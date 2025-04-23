@@ -1,0 +1,27 @@
+#AutoComplete {
+   max-height: 150px;
+   position: absolute;
+   top: calc(100vh / 2 + 40px);
+   width: 50vw;
+   overflow-y: auto;
+   background: rgba(255, 255, 255, 0);
+   border-radius: 7px;
+   font-size: 1.3rem;
+   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(20px);
+   border: 1px solid rgba(255, 255, 255, 0.26);
+   overflow-x: hidden;
+}
+
+#AutoComplete li {
+   padding: 0.5rem 1rem;
+   text-align: center;
+   line-height: 2rem;
+   cursor: pointer;
+   list-style: none;
+}
+
+#AutoComplete li.selected {
+   background-color: rgba(255, 255, 255, 0.26);
+}
