@@ -2,6 +2,7 @@ import type { ServiceGroup } from "../patterns";
 
 export type ParsedInput = {
    value: string;
+   code: string;
    isIP: boolean;
    isStrictURL: boolean;
    isPartialURL: boolean;

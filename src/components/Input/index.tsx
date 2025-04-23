@@ -80,6 +80,7 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
 
       return {
          value,
+         code,
          isIP: z.string()
             .refine( //127::1, ::1, 127...1, 127..1 para 127.0.0.1
                val => ['localhost', '::1'].includes(val) || z.string().ip().safeParse(val).success,
@@ -109,12 +110,10 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
 
    const onChange = (event) => {
       event.stopPropagation();
-      const { services } = parse(event.target.value, event.code);
+      const { services, suggestions } = parse(event.target.value, event.code);
       console.log(parse(event.target.value, event.code));
       setServiceTheme(services);
-      setSuggestions(Object.entries(servicesList).filter(([name]) =>
-         (event.target.value.length === 0 && ["ArrowRight", "Tab"].includes(event.code)) || name.match(event.target.value)
-      ) as [string, object][]);
+      setSuggestions(suggestions.suggestions);
    };
 
    const onKeyDown = (event) => {
