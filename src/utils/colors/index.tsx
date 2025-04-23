@@ -1,3 +1,13 @@
+export type ColorType = {
+   backgroundColor?: string;
+   backgroundImage?: string;
+   color?: string;
+};
+
+export type Colors = {
+   [key: string]: ColorType;
+};
+
 export const colors = {
    reddit: {
       backgroundColor: "#ff4500",
@@ -131,4 +141,4 @@ export const colors = {
       backgroundColor: "#2c2c2c",
       color: "#ffffff",
    }
-};
+} as Colors;

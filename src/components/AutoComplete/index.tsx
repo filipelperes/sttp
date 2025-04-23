@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 import './style.css';
+import { Suggestions } from '../../utils/types/Suggestion';
 
 type AutoCompleteProps = {
-   suggestions: [string][]; // Supondo que suggestions seja um array de arrays de strings
+   suggestions: Suggestions;
    selectedIndex: number;
    setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({ suggestions, selectedIndex, setSelectedIndex }) => {
    const itemRef = useRef<(HTMLLIElement | null)[]>([]);
-
 
    useEffect(() => itemRef.current[selectedIndex]?.scrollIntoView({
       behavior: "smooth",

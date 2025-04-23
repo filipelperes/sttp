@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { services } from '../../utils/patterns';
+import { Suggestions } from '../../utils/types/Suggestion';
 
 type HandleWindowProps = {
    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
    focus: boolean;
-   setSuggestions: React.Dispatch<React.SetStateAction<[string, object][]>>;
+   setSuggestions: React.Dispatch<React.SetStateAction<Suggestions>>;
 };
 
 const HandleWindow: React.FC<HandleWindowProps> = ({ setFocus, focus, setSuggestions }) => {

@@ -1,3 +1,5 @@
+import { ServicesList } from "../types/Services";
+
 export const services = {
    reddit: {
       name: "Reddit",
@@ -5,7 +7,7 @@ export const services = {
       icon: "reddit.svg",
       pattern: /^r(eddit)?/i,
       action: (input) => {
-         window.open(`https://reddit.com/${input.replace(/^r\/+/g, "")}`, "_self", false);
+         window.open(`https://reddit.com/${input?.replace(/^r\/+/g, "")}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#ff4500",
@@ -18,8 +20,8 @@ export const services = {
       icon: "twitter.svg",
       pattern: /^t(t|w(itter)?)/i,
       action: (input) => {
-         let tt_input = input.replace(/^tt\/+/g, "");
-         window.open(`https://twitter.com/${tt_input}`, "_self", false);
+         const tt_input = input?.replace(/^tt\/+/g, "");
+         window.open(`https://twitter.com/${tt_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#1da1f2",
@@ -33,8 +35,8 @@ export const services = {
       icon: "youtube.svg",
       pattern: /^y(t(b)?|outube)?/i,
       action: (input) => {
-         let y_input = input.replace(/^y\/+/g, "");
-         window.open(`https://youtube.com/${y_input}`, "_self", false);
+         const y_input = input?.replace(/^y\/+/g, "");
+         window.open(`https://youtube.com/${y_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#ff0000",
@@ -48,8 +50,8 @@ export const services = {
       icon: "github.svg",
       pattern: /^g(ithub)?/i,
       action: (input) => {
-         let g_input = input.replace(/^g\/+/g, "");
-         window.open(`https://github.com/${g_input}`, "_self", false);
+         const g_input = input?.replace(/^g\/+/g, "");
+         window.open(`https://github.com/${g_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#333",
@@ -62,8 +64,8 @@ export const services = {
       icon: "instagram.svg",
       pattern: /^i(nstagram)?/i,
       action: (input) => {
-         let i_input = input.replace(/^i\/+/g, "");
-         window.open(`https://instagram.com/${i_input}`, "_self", false);
+         const i_input = input?.replace(/^i\/+/g, "");
+         window.open(`https://instagram.com/${i_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)",
@@ -75,8 +77,8 @@ export const services = {
       icon: "twitch.svg",
       pattern: /^t(w(itch)?)?/i,
       action: (input) => {
-         let tws_input = input.replace(/^tw:/g, "");
-         window.open(`https://twitch.tv/search?term=${tws_input}`, "_self", false);
+         const tws_input = input?.replace(/^tw:/g, "");
+         window.open(`https://twitch.tv/search?term=${tws_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#9146ff",
@@ -89,8 +91,8 @@ export const services = {
       icon: "monkeytype.svg",
       pattern: /^m(k|onkeytype)?/i,
       action: (input) => {
-         let mk_input = input.replace(/^mk\/+/g, "");
-         window.open(`https://monkeytype.com/${mk_input}`, "_self", false);
+         const mk_input = input?.replace(/^mk\/+/g, "");
+         window.open(`https://monkeytype.com/${mk_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#323437",
@@ -102,8 +104,8 @@ export const services = {
       icon: "spotify.svg",
       pattern: /^s(potify)?/i,
       action: (input) => {
-         let s_input = input.replace(/^s\/+/g, "");
-         window.open(`https://spotify.com/${s_input}`, "_self", false);
+         const s_input = input?.replace(/^s\/+/g, "");
+         window.open(`https://spotify.com/${s_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#1db954",
@@ -116,7 +118,7 @@ export const services = {
       icon: "whatsapp.svg",
       pattern: /^w(hatsapp)?/i,
       action: () => {
-         window.open("https://web.whatsap.com/", "_self", false);
+         window.open("https://web.whatsap.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#128c7e",
@@ -129,8 +131,8 @@ export const services = {
       icon: "google-translate.svg",
       pattern: /^gt(r(anslator)?)?/i,
       action: (input) => {
-         let trc_input = input.replace(/^tr:/g, "").replace(/^tr:/g, "");
-         window.open(`https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=${trc_input}`, "_self", false);
+         const trc_input = input?.replace(/^tr:/g, "").replace(/^tr:/g, "");
+         window.open(`https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=${trc_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#4285f4",
@@ -142,7 +144,7 @@ export const services = {
       icon: "discord.svg",
       pattern: /^d(c|iscord)?/i,
       action: () => {
-         window.open("https://discord.com/app", "_self", false);
+         window.open("https://discord.com/app", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#7289da",
@@ -154,7 +156,7 @@ export const services = {
       icon: "gmail.svg",
       pattern: /^[gm](ail)?$/i,
       action: () => {
-         window.open("https://gmail.com/", "_self", false);
+         window.open("https://gmail.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#ea4335",
@@ -166,7 +168,7 @@ export const services = {
       icon: "netflix.svg",
       pattern: /^n(etflix)?/i,
       action: () => {
-         window.open("https://netflix.com/", "_self", false);
+         window.open("https://netflix.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#e50914",
@@ -179,7 +181,7 @@ export const services = {
       icon: "hackthebox.svg",
       pattern: /^h(?:ack)?(?:\s*t(?:he)?)?(?:\s*b(?:ox)?)?/i, ///^h(ack)?\s?((t(he)?\s?)?(b(ox)?)?)/i // Se você precisa extrair partes específicas da string correspondente
       action: () => {
-         window.open("https://app.hackthebox.com/login/", "_self", false);
+         window.open("https://app.hackthebox.com/login/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(to right, rgb(26, 35, 50), rgb(17, 25, 39)",
@@ -192,7 +194,7 @@ export const services = {
       icon: "tryhackme.svg",
       pattern: /^t(?:ry)?(?:\s*h(?:ack)?)?(?:\s*m(?:e)?)?/i, ///^t(ry)?\s?((h(ack)?\s?)?(m(e)?)?)/i // Se você precisa extrair partes específicas da string correspondente
       action: () => {
-         window.open("https://tryhackme.com/login/", "_self", false);
+         window.open("https://tryhackme.com/login/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(to right, rgb(28, 37, 56), rgb(22, 30, 45)",
@@ -204,7 +206,7 @@ export const services = {
       pattern: /^p(v|rime(\s?video)?)?/i,
       icon: "primevideo.svg",
       action: () => {
-         window.open("https://primevideo.com/", "_self", false);
+         window.open("https://primevideo.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#146eb4",
@@ -217,8 +219,8 @@ export const services = {
       icon: "pinterest.svg",
       pattern: /^p(interest)?/i,
       action: (input) => {
-         let ps_input = input.replace(/^p:/g, "");
-         window.open(`https://pinterest.com/search/pins/?q=${ps_input}`, "_self", false);
+         const ps_input = input?.replace(/^p:/g, "");
+         window.open(`https://pinterest.com/search/pins/?q=${ps_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#e60023",
@@ -231,7 +233,7 @@ export const services = {
       icon: "chatgpt.svg",
       pattern: /^c(gpt|hat(\s?gpt)?)?/i,
       action: () => {
-         window.open("https://chat.openai.com/", "_self", false);
+         window.open("https://chat.openai.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#343541",
@@ -244,8 +246,8 @@ export const services = {
       icon: "linkedin.svg",
       pattern: /^l(inkedin)?/i,
       action: (input) => {
-         let l_input = input.replace(/^l\/+/g, "");
-         window.open(`https://www.linkedin.com/in/${l_input}`, "_self", false);
+         const l_input = input?.replace(/^l\/+/g, "");
+         window.open(`https://www.linkedin.com/in/${l_input}`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#0077b5",
@@ -258,8 +260,8 @@ export const services = {
       icon: "aliexpress.svg",
       pattern: /^a(li(\s?express)?)?/i,
       action: (input) => {
-         let as_input = input.replace(/^a:/g, "");//.replace(" ", "+");
-         window.open(`https://pt.aliexpress.com/wholesale?SearchText=${as_input}`, "_self", false);
+         const as_input = input?.replace(/^a:/g, "");//.replace(" ", "+");
+         window.open(`https://pt.aliexpress.com/wholesale?SearchText=${as_input}`, "_self", "noopener, noreferrer");
          // https://pt.aliexpress.com/w/wholesale-${as_input}.html
       },
       style: {
@@ -273,7 +275,7 @@ export const services = {
       icon: "trello.svg",
       pattern: /^t(rello)?/i,
       action: () => {
-         window.open("https://trello.com/", "_self", false);
+         window.open("https://trello.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#0077bd",
@@ -285,7 +287,7 @@ export const services = {
       icon: "outlook.svg",
       pattern: /^o(utlook)?/i,
       action: () => {
-         window.open(`https://outlook.live.com/mail/0/`, "_self", false);
+         window.open(`https://outlook.live.com/mail/0/`, "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#0f6cbd",
@@ -297,7 +299,7 @@ export const services = {
       icon: "notion.svg",
       pattern: /^n(o(tion)?)?/i,
       action: () => {
-         window.open("https://www.notion.so/", "_self", false);
+         window.open("https://www.notion.so/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#ffffff",
@@ -310,7 +312,7 @@ export const services = {
       icon: "gdrive.svg",
       pattern: /^d|^g(d(rive)?|oogle\s?drive)?/i,
       action: () => {
-         window.open("https://drive.google.com/", "_self", false);
+         window.open("https://drive.google.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(135deg, rgb(255, 208, 75), rgb(30, 163, 98), rgb(70, 136, 243)",
@@ -322,7 +324,7 @@ export const services = {
       icon: "habbo.svg",
       pattern: /^h(abbo)?/i,
       action: () => {
-         window.open("https://habbo.com.br/", "_self", false);
+         window.open("https://habbo.com.br/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#f7c600",
@@ -335,7 +337,7 @@ export const services = {
       icon: "unisantos.svg",
       pattern: /^u(nisantos)?/i,
       action: () => {
-         window.open("https://ww2.unisantos.br/portal/", "_self", false);
+         window.open("https://ww2.unisantos.br/portal/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#52659b",
@@ -348,7 +350,7 @@ export const services = {
       icon: "canva.svg",
       pattern: /^c(v|anva)?/i,
       action: () => {
-         window.open("https://www.canva.com/", "_self", false);
+         window.open("https://www.canva.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(135deg, #01c3cc, #7d2ae7)",
@@ -361,7 +363,7 @@ export const services = {
       icon: "pontogo.svg",
       pattern: /^p(g|onto\sgo)?/i,
       action: () => {
-         window.open("https://pontogo.app/inicio/login", "_self", false);
+         window.open("https://pontogo.app/inicio/login", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#000099",
@@ -374,7 +376,7 @@ export const services = {
       icon: "zoho.svg",
       pattern: /^z(oho)?/i,
       action: () => {
-         window.open("https://mail.zoho.com/zm/", "_self", false);
+         window.open("https://mail.zoho.com/zm/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(135deg, #e42527, #089949, #226db4, #f9b21d)",
@@ -387,7 +389,7 @@ export const services = {
       icon: "shopee.svg",
       pattern: /^sh(opee)?/i,
       action: () => {
-         window.open("https://shopee.com.br/", "_self", false);
+         window.open("https://shopee.com.br/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundImage: "linear-gradient(135deg, #f53d2d, #fe6432)",
@@ -400,7 +402,7 @@ export const services = {
       icon: "mercadolivre.svg",
       pattern: /^m(l|ercado\slivre)?/i,
       action: () => {
-         window.open("https://www.mercadolivre.com.br/", "_self", false);
+         window.open("https://www.mercadolivre.com.br/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#ffe600",
@@ -413,7 +415,7 @@ export const services = {
       icon: "speedtest.svg",
       pattern: /^s(t|peedtest)?/i,
       action: () => {
-         window.open("https://www.speedtest.net/", "_self", false);
+         window.open("https://www.speedtest.net/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#141526",
@@ -426,7 +428,7 @@ export const services = {
       icon: "notion_calendar.svg",
       pattern: /^n(c|otion\scalendar)/i,
       action: () => {
-         window.open("https://calendar.notion.so/", "_self", false);
+         window.open("https://calendar.notion.so/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#242424",
@@ -439,11 +441,11 @@ export const services = {
       icon: "figma.svg",
       pattern: /^f(igma)?/i,
       action: () => {
-         window.open("https://www.figma.com/", "_self", false);
+         window.open("https://www.figma.com/", "_self", "noopener, noreferrer");
       },
       style: {
          backgroundColor: "#2c2c2c",
          color: "#ffffff",
       }
    },
-};
+} as ServicesList;

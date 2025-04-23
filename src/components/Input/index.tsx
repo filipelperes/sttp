@@ -1,14 +1,23 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { z } from "zod";
-import { services as servicesList } from '../../utils/patterns';
+import { services as servicesList, ServiceGroup } from '../../utils/patterns';
+import { Suggestions } from '../../utils/types/Suggestion';
 import { colors } from '../../utils/colors';
 import AutoComplete from '../AutoComplete';
 import './style.css';
+import type { ParsedInput } from '../../utils/types/ParsedInput';
+
+type InputProps = {
+   focus: boolean;
+   setFocus: React.Dispatch<React.SetStateAction<boolean>>;
+   suggestions: Suggestions;
+   setSuggestions: React.Dispatch<React.SetStateAction<Suggestions>>;
+};
 
 
-const Input = ({ focus, setFocus, suggestions, setSuggestions }) => {
-   const inputRef = useRef(null);
-   const [selectedIndex, setSelectedIndex] = useState(0);
+const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggestions }) => {
+   const inputRef = useRef<(HTMLTextAreaElement | null)>(null);
+   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
    useEffect(() => {
       if (focus) inputRef.current?.focus();
@@ -22,7 +31,7 @@ const Input = ({ focus, setFocus, suggestions, setSuggestions }) => {
       }
    }, [focus, setSuggestions]);
 
-   function setServiceTheme({ service }) {
+   function setServiceTheme({ service }: { service?: [string, ServiceGroup]; }) {
       const color = colors[service?.[0]];
       document.body.style.backgroundImage = color?.backgroundImage ?? "none";
       document.body.style.backgroundColor = color?.backgroundColor ?? "#101010";
@@ -38,12 +47,12 @@ const Input = ({ focus, setFocus, suggestions, setSuggestions }) => {
          window.open(
             isStrictURL ? input : isPartialURL ? input.replace(/^(https?:\/\/)?(www\.)?/i, "https://www.") : `http${isIP && !["127.0.0.1", "127::1"].includes(input) ? "s" : ""}://${input}`,
             "_blank",
-            false
+            "noopener, noreferrer"
          );
          return;
       }
 
-      const matchService = Object.entries(servicesList).some(([, service]) => {
+      const matchService = Object.entries(servicesList).some(([, service]: [string, ServiceGroup]) => {
          const all = service?.pattern && service?.action ? [service] : Object.values(service);
          return all.some((s) => {
             if (!s?.pattern?.test(input)) return false;
@@ -53,14 +62,14 @@ const Input = ({ focus, setFocus, suggestions, setSuggestions }) => {
       });
       if (matchService) return;
 
-      window.open(`https://google.com/search?q=${input}`, "_blank", false);
+      window.open(`https://google.com/search?q=${input}`, "_blank", "noopener, noreferrer");
    }
 
    function parse(value, code) {
       const all = Object.entries(servicesList);
       const isEmpty = value.length === 0;
 
-      const service = all.find(([, val]) => {
+      const service = all.find(([, val]: [string, ServiceGroup]) => {
          const entries = val?.pattern && val?.action ? [val] : Object.values(val);
          return entries.some((s) => s?.pattern instanceof RegExp && s.pattern.test(value));
       });
@@ -90,12 +99,12 @@ const Input = ({ focus, setFocus, suggestions, setSuggestions }) => {
             matched: (service !== undefined),
             service,
             all,
-            filtered: all.filter(([, val]) => {
+            filtered: all.filter(([, val]: [string, ServiceGroup]) => {
                const entries = val?.pattern && val?.action ? [val] : Object.values(val);
                return entries.some((s) => s?.pattern instanceof RegExp && s.pattern.test(value));
             }), // MISTERIOSO CASO DE FILTERED O UNICO DE FUNÇÃO QUE NÃO FUNCIONA PQ?
          }
-      };
+      } as ParsedInput;
    }
 
    const onChange = (event) => {
@@ -105,7 +114,7 @@ const Input = ({ focus, setFocus, suggestions, setSuggestions }) => {
       setServiceTheme(services);
       setSuggestions(Object.entries(servicesList).filter(([name]) =>
          (event.target.value.length === 0 && ["ArrowRight", "Tab"].includes(event.code)) || name.match(event.target.value)
-      ));
+      ) as [string, object][]);
    };
 
    const onKeyDown = (event) => {
