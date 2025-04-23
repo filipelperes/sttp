@@ -1,8 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './style.css';
 
-const AutoComplete = ({ suggestions, selectedIndex, setSelectedIndex }) => {
-   const itemRef = useRef([]);
+type AutoCompleteProps = {
+   suggestions: [string][]; // Supondo que suggestions seja um array de arrays de strings
+   selectedIndex: number;
+   setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const AutoComplete: React.FC<AutoCompleteProps> = ({ suggestions, selectedIndex, setSelectedIndex }) => {
+   const itemRef = useRef<(HTMLLIElement | null)[]>([]);
+
 
    useEffect(() => itemRef.current[selectedIndex]?.scrollIntoView({
       behavior: "smooth",
