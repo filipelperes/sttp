@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { services as servicesList, IServiceGroup } from '../../utils/patterns';
-import { colors } from '../../utils/colors';
+import { ServicesList } from '../../utils/services';
 import type { IParsedInput } from '../../utils/types/ParsedInput';
 import { useCallback, useContext, useEffect, useRef } from "react";
 import { SearchContext } from "../../utils/SearchProvider/Context";
@@ -8,6 +7,7 @@ import { StoreContext } from "../../StoreProvider/Context";
 import { SearchInputActions } from "../../StoreProvider/Actions";
 import { ParsedInputActions, SelectedIdxActions } from "../../utils/SearchProvider/Actions";
 import "./style.css";
+import type { IService } from "../../utils/types/Services";
 
 const SearchInput = () => {
    const searchInputRef = useRef<(HTMLTextAreaElement | null)>(null);
@@ -17,10 +17,10 @@ const SearchInput = () => {
    const { isEmpty, isIP, isPartialURL, isStrictURL, suggestions, value } = parsedInput;
 
    const setServiceTheme = useCallback(() => {
-      const color = colors[suggestions.suggestions[selectedIdx]?.[0]];
-      document.body.style.backgroundImage = color?.backgroundImage ?? "none";
-      document.body.style.backgroundColor = color?.backgroundColor ?? "#101010";
-      document.body.style.color = color?.color ?? "#d4d4d4";
+      const style = suggestions.suggestions[selectedIdx]?.[1]?.style;
+      document.body.style.backgroundImage = style?.backgroundImage ?? "none";
+      document.body.style.backgroundColor = style?.backgroundColor ?? "#101010";
+      document.body.style.color = style?.color ?? "#d4d4d4";
    }, [suggestions, selectedIdx]);
 
    useEffect(() => setServiceTheme(), [suggestions, setServiceTheme]);
@@ -48,13 +48,10 @@ const SearchInput = () => {
          return;
       }
 
-      const matchService = Object.entries(servicesList).some(([, service]: [string, IServiceGroup]) => {
-         const all = service?.pattern && service?.action ? [service] : Object.values(service);
-         return all.some((s) => {
-            if (!s?.pattern?.test(input)) return false;
-            s.action?.(input.match(s.pattern)?.[0]);
-            return true;
-         });
+      const matchService = Object.entries(ServicesList).some(([, service]: [string, IService]) => {
+         if (!service?.pattern?.test(input)) return false;
+         service?.action?.(input.match(service.pattern)?.[0]);
+         return true;
       });
       if (matchService) return;
 
@@ -62,14 +59,10 @@ const SearchInput = () => {
    }
 
    function parse(value, code) {
-      const all = Object.entries(servicesList);
+      const all = Object.entries(ServicesList);
       const isEmpty = value.length === 0;
 
-      const service = all.find(([, val]: [string, IServiceGroup]) => {
-         const entries = val?.pattern && val?.action ? [val] : Object.values(val);
-         return entries.some((s) => s?.pattern instanceof RegExp && s.pattern.test(value));
-      });
-
+      const service = all.find(([, service]: [string, IService]) => service.pattern.test(value));
       const suggestions = all.filter(([name]) =>
          (isEmpty && ["ArrowRight", "Tab"].includes(code)) || name.match(value)
       );
@@ -95,10 +88,7 @@ const SearchInput = () => {
             matched: (service !== undefined),
             service,
             all,
-            filtered: all.filter(([, val]: [string, IServiceGroup]) => {
-               const entries = val?.pattern && val?.action ? [val] : Object.values(val);
-               return entries.some((s) => s?.pattern instanceof RegExp && s.pattern.test(value));
-            }), // MISTERIOSO CASO DE FILTERED O UNICO DE FUNÇÃO QUE NÃO FUNCIONA PQ?
+            filtered: all.filter(([, service]: [string, IService]) => service?.pattern?.test(value)), // MISTERIOSO CASO DE FILTERED O UNICO DE FUNÇÃO QUE NÃO FUNCIONA PQ?
          }
       } as IParsedInput;
    }
@@ -120,7 +110,6 @@ const SearchInput = () => {
          if (isEmpty) return;
          event.target.value = suggestions.suggestions[selectedIdx]?.[0] ?? value;
          setSearchState({ type: SelectedIdxActions.RESET });
-
       };
 
       const keyActions = {

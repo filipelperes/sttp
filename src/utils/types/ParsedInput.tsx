@@ -1,4 +1,4 @@
-import type { IServiceGroup } from "../patterns";
+import type { IService } from "../types/Services";
 
 export type IParsedInput = {
    value: string;
@@ -10,12 +10,12 @@ export type IParsedInput = {
    isEmpty: boolean;
    suggestions: {
       matched: boolean;
-      suggestions: [string, IServiceGroup][];
+      suggestions: [string, IService][];
    };
    services: {
       matched: boolean;
-      service?: [string, IServiceGroup];
-      all: [string, IServiceGroup][];
-      filtered: [string, IServiceGroup][];
+      service?: [string, IService];
+      all: [string, IService][];
+      filtered: [string, IService][];
    };
 };

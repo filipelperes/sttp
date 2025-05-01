@@ -7,7 +7,7 @@ const SearchAutoComplete = () => {
    const { searchState, setSearchState } = useContext(SearchContext);
    const { parsedInput, selectedIdx } = searchState;
    const { suggestions: s } = parsedInput;
-   const { suggestions } = s;
+   const { suggestions, matched } = s;
 
    useEffect(() => {
       setSearchState({ type: SelectedIdxActions.SET, payload: Math.min(suggestions.length - 1, selectedIdx) });
@@ -20,9 +20,9 @@ const SearchAutoComplete = () => {
 
    return (
       <>
-         {s.matched &&
+         {matched &&
             <ul id="SearchAutoComplete">
-               {suggestions.map(([name], i) => (
+               {suggestions.map(([, { name }], i) => (
                   <li
                      key={name}
                      id={`suggestion-${i}`}

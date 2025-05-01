@@ -1,6 +1,6 @@
-import { ServicesList } from "../types/Services";
+import { IServicesList } from "../types/Services";
 
-export const services = {
+export const ServicesList = {
    reddit: {
       name: "Reddit",
       url: "https://www.reddit.com",
@@ -448,4 +448,4 @@ export const services = {
          color: "#ffffff",
       }
    },
-} as ServicesList;
+} as IServicesList;

@@ -13,12 +13,12 @@ const Search = () => {
       <>
          {focusSearchInput &&
             (
-               <SearchProvider>
-                  <div id="Search">
+               <div id="Search">
+                  <SearchProvider>
                      <SearchInput />
                      <SearchAutoComplete />
-                  </div>
-               </SearchProvider>
+                  </SearchProvider>
+               </div>
             )
          }
       </>
