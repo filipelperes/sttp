@@ -1,8 +1,7 @@
-import type { ServiceGroup } from "../patterns";
+import type { IServiceGroup } from "../patterns";
 
-export type ParsedInput = {
+export type IParsedInput = {
    value: string;
-   code: string;
    isIP: boolean;
    isStrictURL: boolean;
    isPartialURL: boolean;
@@ -11,12 +10,12 @@ export type ParsedInput = {
    isEmpty: boolean;
    suggestions: {
       matched: boolean;
-      suggestions: [string, ServiceGroup][];
+      suggestions: [string, IServiceGroup][];
    };
    services: {
       matched: boolean;
-      service?: [string, ServiceGroup];
-      all: [string, ServiceGroup][];
-      filtered: [string, ServiceGroup][];
+      service?: [string, IServiceGroup];
+      all: [string, IServiceGroup][];
+      filtered: [string, IServiceGroup][];
    };
 };

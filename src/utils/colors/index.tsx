@@ -1,11 +1,11 @@
-export type ColorType = {
+export type IColorType = {
    backgroundColor?: string;
    backgroundImage?: string;
    color?: string;
 };
 
-export type Colors = {
-   [key: string]: ColorType;
+export type IColors = {
+   [key: string]: IColorType;
 };
 
 export const colors = {
@@ -141,4 +141,4 @@ export const colors = {
       backgroundColor: "#2c2c2c",
       color: "#ffffff",
    }
-} as Colors;
+} as IColors;

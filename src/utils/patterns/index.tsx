@@ -1,15 +1,15 @@
-export type Service = {
+export type IService = {
    pattern: RegExp;
    action: (match?: string) => void;
    //Se quiser garantir que match sempre vai vir com .action, pode mudar a função para exigir argumento: (match: string) => void;
 };
 
-export type ServiceGroup = {
-   [subkey: string]: Service;
+export type IServiceGroup = {
+   [subkey: string]: IService;
 };
 
-export type Services = {
-   [key: string]: ServiceGroup;
+export type IServices = {
+   [key: string]: IServiceGroup;
 };
 
 export const services = {
@@ -548,4 +548,4 @@ export const services = {
          }
       }
    },
-} as Services;
+} as IServices;

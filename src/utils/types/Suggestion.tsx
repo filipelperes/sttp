@@ -1,2 +1,2 @@
-export type Suggestion = [string, object];
-export type Suggestions = Suggestion[];
+export type ISuggestion = [string, object];
+export type ISuggestions = ISuggestion[];

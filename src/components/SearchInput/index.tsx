@@ -1,48 +1,44 @@
-import React, { useRef, useEffect, useState } from 'react';
 import { z } from "zod";
-import { services as servicesList, ServiceGroup } from '../../utils/patterns';
-import { Suggestions } from '../../utils/types/Suggestion';
+import { services as servicesList, IServiceGroup } from '../../utils/patterns';
 import { colors } from '../../utils/colors';
-import AutoComplete from '../AutoComplete';
-import './style.css';
-import type { ParsedInput } from '../../utils/types/ParsedInput';
+import type { IParsedInput } from '../../utils/types/ParsedInput';
+import { useCallback, useContext, useEffect, useRef } from "react";
+import { SearchContext } from "../../utils/SearchProvider/Context";
+import { StoreContext } from "../../StoreProvider/Context";
+import { SearchInputActions } from "../../StoreProvider/Actions";
+import { ParsedInputActions, SelectedIdxActions } from "../../utils/SearchProvider/Actions";
+import "./style.css";
 
-type InputProps = {
-   focus: boolean;
-   setFocus: React.Dispatch<React.SetStateAction<boolean>>;
-   suggestions: Suggestions;
-   setSuggestions: React.Dispatch<React.SetStateAction<Suggestions>>;
-};
+const SearchInput = () => {
+   const searchInputRef = useRef<(HTMLTextAreaElement | null)>(null);
+   const { searchState, setSearchState } = useContext(SearchContext);
+   const { storeState, setStoreState } = useContext(StoreContext);
+   const { parsedInput, selectedIdx } = searchState;
+   const { isEmpty, isIP, isPartialURL, isStrictURL, suggestions, value } = parsedInput;
 
-
-const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggestions }) => {
-   const inputRef = useRef<(HTMLTextAreaElement | null)>(null);
-   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-
-   useEffect(() => {
-      if (focus) inputRef.current?.focus();
-      else {
-         inputRef.current?.blur();
-         document.body.style.removeProperty("background-image");
-         document.body.style.removeProperty("background-color");
-         document.body.style.removeProperty("color");
-         setSelectedIndex(0);
-         setSuggestions([]);
-      }
-   }, [focus, setSuggestions]);
-
-   function setServiceTheme({ service }: { service?: [string, ServiceGroup]; }) {
-      const color = colors[service?.[0]];
+   const setServiceTheme = useCallback(() => {
+      const color = colors[suggestions.suggestions[selectedIdx]?.[0]];
       document.body.style.backgroundImage = color?.backgroundImage ?? "none";
       document.body.style.backgroundColor = color?.backgroundColor ?? "#101010";
       document.body.style.color = color?.color ?? "#d4d4d4";
-   }
+   }, [suggestions, selectedIdx]);
+
+   useEffect(() => setServiceTheme(), [suggestions, setServiceTheme]);
+   useEffect(() => {
+      if (storeState.focusSearchInput) searchInputRef.current?.focus();
+      else {
+         searchInputRef.current?.blur();
+         setSearchState({ type: ParsedInputActions.RESET_PARSED });
+         setSearchState({ type: SelectedIdxActions.RESET });
+      }
+      return () => {
+         document.body.style.removeProperty("background-image");
+         document.body.style.removeProperty("background-color");
+         document.body.style.removeProperty("color");
+      };
+   }, [storeState.focusSearchInput, setSearchState]);
 
    function onSubmit(input) {
-      const isIP = z.string().ip().safeParse(input).success;
-      const isStrictURL = z.string().url().safeParse(input).success;
-      const isPartialURL = /^(?!.*\s)[^\s]+\.[a-zA-Z]{2,}/.test(input) || input.startsWith("http") || input.startsWith("www.");
-
       if (isIP || isStrictURL || isPartialURL || input.startsWith("localhost")) {
          window.open(
             isStrictURL ? input : isPartialURL ? input.replace(/^(https?:\/\/)?(www\.)?/i, "https://www.") : `http${isIP && !["127.0.0.1", "127::1"].includes(input) ? "s" : ""}://${input}`,
@@ -52,7 +48,7 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
          return;
       }
 
-      const matchService = Object.entries(servicesList).some(([, service]: [string, ServiceGroup]) => {
+      const matchService = Object.entries(servicesList).some(([, service]: [string, IServiceGroup]) => {
          const all = service?.pattern && service?.action ? [service] : Object.values(service);
          return all.some((s) => {
             if (!s?.pattern?.test(input)) return false;
@@ -69,7 +65,7 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
       const all = Object.entries(servicesList);
       const isEmpty = value.length === 0;
 
-      const service = all.find(([, val]: [string, ServiceGroup]) => {
+      const service = all.find(([, val]: [string, IServiceGroup]) => {
          const entries = val?.pattern && val?.action ? [val] : Object.values(val);
          return entries.some((s) => s?.pattern instanceof RegExp && s.pattern.test(value));
       });
@@ -80,7 +76,6 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
 
       return {
          value,
-         code,
          isIP: z.string()
             .refine( //127::1, ::1, 127...1, 127..1 para 127.0.0.1
                val => ['localhost', '::1'].includes(val) || z.string().ip().safeParse(val).success,
@@ -100,35 +95,32 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
             matched: (service !== undefined),
             service,
             all,
-            filtered: all.filter(([, val]: [string, ServiceGroup]) => {
+            filtered: all.filter(([, val]: [string, IServiceGroup]) => {
                const entries = val?.pattern && val?.action ? [val] : Object.values(val);
                return entries.some((s) => s?.pattern instanceof RegExp && s.pattern.test(value));
             }), // MISTERIOSO CASO DE FILTERED O UNICO DE FUNÇÃO QUE NÃO FUNCIONA PQ?
          }
-      } as ParsedInput;
+      } as IParsedInput;
    }
 
    const onChange = (event) => {
       event.stopPropagation();
-      const { services, suggestions } = parse(event.target.value, event.code);
-      console.log(parse(event.target.value, event.code));
-      setServiceTheme(services);
-      setSuggestions(suggestions.suggestions);
+      setSearchState({ type: ParsedInputActions.SET_PARSED, payload: parse(event.target.value, event.code) });
    };
 
    const onKeyDown = (event) => {
       event.stopPropagation();
       const submit = () => {
          event.preventDefault();
-         onSubmit(event.target.value);
+         onSubmit(value);
       };
 
       const complete = () => {
          event.preventDefault();
-         if (event.target.value.length === 0) return;
-         event.target.value = suggestions[selectedIndex]?.[0] ?? event.target.value;
-         setSelectedIndex(0);
-         setSuggestions([]);
+         if (isEmpty) return;
+         event.target.value = suggestions.suggestions[selectedIdx]?.[0] ?? value;
+         setSearchState({ type: SelectedIdxActions.RESET });
+
       };
 
       const keyActions = {
@@ -138,25 +130,23 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
          ArrowRight: complete,
          Escape: () => {
             event.target.value = "";
-            setFocus(false);
-            setSelectedIndex(0);
-            setSuggestions([]);
+            setStoreState({ type: SearchInputActions.HIDE });
          },
          ArrowDown: () => {
             event.preventDefault();
-            setSelectedIndex((prev) => prev === suggestions.length - 1 ? 0 : prev + 1);
+            setSearchState({ type: SelectedIdxActions.SET, payload: selectedIdx === suggestions.suggestions.length - 1 ? 0 : selectedIdx + 1 });
          },
          ArrowUp: () => {
             event.preventDefault();
-            setSelectedIndex((prev) => prev === 0 ? suggestions.length - 1 : prev - 1);
+            setSearchState({ type: SelectedIdxActions.SET, payload: selectedIdx === 0 ? suggestions.suggestions.length - 1 : selectedIdx - 1 });
          },
          Home: () => {
             event.preventDefault();
-            setSelectedIndex(0);
+            setSearchState({ type: SelectedIdxActions.RESET });
          },
          End: () => {
             event.preventDefault();
-            setSelectedIndex(suggestions.length - 1);
+            setSearchState({ type: SelectedIdxActions.SET, payload: suggestions.suggestions.length - 1 });
          },
       };
 
@@ -164,28 +154,16 @@ const Input: React.FC<InputProps> = ({ focus, setFocus, suggestions, setSuggesti
    };
 
    return (
-      <>
-         {focus && (
-            <>
-               <textarea
-                  id="Input"
-                  ref={inputRef}
-                  spellCheck="false"
-                  wrap="off"
-                  rows={1}
-                  onChange={onChange}
-                  onKeyDown={onKeyDown}
-               />
-               <AutoComplete
-                  suggestions={suggestions}
-                  selectedIndex={selectedIndex}
-                  setSelectedIndex={setSelectedIndex}
-               />
-            </>
-         )}
-      </>
+      <textarea
+         id="SearchInput"
+         ref={searchInputRef}
+         spellCheck="false"
+         wrap="off"
+         rows={1}
+         onChange={onChange}
+         onKeyDown={onKeyDown}
+      />
    );
-
 };
 
-export default Input;
+export default SearchInput;

@@ -1,4 +1,4 @@
-export type Service = {
+export type IService = {
    name: string;
    url: string;
    icon: string;
@@ -11,6 +11,6 @@ export type Service = {
    };
 };
 
-export type ServicesList = {
-   [key: string]: Service;
+export type IServicesList = {
+   [key: string]: IService;
 };

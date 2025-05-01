@@ -1,8 +1,8 @@
-#AutoComplete {
+#SearchAutoComplete {
+   width: 100%;
    max-height: 150px;
    position: absolute;
    top: calc(100vh / 2 + 40px);
-   width: 50vw;
    overflow-y: auto;
    background: rgba(255, 255, 255, 0);
    border-radius: 7px;
@@ -12,9 +12,10 @@
    -webkit-backdrop-filter: blur(20px);
    border: 1px solid rgba(255, 255, 255, 0.26);
    overflow-x: hidden;
+   width: 50vw;
 }
 
-#AutoComplete li {
+#SearchAutoComplete li {
    padding: 0.5rem 1rem;
    text-align: center;
    line-height: 2rem;
@@ -22,6 +23,6 @@
    list-style: none;
 }
 
-#AutoComplete li.selected {
+#SearchAutoComplete li.selected {
    background-color: rgba(255, 255, 255, 0.26);
 }

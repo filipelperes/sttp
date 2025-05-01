@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './style.css';
+import { StoreContext } from '../../StoreProvider/Context';
 
-type ClockProps = {
-   focus: boolean;
-};
-
-const Clock: React.FC<ClockProps> = ({ focus }) => {
+const Clock = () => {
+   const { storeState } = useContext(StoreContext);
+   const { focusSearchInput } = storeState;
    const [clock, setClock] = useState<string>("");
 
    useEffect(() => {
@@ -19,10 +18,8 @@ const Clock: React.FC<ClockProps> = ({ focus }) => {
 
    return (
       <>
-         {!focus && (
-            <time id="Clock">
-               {clock}
-            </time>
+         {!focusSearchInput && (
+            <time id="Clock"> {clock} </time>
          )}
       </>
    );
