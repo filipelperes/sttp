@@ -1,20 +1,19 @@
 import type { IParsedInput } from "../types/ParsedInput";
 
 export const initialParsedInputState: IParsedInput = {
-   value: "",
    isIP: false,
    isStrictURL: false,
    isPartialURL: false,
-   dashed: false,
+   slash: false,
    collon: false,
    isEmpty: true,
+   all: [],
    suggestions: {
       matched: false,
       suggestions: []
    },
    services: {
       matched: false,
-      all: [],
       filtered: []
    }
 };

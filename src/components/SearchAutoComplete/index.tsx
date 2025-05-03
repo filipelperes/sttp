@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { SearchContext } from '../../utils/SearchProvider/Context';
 import './style.css';
 import { SelectedIdxActions } from '../../utils/SearchProvider/Actions';
+import { Icon } from '../Icon';
 
 const SearchAutoComplete = () => {
    const { searchState, setSearchState } = useContext(SearchContext);
@@ -10,7 +11,11 @@ const SearchAutoComplete = () => {
    const { suggestions, matched } = s;
 
    useEffect(() => {
-      setSearchState({ type: SelectedIdxActions.SET, payload: Math.min(suggestions.length - 1, selectedIdx) });
+      setSearchState({
+         type: SelectedIdxActions.SET,
+         payload: Math.min(suggestions.length - 1, selectedIdx)
+      });
+
       document.getElementById(`suggestion-${selectedIdx}`)?.scrollIntoView({
          behavior: "smooth",
          block: "nearest",
@@ -22,13 +27,14 @@ const SearchAutoComplete = () => {
       <>
          {matched &&
             <ul id="SearchAutoComplete">
-               {suggestions.map(([, { name }], i) => (
+               {suggestions.map(([, { name, icon }], i) => (
                   <li
                      key={name}
                      id={`suggestion-${i}`}
                      className={i === selectedIdx ? "selected" : ""}
                   >
-                     {name}
+                     <Icon icon={icon} />
+                     <p>{name}</p>
                   </li>
                ))}
             </ul>

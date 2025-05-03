@@ -2,7 +2,7 @@ import { useReducer, type ReactNode } from "react";
 import type { ISearchInputActions } from "./Actions";
 import { SearchInputReducer } from "./Reducers";
 import { initialSearchInputState, type ISearchInputState } from "./States";
-import { StoreContext } from "./context";
+import { StoreContext } from "./Context";
 
 export type IRootState = {
    focusSearchInput: ISearchInputState["focusSearchInput"];
