@@ -1,6 +1,7 @@
 import type { IService } from "../types/Services";
 
 export type IParsedInput = {
+   value: string;
    isIP: boolean;
    isStrictURL: boolean;
    isPartialURL: boolean;

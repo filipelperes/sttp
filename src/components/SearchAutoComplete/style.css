@@ -1,8 +1,7 @@
-#SearchAutoComplete {
-   width: 100%;
+#SearchAutoComplete-Wrapper {
    max-height: 150px;
    position: absolute;
-   top: calc(100vh / 2 + 40px);
+   top: 6rem;
    overflow-y: auto;
    background: rgba(255, 255, 255, 0);
    border-radius: 7px;
@@ -10,28 +9,25 @@
    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
    backdrop-filter: blur(20px);
    -webkit-backdrop-filter: blur(20px);
-   border: 1px solid rgba(255, 255, 255, 0.26);
+   border: 1px solid var(--scrollbar-color);
    overflow-x: hidden;
    width: 50vw;
 }
 
-#SearchAutoComplete li {
+#SearchAutoComplete-Wrapper li {
    padding: 0.5rem 1rem;
    text-align: center;
    cursor: pointer;
    list-style: none;
    font-weight: 400;
    letter-spacing: 1.13px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
    line-height: 2.0625rem;
 }
 
-#SearchAutoComplete li.selected {
-   background-color: rgba(255, 255, 255, 0.26);
+#SearchAutoComplete-Wrapper li.selected {
+   background-color: var(--scrollbar-color);
 }
 
-#SearchAutoComplete li p {
+#SearchAutoComplete-Wrapper li p {
    margin-left: 7px;
 }

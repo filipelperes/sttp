@@ -1,6 +1,7 @@
 import type { IParsedInput } from "../types/ParsedInput";
 
 export const initialParsedInputState: IParsedInput = {
+   value: "",
    isIP: false,
    isStrictURL: false,
    isPartialURL: false,

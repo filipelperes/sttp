@@ -1,29 +1,41 @@
 import { createElement, useState } from 'react';
 import type { IService } from '../../utils/types/Services';
+import { img, svgr } from '../../utils/services';
 
-const isSVGComponent = (icon: unknown): icon is React.FC<React.SVGProps<SVGSVGElement>> =>
-   typeof icon === 'function';
+type IIconProps = {
+   icon: IService['icon'];
+   width?: number;
+   height?: number;
+   size?: string;
+   alt?: string;
+   name?: string;
+};
 
-type Props = { icon: IService['icon']; alt?: string; };
-
-export const Icon = ({ icon, alt = '' }: Props) => {
+export const Icon = ({
+   icon,
+   alt = '',
+   width = 28,
+   height = 28,
+   size = '1.7rem',
+   name = '',
+}: IIconProps) => {
    const [imgError, setImgError] = useState(false);
 
-   const iconProps = isSVGComponent(icon)
-      ? { width: 28, height: 28, fill: 'currentColor' }
-      : { size: '1.7rem' };
+   const isSvg = svgr.includes(name);
+   const isImg = img.includes(name);
 
-   return typeof icon === 'string' ?
-      !imgError ? (
-         <img
-            src={icon}
-            alt={alt}
-            width={28}
-            height={28}
-            onError={() => setImgError(true)}
-            style={{ objectFit: 'contain' }}
-         />
-      ) : (<span style={{ fontSize: '1.7rem' }}>🧩</span>)
-      : (createElement(icon, iconProps));
+   const props = isSvg ? { width, height, fill: 'currentColor' } : { size };
 
+   return imgError ? (
+      <span style={{ fontSize: size }}>🧩</span>
+   ) : isImg ? (
+      <img
+         src={icon as string}
+         alt={alt}
+         width={width}
+         height={height}
+         onError={() => setImgError(true)}
+         style={{ objectFit: 'contain' }}
+      />)
+      : (createElement(icon, props));
 };

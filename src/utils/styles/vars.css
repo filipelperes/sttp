@@ -1,0 +1,7 @@
+:root {
+   --background: #101010;
+   --foreground: #d4d4d4;
+   --scrollbar-color: rgba(255, 255, 255, 0.26);
+
+   --inter-font-family: 'Inter', sans-serif;
+}

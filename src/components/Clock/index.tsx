@@ -19,7 +19,15 @@ const Clock = () => {
    return (
       <>
          {!focusSearchInput && (
-            <time id="Clock"> {clock} </time>
+            <div className="Clock-Wrapper d-flex justify-center">
+               <time id="Clock">
+                  {clock.split(":").reduce((acc, part, index, array) => [
+                     ...acc,
+                     <span key={`digit-${index}`}>{part}</span>,
+                     (index < array.length - 1 && (<span key={`separator-${index}`} className="separator"> : </span>))
+                  ], [] as React.ReactNode[])}
+               </time>
+            </div>
          )}
       </>
    );

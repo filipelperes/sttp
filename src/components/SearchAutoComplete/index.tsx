@@ -26,14 +26,14 @@ const SearchAutoComplete = () => {
    return (
       <>
          {matched &&
-            <ul id="SearchAutoComplete">
+            <ul id="SearchAutoComplete-Wrapper">
                {suggestions.map(([, { name, icon }], i) => (
                   <li
                      key={name}
                      id={`suggestion-${i}`}
-                     className={i === selectedIdx ? "selected" : ""}
+                     className={`${i === selectedIdx ? "selected" : ""} d-flex justify-center align-middle`}
                   >
-                     <Icon icon={icon} />
+                     <Icon name={name} icon={icon} />
                      <p>{name}</p>
                   </li>
                ))}

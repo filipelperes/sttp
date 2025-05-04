@@ -1,5 +1,5 @@
-#Search {
-   display: flex;
-   flex-direction: column;
+#Search-Wrapper {
    width: 50vw;
+   position: relative;
+   margin: 0 auto;
 }

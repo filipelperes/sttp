@@ -1,6 +1,16 @@
+.Clock-Wrapper {
+   width: 50vw;
+   margin: 0 auto;
+}
+
 #Clock {
    font-size: 5.5rem;
    font-weight: bolder;
    text-align: center;
    letter-spacing: 0.1rem;
+}
+
+#Clock .separator {
+   position: relative;
+   top: -7px;
 }

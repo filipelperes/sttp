@@ -7,7 +7,7 @@ function App() {
 
   return (
     <StoreProvider>
-      <div className="App">
+      <div className="App d-flex justify-center align-middle column">
         <Clock />
         <Search />
         <HandleWindow />
