@@ -11,10 +11,11 @@ import HighlightedOverlay from "../HighlightedOverlay";
 
 const SearchInput = () => {
    const searchInputRef = useRef<(HTMLTextAreaElement | null)>(null);
+   const overlayRef = useRef<(HTMLDivElement | null)>(null);
    const { searchState, setSearchState } = useContext(SearchContext);
    const { storeState, setStoreState } = useContext(StoreContext);
    const { parsedInput, selectedIdx } = searchState;
-   const { isEmpty, isIP, isPartialURL, isStrictURL, suggestions, all, value } = parsedInput;
+   const { isIP, isPartialURL, isStrictURL, suggestions, all, value } = parsedInput;
 
    const setServiceTheme = useCallback(() => {
       const style =
@@ -116,8 +117,6 @@ const SearchInput = () => {
       };
 
       const complete = () => {
-         event.preventDefault();
-         if (isEmpty) return;
          event.target.value = suggestions.suggestions[selectedIdx]?.[1]?.name ?? event.target.value;
          setSearchState({
             type: ParsedInputActions.SET_PARSED,
@@ -129,8 +128,14 @@ const SearchInput = () => {
       const keyActions = {
          Enter: submit,
          NumpadEnter: submit,
-         Tab: complete,
-         ArrowRight: complete,
+         Tab: () => {
+            event.preventDefault();
+            complete();
+         },
+         ArrowRight: () => {
+            if (suggestions.matched) event.preventDefault();
+            complete();
+         },
          Escape: () => {
             event.target.value = "";
             setStoreState({ type: SearchInputActions.HIDE });
@@ -145,20 +150,42 @@ const SearchInput = () => {
          },
          Home: () => {
             event.preventDefault();
-            setSearchState({ type: SelectedIdxActions.RESET });
+            if (suggestions.matched) setSearchState({ type: SelectedIdxActions.RESET });
+            else {
+               searchInputRef.current?.setSelectionRange(0, 0);
+               searchInputRef.current.scroll({
+                  behavior: "smooth",
+                  left: 0
+               });
+            }
          },
          End: () => {
             event.preventDefault();
-            setSearchState({ type: SelectedIdxActions.SET, payload: suggestions.suggestions.length - 1 });
+            if (suggestions.matched) setSearchState({ type: SelectedIdxActions.SET, payload: suggestions.suggestions.length - 1 });
+            else {
+               searchInputRef.current?.setSelectionRange(event.target.value.length, event.target.value.length);
+               searchInputRef.current.scroll({
+                  behavior: "smooth",
+                  left: 99999
+               });
+            }
          },
       };
 
       keyActions[event.code]?.();
    };
 
+   const onScroll = () => {
+      if (searchInputRef.current && overlayRef.current) {
+         overlayRef.current.scrollTop = searchInputRef.current.scrollTop;
+         overlayRef.current.scrollLeft = searchInputRef.current.scrollLeft;
+      }
+   };
+
+
    return (
-      <div className="SearchInput-Wrapper d-flex justify-center align-middle">
-         <div className="overlay d-flex justify-center align-middle">
+      <div className="SearchInput-Wrapper d-flex justify-center align-middle pos-relative">
+         <div ref={overlayRef} className="overlay d-flex justify-center align-middle">
             <HighlightedOverlay value={value} />
          </div>
          <textarea
@@ -170,6 +197,7 @@ const SearchInput = () => {
             rows={1}
             onChange={onChange}
             onKeyDown={onKeyDown}
+            onScroll={onScroll}
          />
       </div>
    );

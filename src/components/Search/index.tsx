@@ -13,7 +13,7 @@ const Search = () => {
       <>
          {focusSearchInput &&
             (
-               <div id="Search-Wrapper" className="d-flex column">
+               <div id="Search-Wrapper" className="d-flex column pos-relative">
                   <SearchProvider>
                      <SearchInput />
                      <SearchAutoComplete />

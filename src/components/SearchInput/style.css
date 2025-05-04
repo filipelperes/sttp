@@ -1,21 +1,27 @@
-.SearchInput-Wrapper {
-   position: relative;
+.SearchInput-Wrapper,
+.overlay {
    width: 100%;
 }
 
 .overlay {
-   width: 100%;
    position: absolute;
    pointer-events: none;
-   white-space: pre-wrap;
+   overflow: hidden;
+   z-index: 1;
 }
 
-#SearchInput {
-   overflow: hidden;
+textarea#SearchInput {
+   z-index: 2;
+   overflow: auto hidden;
    resize: none;
    background: transparent;
-   color: inherit;
    border: 0;
    outline: 0;
-   color: aqua;
+   color: transparent;
+   caret-color: white;
+   /* Adiciona isso para esconder correções ortográficas e sugestões */
+   text-shadow: none !important;
+   -webkit-text-fill-color: transparent;
+   /* Safari/Chrome */
+   -webkit-text-stroke: 0 transparent
 }

@@ -3,6 +3,7 @@ import { SearchContext } from '../../utils/SearchProvider/Context';
 import './style.css';
 import { SelectedIdxActions } from '../../utils/SearchProvider/Actions';
 import { Icon } from '../Icon';
+import Text from '../Text';
 
 const SearchAutoComplete = () => {
    const { searchState, setSearchState } = useContext(SearchContext);
@@ -34,7 +35,7 @@ const SearchAutoComplete = () => {
                      className={`${i === selectedIdx ? "selected" : ""} d-flex justify-center align-middle`}
                   >
                      <Icon name={name} icon={icon} />
-                     <p>{name}</p>
+                     <p><Text name={name} value={parsedInput.value} /></p>
                   </li>
                ))}
             </ul>

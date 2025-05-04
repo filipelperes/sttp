@@ -8,19 +8,18 @@ const HighlightedOverlay = ({ value }: { value: string; }) => {
    if (!matched) return (<p className="searchInputText">{value}</p>);
 
    const [, { icon, name }] = matched;
-   const regex = new RegExp(`^${name}([:/]*)`, 'i');
 
    return (
       <div className="highlight-overlay d-flex align-middle justify-center">
          <p className="searchInputText">
             <span
-               className="highlight"
+               className="highlight pos-relative"
                style={{ color: document.body.style.getPropertyValue("color") }} // left: `-${svgr.includes(name) ? "3rem" : "48px"}`
             >
                <Icon icon={icon} size={"3rem"} width={48} height={48} name={name} />
-               {value.match(regex)?.["input"] ?? ""}
+               {value.substring(0, name.length)}
             </span>
-            {value.replace(regex, "")}
+            {value.substring(name.length)}
          </p>
       </div>
    );
