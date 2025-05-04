@@ -1,6 +1,7 @@
 import { createElement, useState } from 'react';
 import type { IService } from '../../utils/types/Services';
 import { img, svgr } from '../../utils/services';
+import './style.css';
 
 type IIconProps = {
    icon: IService['icon'];
@@ -27,7 +28,7 @@ export const Icon = ({
    const props = isSvg ? { width, height, fill: 'currentColor' } : { size };
 
    return imgError ? (
-      <span style={{ fontSize: size }}>🧩</span>
+      <span className='icon' style={{ fontSize: size }}>🧩</span>
    ) : isImg ? (
       <img
          src={icon as string}
@@ -36,6 +37,7 @@ export const Icon = ({
          height={height}
          onError={() => setImgError(true)}
          style={{ objectFit: 'contain' }}
+         className='icon'
       />)
-      : (createElement(icon, props));
+      : (createElement(icon, { ...props }));
 };

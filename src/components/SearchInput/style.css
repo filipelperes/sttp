@@ -10,11 +10,6 @@
    white-space: pre-wrap;
 }
 
-.overlay p {
-   width: 100%;
-   text-align: center;
-}
-
 #SearchInput {
    overflow: hidden;
    resize: none;
@@ -22,7 +17,5 @@
    color: inherit;
    border: 0;
    outline: 0;
-   width: 100%;
-   text-align: center;
    color: aqua;
 }
