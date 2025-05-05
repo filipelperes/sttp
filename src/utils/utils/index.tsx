@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { ServicesList } from "../services";
 import type { IParsedInput } from "../types/ParsedInput";
-import { isIP } from "net";
 
 export function parse(value): IParsedInput {
    const all = Object.entries(ServicesList);
@@ -17,7 +16,7 @@ export function parse(value): IParsedInput {
             val => ['localhost', '::1'].includes(val) || z.string().ip().safeParse(val).success,
             { message: "Must be a valid IP address or 'localhost'" }
          )
-         .safeParse(value).success || isIP(value) !== 0,
+         .safeParse(value).success,
       isStrictURL: z.string().url().safeParse(value).success,
       isPartialURL: /^(?!.*\s)[^\s]+\.[a-zA-Z]{2,}/.test(value) || value.startsWith("http") || value.startsWith("www."),
       slash: value.includes("/"),
