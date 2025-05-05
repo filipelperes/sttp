@@ -20,15 +20,11 @@ export const Icon = ({
    name = '',
 }: IIconProps) => {
    const [imgError, setImgError] = useState(false);
-
-   const isSvg = ["ChatGPT", "Ponto Go"].includes(name);
-   const isImg = ["Habbo", "Unisantos"].includes(name);
-
-   const props = isSvg ? { width, height, fill: 'currentColor' } : { size };
+   const props = ["ChatGPT", "Ponto Go"].includes(name) ? { width, height, fill: 'currentColor' } : { size };
 
    return imgError ? (
       <span className='icon' style={{ fontSize: size }}>🧩</span>
-   ) : isImg ? (
+   ) : ["Habbo", "Unisantos"].includes(name) ? (
       <img
          src={icon as string}
          alt={alt}
@@ -37,6 +33,8 @@ export const Icon = ({
          onError={() => setImgError(true)}
          style={{ objectFit: 'contain' }}
          className='icon'
-      />)
-      : (createElement(icon, { ...props }));
+      />
+   ) : (
+      createElement(icon, props)
+   );
 };

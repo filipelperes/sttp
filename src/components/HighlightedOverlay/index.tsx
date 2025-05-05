@@ -3,7 +3,7 @@ import { Icon } from "../Icon";
 import './style.css';
 
 const HighlightedOverlay = ({ value }: { value: string; }) => {
-   const matched = Object.entries(ServicesList).find(([, { name }]) => new RegExp(`^${name.toLowerCase()}([:/]*)`, 'i').test(value.toLowerCase()));
+   const matched = Object.entries(ServicesList).find(([, { name }]) => new RegExp(`^${name}([:/]*)`, 'i').test(value));
 
    if (!matched) return (<p className="searchInputText">{value}</p>);
 
@@ -14,7 +14,7 @@ const HighlightedOverlay = ({ value }: { value: string; }) => {
          <p className="searchInputText">
             <span
                className="highlight pos-relative"
-               style={{ color: document.body.style.getPropertyValue("color") }}
+               style={{ color: document.body.style.color }}
             >
                <Icon icon={icon} size={"3rem"} width={48} height={48} name={name} />
                {value.substring(0, name.length)}
