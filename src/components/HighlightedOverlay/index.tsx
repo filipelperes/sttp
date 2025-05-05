@@ -14,7 +14,7 @@ const HighlightedOverlay = ({ value }: { value: string; }) => {
          <p className="searchInputText">
             <span
                className="highlight pos-relative"
-               style={{ color: document.body.style.getPropertyValue("color") }} // left: `-${svgr.includes(name) ? "3rem" : "48px"}`
+               style={{ color: document.body.style.getPropertyValue("color") }}
             >
                <Icon icon={icon} size={"3rem"} width={48} height={48} name={name} />
                {value.substring(0, name.length)}

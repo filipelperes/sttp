@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import SearchAutoComplete from '../SearchAutoComplete';
 import './style.css';
 import SearchInput from '../SearchInput';
@@ -7,6 +7,7 @@ import { SearchProvider } from '../../utils/SearchProvider';
 
 const Search = () => {
    const { storeState } = useContext(StoreContext);
+   const searchInputRef = useRef<HTMLTextAreaElement | null>(null);
    const { focusSearchInput } = storeState;
 
    return (
@@ -15,8 +16,8 @@ const Search = () => {
             (
                <div id="Search-Wrapper" className="d-flex column pos-relative">
                   <SearchProvider>
-                     <SearchInput />
-                     <SearchAutoComplete />
+                     <SearchInput searchInputRef={searchInputRef} />
+                     <SearchAutoComplete searchInputRef={searchInputRef} />
                   </SearchProvider>
                </div>
             )

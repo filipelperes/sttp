@@ -9,7 +9,6 @@ div.highlight-overlay {
    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
    backdrop-filter: blur(20px);
    -webkit-backdrop-filter: blur(20px);
-   transition: background-color 2s ease, color 1s ease;
    left: -2rem;
 }
 

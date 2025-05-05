@@ -1,6 +1,5 @@
 import { createElement, useState } from 'react';
 import type { IService } from '../../utils/types/Services';
-import { img, svgr } from '../../utils/services';
 import './style.css';
 
 type IIconProps = {
@@ -22,8 +21,8 @@ export const Icon = ({
 }: IIconProps) => {
    const [imgError, setImgError] = useState(false);
 
-   const isSvg = svgr.includes(name);
-   const isImg = img.includes(name);
+   const isSvg = ["ChatGPT", "Ponto Go"].includes(name);
+   const isImg = ["Habbo", "Unisantos"].includes(name);
 
    const props = isSvg ? { width, height, fill: 'currentColor' } : { size };
 

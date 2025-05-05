@@ -1,11 +1,12 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, type RefObject } from 'react';
 import { SearchContext } from '../../utils/SearchProvider/Context';
 import './style.css';
-import { SelectedIdxActions } from '../../utils/SearchProvider/Actions';
+import { ParsedInputActions, SelectedIdxActions } from '../../utils/SearchProvider/Actions';
 import { Icon } from '../Icon';
 import Text from '../Text';
+import { parse } from '../../utils/utils';
 
-const SearchAutoComplete = () => {
+const SearchAutoComplete = ({ searchInputRef }: { searchInputRef: RefObject<HTMLTextAreaElement | null>; }) => {
    const { searchState, setSearchState } = useContext(SearchContext);
    const { parsedInput, selectedIdx } = searchState;
    const { suggestions: s } = parsedInput;
@@ -24,6 +25,16 @@ const SearchAutoComplete = () => {
       });
    }, [suggestions, selectedIdx, setSearchState]);
 
+   const onClick = (name) => {
+      searchInputRef.current.value = name;
+      setSearchState({ type: ParsedInputActions.SET_PARSED, payload: parse(name) });
+      setSearchState({ type: SelectedIdxActions.RESET });
+      parsedInput.all.some(([, { name }]) => new RegExp(`^${name}([:/]*)?`, 'i').test(searchInputRef.current.value) && searchInputRef.current.value.length >= name.length)
+         ? searchInputRef.current?.style.setProperty("margin-left", "6.0625rem")
+         : searchInputRef.current?.style.removeProperty("margin-left");
+      searchInputRef.current.focus();
+   };
+
    return (
       <>
          {matched &&
@@ -32,10 +43,11 @@ const SearchAutoComplete = () => {
                   <li
                      key={name}
                      id={`suggestion-${i}`}
-                     className={`${i === selectedIdx ? "selected" : ""} d-flex justify-center align-middle`}
+                     className={`${i === selectedIdx && "selected"} d-flex justify-center align-middle`}
+                     onClick={() => onClick(name)}
                   >
                      <Icon name={name} icon={icon} />
-                     <p><Text name={name} value={parsedInput.value} /></p>
+                     <Text name={name} value={parsedInput.value} />
                   </li>
                ))}
             </ul>

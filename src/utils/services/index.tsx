@@ -8,9 +8,6 @@ import ChatGPT from '../../assets/chatgpt.svg?react';
 import Habbo from '../../assets/habbo.png';
 import Unisantos from '../../assets/unisantos.png';
 
-export const img = ["Habbo", "Unisantos"];
-export const svgr = ["ChatGPT", "Ponto Go"];
-
 export const ServicesList = {
    reddit: {
       name: "Reddit",
