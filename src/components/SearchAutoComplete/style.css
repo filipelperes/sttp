@@ -27,6 +27,7 @@
    margin-right: 7px;
 }
 
-#SearchAutoComplete-Wrapper li.selected {
+#SearchAutoComplete-Wrapper li.selected,
+#SearchAutoComplete-Wrapper li:hover {
    background-color: var(--scrollbar-color);
 }

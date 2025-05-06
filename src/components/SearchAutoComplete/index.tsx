@@ -16,7 +16,7 @@ const SearchAutoComplete = ({ searchInputRef }: { searchInputRef: RefObject<HTML
    useEffect(() => {
       setSearchState({
          type: SelectedIdxActions.SET,
-         payload: Math.min(suggestions.length - 1, selectedIdx)
+         payload: Math.max(0, Math.min(suggestions.length - 1, selectedIdx))
       });
 
       itemRefs.current?.[selectedIdx]?.scrollIntoView({
@@ -36,23 +36,17 @@ const SearchAutoComplete = ({ searchInputRef }: { searchInputRef: RefObject<HTML
       searchInputRef.current.focus();
    };
 
-   const onMouseEnter = (i) => itemRefs.current?.[i]?.style.setProperty("background-color", i === selectedIdx ? "transparent" : "rgba(255, 255, 255, 0.26)");
-
-   const onMouseLeave = (i) => itemRefs.current?.[i]?.style.removeProperty("background-color");
-
    return (
       <>
          {matched &&
             <ul id="SearchAutoComplete-Wrapper">
                {suggestions.map(([, { name, icon }], i) => (
                   <li
-                     ref={(el) => itemRefs.current[i] = el}
+                     ref={el => { itemRefs.current[i] = el; }}
                      key={name}
                      id={`suggestion-${i}`}
                      className={`${i === selectedIdx && "selected"} d-flex justify-center align-middle`}
                      onClick={() => onClick(name)}
-                     onMouseEnter={() => onMouseEnter(i)}
-                     onMouseLeave={() => onMouseLeave(i)}
                   >
                      <Icon name={name} icon={icon} />
                      <Text name={name} value={parsedInput.value} />
