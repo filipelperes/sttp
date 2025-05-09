@@ -1,17 +1,24 @@
-div.highlight-overlay {
+.highlight-overlay {
    width: 100%;
+   height: 100%;
+}
+
+.highlight-overlay .searchInputText {
+   position: relative;
+   top: 2px;
 }
 
 .highlight {
-   padding: 5px 1rem;
+   padding: 5px 1rem 5px 1.5rem;
    background: var(--scrollbar-color);
-   border-radius: 1rem;
+   border-radius: 11px;
    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
    backdrop-filter: blur(20px);
    -webkit-backdrop-filter: blur(20px);
-   left: -2rem;
+   left: -2.1rem;
 }
 
-.highlight>svg {
-   box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.13);
+.highlight .icon {
+   left: -10px;
+   top: -4px;
 }

@@ -1,4 +1,4 @@
-import type { IParsedInput } from "../types/ParsedInput";
+import type { IParsedInput } from "../../utils/types/ParsedInput";
 import { ParsedInputActions, SelectedIdxActions, type IParsedInputActions, type ISelectedIdxActions } from "./Actions";
 import { initialParsedInputState } from "./State";
 

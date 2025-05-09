@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect } from 'react';
-import { StoreContext } from '../../StoreProvider/Context';
-import { SearchInputActions } from '../../StoreProvider/Actions';
+import { StoreContext } from '../../providers/StoreProvider/Context';
+import { SearchInputActions } from '../../providers/StoreProvider/Actions';
 
 const HandleWindow = () => {
    const { storeState, setStoreState } = useContext(StoreContext);

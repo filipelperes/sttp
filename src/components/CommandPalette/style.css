@@ -1,0 +1,11 @@
+#CommandPalette {
+   position: fixed;
+   z-index: 3;
+   opacity: 0;
+   transition: opacity .3s ease;
+   width: 65vw;
+}
+
+body.focused #CommandPalette {
+   opacity: 1;
+}

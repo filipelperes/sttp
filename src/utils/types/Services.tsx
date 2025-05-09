@@ -1,5 +1,5 @@
 // import type { IParsedInput } from "./ParsedInput";
-import type { SVGProps } from "react";
+import type { SVGAttributes } from "react";
 import type { IconType } from "react-icons";
 
 type IServiceURL = {
@@ -10,7 +10,7 @@ type IServiceURL = {
 export type IService = {
    name: string;
    url: IServiceURL;
-   icon: string | IconType | React.FC<SVGProps<SVGSVGElement>>;
+   icon: string | IconType | React.FC<SVGAttributes<SVGElement>>;
    pattern: RegExp;
    style?: {
       backgroundColor?: string;

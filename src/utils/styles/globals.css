@@ -19,7 +19,7 @@ body {
 
 body,
 div#root,
-div.App {
+div#App {
    width: 100vw;
    height: 100vh;
 }

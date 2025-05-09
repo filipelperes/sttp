@@ -20,10 +20,10 @@
 
 .searchInputText {
    font-weight: 700;
-   font-size: 4rem;
-   line-height: 7rem;
+   font-size: 3rem;
    width: 100%;
    text-align: center;
    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
    white-space: nowrap;
+   letter-spacing: var(--letter-spacing);
 }

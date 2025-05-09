@@ -1,11 +1,19 @@
 #Clock {
+   opacity: 1;
+   transition: opacity .3s ease;
+}
+
+#Clock time {
    font-size: 5.5rem;
-   font-weight: bolder;
+   letter-spacing: var(--letter-spacing);
    text-align: center;
-   letter-spacing: 0.1rem;
+   font-weight: 500;
 }
 
 #Clock .separator {
-   position: relative;
    top: -7px;
+}
+
+.focused #Clock {
+   opacity: 0;
 }

@@ -3,8 +3,7 @@
 @import 'styles/globals.css';
 @import 'styles/utilities.css';
 
-.Clock-Wrapper,
-#Search-Wrapper {
+.Clock-Wrapper {
    width: 50vw;
    margin: 0 auto;
 }

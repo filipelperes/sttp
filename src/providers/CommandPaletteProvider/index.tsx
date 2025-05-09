@@ -1,8 +1,8 @@
 import { useReducer, type ReactNode } from "react";
 import { ParsedInputReducer, SelectedIdxReducer } from "./Reducer";
 import { initialParsedInputState, initialSelectedIdx } from "./State";
-import { SearchContext } from "./Context";
-import type { IParsedInput } from "../types/ParsedInput";
+import { CommandPaletteContext } from "./Context";
+import type { IParsedInput } from "../../utils/types/ParsedInput";
 import { ParsedInputActions, SelectedIdxActions, type IParsedInputActions, type ISelectedIdxActions } from "./Actions";
 
 export type IRootState = {
@@ -31,12 +31,12 @@ const RootReducer = (state: IRootState, action: IRootAction): IRootState => {
    };
 };
 
-export const SearchProvider = ({ children }: { children: ReactNode; }) => {
-   const [searchState, setSearchState] = useReducer(RootReducer, initialState);
+export const CommandPaletteProvider = ({ children }: { children: ReactNode; }) => {
+   const [CommandPaletteState, setCommandPaletteState] = useReducer(RootReducer, initialState);
 
    return (
-      <SearchContext.Provider value={{ searchState, setSearchState }}>
+      <CommandPaletteContext.Provider value={{ CommandPaletteState, setCommandPaletteState }}>
          {children}
-      </SearchContext.Provider>
+      </CommandPaletteContext.Provider>
    );
 };

@@ -1,4 +1,4 @@
-import type { IParsedInput } from "../types/ParsedInput";
+import type { IParsedInput } from "../../utils/types/ParsedInput";
 
 export const initialParsedInputState: IParsedInput = {
    value: "",

@@ -16,7 +16,7 @@ export const ServicesList = {
       pattern: /^r(eddit)?/i,
       style: {
          backgroundColor: "#ff4500",
-         backgroundImage: "linear-gradient(to right down, rgb(255, 69, 0), rgb(255, 87, 0), rgb(255, 139, 96))",
+         backgroundImage: "linear-gradient(to right bottom, rgb(255, 69, 0), rgb(255, 87, 0), rgb(255, 139, 96))",
       }
    },
    twitter: {
@@ -26,7 +26,7 @@ export const ServicesList = {
       pattern: /^t(t|w(itter)?)/i,
       style: {
          backgroundColor: "#1da1f2",
-         backgroundImage: "linear-gradient(to right, #1DA1F2, #009ffc)",
+         backgroundImage: "linear-gradient(to right bottom, #1DA1F2, #009ffc)",
          color: "#14171a",
       }
    },
@@ -37,7 +37,7 @@ export const ServicesList = {
       pattern: /^y(t(b)?|outube)?/i,
       style: {
          backgroundColor: "#ff0000",
-         backgroundImage: "linear-gradient(to right, #e52d27, #b31217)",
+         backgroundImage: "linear-gradient(to right bottom, #e52d27, #b31217)",
          color: "#212121",
       }
    },
@@ -57,7 +57,8 @@ export const ServicesList = {
       icon: FaInstagram,
       pattern: /^i(nstagram)?/i,
       style: {
-         backgroundImage: "linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)",
+         backgroundImage: "linear-gradient(to right bottom, #833ab4, #fd1d1d, #fcb045)",
+         backgroundColor: "#C13584"
       }
    },
    twitch: {
@@ -67,7 +68,7 @@ export const ServicesList = {
       pattern: /^t(w(itch)?)?/i,
       style: {
          backgroundColor: "#9146ff",
-         backgroundImage: "linear-gradient(to right, #6441A5, #2a0845)",
+         backgroundImage: "linear-gradient(to right bottom, #6441A5, #2a0845)",
       }
    },
    monkeytype: {
@@ -96,7 +97,7 @@ export const ServicesList = {
       pattern: /^w(hatsapp)?/i,
       style: {
          backgroundColor: "#128c7e",
-         backgroundImage: "linear-gradient(to right, #075e54, #128c7e, #25d366)",
+         backgroundImage: "linear-gradient(to right bottom, #075e54, #128c7e, #25d366)",
       }
    },
    translator: {
@@ -133,7 +134,7 @@ export const ServicesList = {
       pattern: /^n(etflix)?/i,
       style: {
          backgroundColor: "#e50914",
-         backgroundImage: "linear-gradient(to right, #1F1C18, #8E0E00)",
+         backgroundImage: "linear-gradient(to right bottom, #1F1C18, #8E0E00)",
       }
    },
    hackthebox: {
@@ -142,7 +143,8 @@ export const ServicesList = {
       icon: SiHackthebox,
       pattern: /^h(?:ack)?(?:\s*t(?:he)?)?(?:\s*b(?:ox)?)?/i, ///^h(ack)?\s?((t(he)?\s?)?(b(ox)?)?)/i // Se você precisa extrair partes específicas da string correspondente
       style: {
-         backgroundImage: "linear-gradient(to right, rgb(26, 35, 50), rgb(17, 25, 39)",
+         backgroundImage: "linear-gradient(to right bottom, rgb(26, 35, 50), rgb(17, 25, 39)",
+         backgroundColor: "#1a2332",
          color: "#9FEF00",
       }
    },
@@ -152,7 +154,8 @@ export const ServicesList = {
       icon: SiTryhackme,
       pattern: /^t(?:ry)?(?:\s*h(?:ack)?)?(?:\s*m(?:e)?)?/i, ///^t(ry)?\s?((h(ack)?\s?)?(m(e)?)?)/i // Se você precisa extrair partes específicas da string correspondente
       style: {
-         backgroundImage: "linear-gradient(to right, rgb(28, 37, 56), rgb(22, 30, 45)",
+         backgroundImage: "linear-gradient(to right bottom, rgb(28, 37, 56), rgb(22, 30, 45)",
+         backgroundColor: "#1c2538",
       }
    },
    primevideo: {
@@ -162,7 +165,7 @@ export const ServicesList = {
       icon: SiPrimevideo,
       style: {
          backgroundColor: "#146eb4",
-         backgroundImage: "linear-gradient(to right, #146eb4, #0f4c81)",
+         backgroundImage: "linear-gradient(to right bottom, #146eb4, #0f4c81)",
       }
    },
    pinterest: {
@@ -172,7 +175,7 @@ export const ServicesList = {
       pattern: /^p(interest)?/i,
       style: {
          backgroundColor: "#e60023",
-         backgroundImage: "linear-gradient(to right, #e60023, #f00000)",
+         backgroundImage: "linear-gradient(to right bottom, #e60023, #f00000)",
       }
    },
    chat_gpt: {
@@ -192,7 +195,7 @@ export const ServicesList = {
       pattern: /^l(inkedin)?/i,
       style: {
          backgroundColor: "#0077b5",
-         backgroundImage: "linear-gradient(to right , #0a66c2, #0d86ff)",
+         backgroundImage: "linear-gradient(to right bottom, #0a66c2, #0d86ff)",
       }
    },
    aliexpress: {
@@ -202,7 +205,7 @@ export const ServicesList = {
       pattern: /^a(li(\s?express)?)?/i,
       style: {
          backgroundColor: "#f57224",
-         backgroundImage: "linear-gradient(to right, #f57224, #ff6a00)",
+         backgroundImage: "linear-gradient(to right bottom, #f57224, #ff6a00)",
       }
    },
    trello: {
@@ -239,7 +242,8 @@ export const ServicesList = {
       icon: FaGoogleDrive,
       pattern: /^d|^g(d(rive)?|oogle\s?drive)?/i,
       style: {
-         backgroundImage: "linear-gradient(135deg, rgb(255, 208, 75), rgb(30, 163, 98), rgb(70, 136, 243)",
+         backgroundImage: "linear-gradient(to right bottom, rgb(255, 208, 75), rgb(30, 163, 98), rgb(70, 136, 243)",
+         backgroundColor: "#fdce4a",
       }
    },
    habbo: {
@@ -268,7 +272,8 @@ export const ServicesList = {
       icon: SiCanva,
       pattern: /^c(v|anva)?/i,
       style: {
-         backgroundImage: "linear-gradient(135deg, #01c3cc, #7d2ae7)",
+         backgroundImage: "linear-gradient(to right bottom, #01c3cc, #7d2ae7)",
+         backgroundColor: "#7d2ae7",
          color: "#FFFFFF",
       }
    },
@@ -288,7 +293,7 @@ export const ServicesList = {
       icon: SiZoho,
       pattern: /^z(oho)?/i,
       style: {
-         backgroundImage: "linear-gradient(135deg, #e42527, #089949, #226db4, #f9b21d)",
+         backgroundImage: "linear-gradient(to right bottom, #e42527, #089949, #226db4, #f9b21d)",
          color: "#FFFFFF",
       }
    },
@@ -298,7 +303,8 @@ export const ServicesList = {
       icon: SiShopee,
       pattern: /^sh(opee)?/i,
       style: {
-         backgroundImage: "linear-gradient(135deg, #f53d2d, #fe6432)",
+         backgroundImage: "linear-gradient(to right bottom, #f53d2d, #fe6432)",
+         backgroundColor: "#fe6432",
          color: "#FFFFFF",
       }
    },

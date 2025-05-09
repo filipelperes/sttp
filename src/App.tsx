@@ -1,15 +1,15 @@
 import Clock from "./components/Clock";
-import Search from "./components/Search";
+import CommandPalette from "./components/CommandPalette";
 import HandleWindow from "./components/HandleWindow";
-import StoreProvider from "./StoreProvider";
+import StoreProvider from "./providers/StoreProvider";
 
 function App() {
 
   return (
     <StoreProvider>
-      <div className="App d-flex justify-center align-middle column pos-relative">
+      <div id="App" className="d-flex justify-center align-middle column pos-relative">
         <Clock />
-        <Search />
+        <CommandPalette />
         <HandleWindow />
       </div>
     </StoreProvider>
