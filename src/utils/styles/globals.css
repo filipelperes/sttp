@@ -10,9 +10,7 @@
 
 body {
    font-family: var(--inter-font-family);
-   background-repeat: no-repeat;
-   background-attachment: fixed;
-   background-color: var(--background);
+   background: var(--background) fixed no-repeat;
    color: var(--foreground);
    scroll-behavior: smooth;
 }
@@ -22,6 +20,10 @@ div#root,
 div#App {
    width: 100vw;
    height: 100vh;
+}
+
+pre {
+   font-family: inherit;
 }
 
 /* Webkit (Chrome, Edge, Safari) */
@@ -36,8 +38,8 @@ div#App {
 }
 
 *::-webkit-scrollbar-thumb {
-   background: var(--scrollbar-color);
    border-radius: 7px;
    border: 3px solid transparent;
+   background: var(--scrollbar-color);
    background-clip: content-box;
 }

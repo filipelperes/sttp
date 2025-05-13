@@ -1,10 +1,16 @@
-type ITextProps = { name: string, value: string; };
+import type { CSSProperties } from "react";
 
-const Text = ({ name, value }: ITextProps) => (
+type ITextProps = {
+   name: string,
+   value: string;
+   style?: CSSProperties;
+};
+
+const Text = ({ name, value, style = { fontWeight: 800 } }: ITextProps) => (
    <p>
       {name.split(new RegExp(`(${value})`, 'i')).map(v => (
          v.toLowerCase() === value.toLowerCase() ? (
-            <span style={{ fontWeight: 800 }}>{v}</span>
+            <span style={style}>{v}</span>
          ) : (
             <>{v}</>
          )

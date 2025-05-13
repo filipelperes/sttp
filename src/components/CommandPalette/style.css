@@ -5,7 +5,3 @@
    transition: opacity .3s ease;
    width: 65vw;
 }
-
-body.focused #CommandPalette {
-   opacity: 1;
-}

@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect } from 'react';
-import { StoreContext } from '../../providers/StoreProvider/Context';
+import { useCallback, useEffect } from 'react';
+import { useStoreContext } from '../../providers/StoreProvider/Context';
 import { SearchInputActions } from '../../providers/StoreProvider/Actions';
 
 const HandleWindow = () => {
-   const { storeState, setStoreState } = useContext(StoreContext);
+   const { storeState, setStoreState } = useStoreContext();
    const { focusSearchInput } = storeState;
 
    const handleKeyDown = useCallback((event) => {

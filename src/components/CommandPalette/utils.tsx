@@ -10,17 +10,11 @@ export const setTheme = (style) => {
    document.body.style.setProperty("color", style?.color ?? "#d4d4d4");
 };
 
-export const resetStyle = () => {
-   document.body.style.removeProperty("background-image");
-   document.body.style.removeProperty("background-color");
-   document.body.style.removeProperty("color");
-};
-
 export function parse(value): IParsedInput {
    const all = Object.entries(ServicesList);
    const isEmpty = value.length === 0;
 
-   const service = all.find(([, { name }]) => name.toLowerCase().match(value.toLowerCase()));
+   const service = all.find(([, { name }]) => value.toLowerCase().match(name.toLowerCase()));
    const filtered = all.filter(([, { name }]) => name.toLowerCase().includes(value.toLowerCase()));
 
    return {

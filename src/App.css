@@ -3,7 +3,11 @@
 @import 'styles/globals.css';
 @import 'styles/utilities.css';
 
-.Clock-Wrapper {
-   width: 50vw;
-   margin: 0 auto;
+body.focused #Clock {
+   opacity: 0;
+}
+
+body.focused #CommandPalette,
+body.show-suggestions #CommandPaletteAutoComplete {
+   opacity: 1;
 }

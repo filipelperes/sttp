@@ -1,56 +1,25 @@
-import { useContext, useEffect, useRef, type RefObject } from "react";
-import { CommandPaletteContext } from "../../providers/CommandPaletteProvider/Context";
-import { StoreContext } from "../../providers/StoreProvider/Context";
+import { useRef } from "react";
+import { useCommandPaletteContext } from "../../providers/CommandPaletteProvider/Context";
+import { useStoreContext } from "../../providers/StoreProvider/Context";
 import { SearchInputActions } from "../../providers/StoreProvider/Actions";
 import { ParsedInputActions, SelectedIdxActions } from "../../providers/CommandPaletteProvider/Actions";
 import "./style.css";
 import HighlightedOverlay from "../HighlightedOverlay";
-import { localhost, parse, resetStyle, setTheme } from "../CommandPalette/utils";
+import { localhost, parse } from "../CommandPalette/utils";
 import { Icon } from "../Icon";
 import { RxChevronRight } from "react-icons/rx";
 
-const CommandPaletteInput = ({ CommandPaletteInputRef }: { CommandPaletteInputRef: RefObject<HTMLTextAreaElement | null>; }) => {
-   const overlayRef = useRef<(HTMLDivElement | null)>(null);
-   const submitIconRef = useRef<HTMLSpanElement | HTMLImageElement | SVGElement>(null);
-   const { CommandPaletteState, setCommandPaletteState } = useContext(CommandPaletteContext);
-   const { storeState, setStoreState } = useContext(StoreContext);
+const CommandPaletteInput = () => {
+   const OverlayWrapperRef = useRef<(HTMLDivElement | null)>(null);
+   const { CommandPaletteState, setCommandPaletteState, CommandPaletteInputRef } = useCommandPaletteContext();
+   const { setStoreState } = useStoreContext();
    const { parsedInput, selectedIdx } = CommandPaletteState;
-   const { isIP, isPartialURL, isStrictURL, suggestions, all, value, isEmpty } = parsedInput;
+   const { isIP, isPartialURL, isStrictURL, suggestions, all, value, isEmpty, services } = parsedInput;
 
-   const handleClick = () => !isEmpty && (onSubmit(CommandPaletteInputRef.current.value));
-
-   setTheme(
-      suggestions.suggestions[selectedIdx]?.[1]?.style
-      || all.find(([, { name }]) => value.toLowerCase().includes(name.toLowerCase()))?.[1]?.style
-   );
-
-   if (suggestions.matched) document.body.classList.add("show-suggestions");
-   else document.body.classList.remove("show-suggestions");
-
-   useEffect(() => {
-      submitIconRef.current?.addEventListener("click", handleClick);
-      return () => submitIconRef.current?.removeEventListener("click", handleClick);
-   }, []);
-
-   useEffect(() => {
-      if (storeState.focusSearchInput) {
-         document.body.classList.add("focused");
-         CommandPaletteInputRef.current?.focus();
-      }
-      else {
-         CommandPaletteInputRef.current?.blur();
-         setCommandPaletteState({ type: ParsedInputActions.RESET_PARSED });
-         setCommandPaletteState({ type: SelectedIdxActions.RESET });
-      }
-      return () => {
-         resetStyle();
-         document.body.classList.remove("focused");
-      };
-   }, [storeState.focusSearchInput, setCommandPaletteState, CommandPaletteInputRef]);
-
-   function onSubmit(value) {
+   const onSubmit = () => {
+      if (isEmpty) return;
       if (isIP || isStrictURL || isPartialURL) { //127::1, ::1, 127...1, 127..1 para 127.0.0.1
-         const match = localhost.find(v => value.includes(v));
+         const match = localhost.find(ip => value.includes(ip));
          window.open(
             isStrictURL || (isIP && value.includes("localhost")) ? value
                : isPartialURL ? value.replace(/^(https?:\/\/)?(www\.)?/i, "https://www.")
@@ -77,29 +46,25 @@ const CommandPaletteInput = ({ CommandPaletteInputRef }: { CommandPaletteInputRe
       if (matched) return;
 
       window.open(`https://google.com/search?q=${value}`, "_blank", "noopener, noreferrer");
-   }
+   };
 
    const onChange = (event) => {
       event.stopPropagation();
-
       setCommandPaletteState({
          type: ParsedInputActions.SET_PARSED,
          payload: parse(event.target.value)
       });
-
-      CommandPaletteInputRef.current && all.some(([, { name }]) =>
-         event.target.value.toLowerCase().includes(name.toLowerCase()) && event.target.value.length > name.length
-      )
-         ? CommandPaletteInputRef.current.style.setProperty("margin-left", "5.5rem")
-         : CommandPaletteInputRef.current.style.removeProperty("margin-left");
+      setCommandPaletteState({
+         type: SelectedIdxActions.SET,
+         payload: Math.max(0, Math.min(suggestions.suggestions.length - 1, selectedIdx))
+      });
    };
 
    const onKeyDown = (event) => {
       event.stopPropagation();
       const submit = () => {
          event.preventDefault();
-         onSubmit(event.target.value);
-         CommandPaletteInputRef.current.value = "";
+         onSubmit();
       };
 
       const keyActions = {
@@ -131,7 +96,7 @@ const CommandPaletteInput = ({ CommandPaletteInputRef }: { CommandPaletteInputRe
             if (suggestions.matched) setCommandPaletteState({ type: SelectedIdxActions.RESET });
             else {
                CommandPaletteInputRef.current?.setSelectionRange(0, 0);
-               CommandPaletteInputRef.current.scroll({
+               CommandPaletteInputRef.current?.scroll({
                   behavior: "smooth",
                   left: 0
                });
@@ -142,7 +107,7 @@ const CommandPaletteInput = ({ CommandPaletteInputRef }: { CommandPaletteInputRe
             if (suggestions.matched) setCommandPaletteState({ type: SelectedIdxActions.SET, payload: suggestions.suggestions.length - 1 });
             else {
                CommandPaletteInputRef.current?.setSelectionRange(event.target.value.length, event.target.value.length);
-               CommandPaletteInputRef.current.scroll({
+               CommandPaletteInputRef.current?.scroll({
                   behavior: "smooth",
                   left: 999999
                });
@@ -154,30 +119,32 @@ const CommandPaletteInput = ({ CommandPaletteInputRef }: { CommandPaletteInputRe
    };
 
    const onScroll = () => {
-      if (CommandPaletteInputRef.current && overlayRef.current) {
-         overlayRef.current.scrollTop = CommandPaletteInputRef.current.scrollTop;
-         overlayRef.current.scrollLeft = CommandPaletteInputRef.current.scrollLeft;
+      if (CommandPaletteInputRef.current && OverlayWrapperRef.current) {
+         OverlayWrapperRef.current.scrollTop = CommandPaletteInputRef.current.scrollTop;
+         OverlayWrapperRef.current.scrollLeft = CommandPaletteInputRef.current.scrollLeft;
       }
    };
 
-
    return (
-      <div id="CommandPaletteInput-Wrapper" className="d-flex justify-center align-middle pos-relative">
-         <div ref={overlayRef} className="overlay d-flex justify-center align-middle">
-            <HighlightedOverlay value={value} />
+      <div id="CommandPaletteInput-Wrapper" className="d-flex justify-center align-middle">
+         <div id="CommandPaletteInputContainer" className="pos-relative">
+            <HighlightedOverlay ref={OverlayWrapperRef} />
+            <textarea
+               ref={CommandPaletteInputRef}
+               id="CommandPaletteInput"
+               className={`CommandPaletteInputText`}
+               spellCheck="false"
+               wrap="off"
+               rows={1}
+               onChange={onChange}
+               onKeyDown={onKeyDown}
+               onScroll={onScroll}
+               style={{ textIndent: services.matched ? value.length > services.service[1].name.length ? "5.75rem" : "3.125rem" : "0" }}
+            />
          </div>
-         <textarea
-            ref={CommandPaletteInputRef}
-            id="CommandPaletteInput"
-            className="searchInputText"
-            spellCheck="false"
-            wrap="off"
-            rows={1}
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-            onScroll={onScroll}
-         />
-         <Icon icon={RxChevronRight} size="3rem" ref={submitIconRef} />
+         <button className="pos-relative" onClick={onSubmit}>
+            <Icon icon={{ icon: RxChevronRight, type: "react-icons" }} size="3rem" />
+         </button>
       </div>
    );
 };

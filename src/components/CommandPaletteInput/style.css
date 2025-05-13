@@ -5,27 +5,25 @@
    backdrop-filter: blur(20px);
    -webkit-backdrop-filter: blur(20px);
    border: 1px solid var(--scrollbar-color);
-   padding: 1rem 1rem;
+   flex: 1;
+}
+
+#CommandPaletteInput-Wrapper #CommandPaletteInputContainer {
    width: 100%;
    overflow: hidden;
+   border-radius: 3rem 0 0 3rem;
 }
 
-#CommandPaletteInput-Wrapper .icon {
-   margin: 0;
+#CommandPaletteInput-Wrapper button {
+   color: inherit;
    cursor: pointer;
+   background-color: transparent;
+   border: none;
+   width: 60px;
+   left: -7px;
 }
 
-.overlay {
-   position: absolute;
-   pointer-events: none;
-   overflow: hidden;
-   z-index: 1;
-   height: 100%;
-   width: 91%;
-   left: 1rem;
-}
-
-#CommandPaletteInput {
+#CommandPaletteInput-Wrapper #CommandPaletteInputContainer #CommandPaletteInput {
    z-index: 2;
    overflow: auto hidden;
    resize: none;
@@ -34,9 +32,9 @@
    outline: 0;
    color: transparent;
    caret-color: var(--foreground);
-   /* Adiciona isso para esconder correções ortográficas e sugestões */
-   text-shadow: none !important;
    -webkit-text-fill-color: transparent;
-   /* Safari/Chrome */
    -webkit-text-stroke: 0 transparent;
+   height: 100%;
+   text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+   padding-left: 2rem;
 }

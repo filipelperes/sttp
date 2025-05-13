@@ -12,7 +12,8 @@ export default defineConfig({
   base: "/sttp",
   resolve: {
     alias: {
-      styles: path.resolve(__dirname, 'src/utils/styles')
+      styles: path.resolve(__dirname, 'src/utils/styles'),
+      assets: path.resolve(__dirname, 'src/assets')
     }
   }
 });

@@ -1,41 +1,38 @@
-import { createElement, forwardRef, useState } from 'react';
-import type { IService } from '../../utils/types/Services';
+import { createElement, useState } from 'react';
+import type { IServiceStyle, IServiceIcon } from '../../utils/types/Services';
 import './style.css';
 
 type IIconProps = {
-   icon: IService['icon'];
+   icon: IServiceIcon;
    width?: number;
    height?: number;
    size?: string;
    alt?: string;
-   name?: string;
    fill?: string;
-   style?: IService['style'];
+   style?: IServiceStyle;
 };
 
-export const Icon = forwardRef<(HTMLSpanElement | HTMLImageElement | SVGElement), IIconProps>(({
+export const Icon = ({
    icon,
    alt = '',
    width = 28,
    height = 28,
    size = '1.7rem',
-   name = '',
    fill = null,
    style = {
       backgroundImage: "none",
       backgroundColor: "#101010"
    }
-}, ref) => {
+}: IIconProps) => {
    const [imgError, setImgError] = useState(false);
-   const baseProps = { className: "icon", ref, fill: fill ?? "currentColor" };
-   const props = ["ChatGPT", "Ponto Go"].includes(name) ? { width, height } : { size };
+   const { icon: i, type } = icon;
+   const props = type === "svgr" ? { width, height } : { size };
 
    return imgError ? (
-      <span ref={ref as React.RefObject<HTMLSpanElement>} className='icon' style={{ fontSize: size }}>🧩</span>
-   ) : ["Habbo", "Unisantos"].includes(name) ? (
+      <span className='icon' style={{ fontSize: size }}>🧩</span>
+   ) : type === "img" ? (
       <img
-         ref={ref as React.RefObject<HTMLImageElement>}
-         src={icon as string}
+         src={i as string}
          alt={alt}
          width={width}
          height={height}
@@ -48,6 +45,13 @@ export const Icon = forwardRef<(HTMLSpanElement | HTMLImageElement | SVGElement)
          className='icon'
       />
    ) : (
-      createElement(icon, { ...baseProps, ...props })
+      createElement(
+         i,
+         {
+            className: "icon",
+            fill: fill ?? "currentColor",
+            ...props
+         }
+      )
    );
-});
+};

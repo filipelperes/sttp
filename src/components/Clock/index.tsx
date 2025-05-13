@@ -14,17 +14,13 @@ const Clock = () => {
    }, []);
 
    return (
-      <>
-         <div id="Clock" className="d-flex justify-center">
-            <time>
-               {clock.split(":").reduce((acc, part, index, array) => [
-                  ...acc,
-                  <span key={`digit-${index}`}>{part}</span>,
-                  (index < array.length - 1 && (<span key={`separator-${index}`} className="separator pos-relative"> : </span>))
-               ], [] as React.ReactNode[])}
-            </time>
-         </div>
-      </>
+      <time id="Clock">
+         {clock.split(":").reduce((acc, part, index, array) => [
+            ...acc,
+            <span key={`digit-${index}`}>{part}</span>,
+            (index < array.length - 1 && (<span key={`separator-${index}`} className="separator pos-relative"> : </span>))
+         ], [] as React.ReactNode[])}
+      </time>
    );
 };
 

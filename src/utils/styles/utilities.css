@@ -18,12 +18,15 @@
    position: relative;
 }
 
-.searchInputText {
+.CommandPaletteInputText {
    font-weight: 700;
    font-size: 3rem;
-   width: 100%;
    text-align: center;
-   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
-   white-space: nowrap;
    letter-spacing: var(--letter-spacing);
+   white-space: pre;
+   overflow-wrap: normal;
+   word-break: normal;
+   display: inline-block;
+   min-width: 100%;
+   padding: 1rem 0;
 }

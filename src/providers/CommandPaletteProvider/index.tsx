@@ -1,4 +1,4 @@
-import { useReducer, type ReactNode } from "react";
+import { useReducer, useRef, type ReactNode } from "react";
 import { ParsedInputReducer, SelectedIdxReducer } from "./Reducer";
 import { initialParsedInputState, initialSelectedIdx } from "./State";
 import { CommandPaletteContext } from "./Context";
@@ -33,9 +33,10 @@ const RootReducer = (state: IRootState, action: IRootAction): IRootState => {
 
 export const CommandPaletteProvider = ({ children }: { children: ReactNode; }) => {
    const [CommandPaletteState, setCommandPaletteState] = useReducer(RootReducer, initialState);
+   const CommandPaletteInputRef = useRef<HTMLTextAreaElement | null>(null);
 
    return (
-      <CommandPaletteContext.Provider value={{ CommandPaletteState, setCommandPaletteState }}>
+      <CommandPaletteContext.Provider value={{ CommandPaletteState, setCommandPaletteState, CommandPaletteInputRef }}>
          {children}
       </CommandPaletteContext.Provider>
    );
