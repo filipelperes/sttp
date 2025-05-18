@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import { Icon } from "../Icon";
 import './style.css';
-import { useCommandPaletteStore } from "../../providers/CommandPaletteProvider";
+import { useCommandPaletteStore } from "../../stores/CommandPaletteStore";
 
 type IHighlightedOverlayProps = {
    ref: RefObject<HTMLDivElement>;
@@ -9,6 +9,7 @@ type IHighlightedOverlayProps = {
 
 const HighlightedOverlay = (({ ref }: IHighlightedOverlayProps) => {
    const parsedInput = useCommandPaletteStore(s => s.parsedInput);
+
    const { value, services } = parsedInput;
    const { service, matched } = services;
    const name = service?.[1]?.name;

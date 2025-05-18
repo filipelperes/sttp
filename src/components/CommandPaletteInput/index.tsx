@@ -1,21 +1,23 @@
 import { useRef } from "react";
-import { useStoreContext } from "../../providers/StoreProvider/Context";
-import { SearchInputActions } from "../../providers/StoreProvider/Actions";
 import "./style.css";
 import HighlightedOverlay from "../HighlightedOverlay";
 import { localhost, parse } from "../CommandPalette/utils";
 import { RxChevronRight } from "react-icons/rx";
 import { IoMdCloseCircle } from "react-icons/io";
-import { useCommandPaletteStore } from "../../providers/CommandPaletteProvider";
+import { useCommandPaletteStore } from "../../stores/CommandPaletteStore";
+import { useAppStore } from "../../stores/AppStore";
 
 const CommandPaletteInput = () => {
    const OverlayWrapperRef = useRef<(HTMLDivElement | null)>(null);
+
    const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
    const parsedInput = useCommandPaletteStore(s => s.parsedInput);
    const selectedIdx = useCommandPaletteStore(s => s.selectedIdx);
+
    const setParsedInput = useCommandPaletteStore(s => s.setParsedInput);
    const setSelectedIdx = useCommandPaletteStore(s => s.setSelectedIdx);
-   const { setStoreState } = useStoreContext();
+   const setFocusSearchInput = useAppStore(s => s.setFocusSearchInput);
+
    const { isIP, isPartialURL, isStrictURL, suggestions, all, value, isEmpty, services } = parsedInput;
 
    const ClearCommandPaletteInput = event => {
@@ -92,7 +94,7 @@ const CommandPaletteInput = () => {
          },
          Escape: () => {
             event.target.value = "";
-            setStoreState({ type: SearchInputActions.HIDE });
+            setFocusSearchInput(false);
          },
          ArrowDown: () => {
             event.preventDefault();

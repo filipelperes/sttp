@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from 'react';
-import { useStoreContext } from '../../providers/StoreProvider/Context';
-import { SearchInputActions } from '../../providers/StoreProvider/Actions';
+import { useAppStore } from '../../stores/AppStore';
 
 const HandleWindow = () => {
-   const { storeState, setStoreState } = useStoreContext();
-   const { focusSearchInput } = storeState;
+   const focusSearchInput = useAppStore(s => s.focusSearchInput);
+
+   const setFocusSearchInput = useAppStore(s => s.setFocusSearchInput);
 
    const handleKeyDown = useCallback((event) => {
       event.stopPropagation();
@@ -13,8 +13,8 @@ const HandleWindow = () => {
       if (
          (!(["Escape"].includes(event.code) || (event.ctrlKey && event.shiftKey && event.code === "KeyR"))) ||
          (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(event.code) && !focusSearchInput)
-      ) setStoreState({ type: SearchInputActions.SHOW });
-   }, [focusSearchInput, setStoreState]);
+      ) setFocusSearchInput(true);
+   }, []);
 
    useEffect(() => {
       window.addEventListener("keydown", handleKeyDown);

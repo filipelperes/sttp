@@ -3,15 +3,18 @@ import './style.css';
 import { Icon } from '../Icon';
 import Text from '../Text';
 import { parse, setTheme } from '../CommandPalette/utils';
-import { useCommandPaletteStore } from '../../providers/CommandPaletteProvider';
+import { useCommandPaletteStore } from '../../stores/CommandPaletteStore';
 
 const CommandPaletteAutoComplete = () => {
    const suggestionsRef = useRef<(HTMLLIElement | null)[]>([]);
+
+   const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
    const parsedInput = useCommandPaletteStore(s => s.parsedInput);
    const selectedIdx = useCommandPaletteStore(s => s.selectedIdx);
-   const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
+
    const setParsedInput = useCommandPaletteStore(s => s.setParsedInput);
    const setSelectedIdx = useCommandPaletteStore(s => s.setSelectedIdx);
+
    const { suggestions: s, services, isEmpty } = parsedInput;
    const { suggestions, matched } = s;
 
