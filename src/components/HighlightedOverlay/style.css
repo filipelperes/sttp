@@ -7,6 +7,7 @@
    height: 100%;
    padding-left: 2rem;
    border-radius: 3rem 0 0 3rem;
+   margin-right: 3rem;
 }
 
 #Overlay-Wrapper .Overlay-Container {
@@ -20,12 +21,17 @@
 }
 
 #Overlay-Wrapper .Overlay-Container .CommandPaletteInputText .highlight {
-   padding: 7px 1rem 7px calc(1rem - 8px);
+   /* padding: 7px 1rem 7px calc(1rem - 7px); */
+   /* border-radius: 1rem; */
+   padding: 7px 11px 7px calc(1rem - 3px);
    background: var(--scrollbar-color);
-   border-radius: 1rem;
+   position: absolute;
+   left: 0;
+   height: 100%;
    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
    backdrop-filter: blur(20px);
    -webkit-backdrop-filter: blur(20px);
    margin-right: 7px;
    display: inline-flex;
+   text-transform: capitalize;
 }

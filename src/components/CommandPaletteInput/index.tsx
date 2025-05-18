@@ -1,22 +1,33 @@
 import { useRef } from "react";
-import { useCommandPaletteContext } from "../../providers/CommandPaletteProvider/Context";
 import { useStoreContext } from "../../providers/StoreProvider/Context";
 import { SearchInputActions } from "../../providers/StoreProvider/Actions";
-import { ParsedInputActions, SelectedIdxActions } from "../../providers/CommandPaletteProvider/Actions";
 import "./style.css";
 import HighlightedOverlay from "../HighlightedOverlay";
 import { localhost, parse } from "../CommandPalette/utils";
-import { Icon } from "../Icon";
 import { RxChevronRight } from "react-icons/rx";
+import { IoMdCloseCircle } from "react-icons/io";
+import { useCommandPaletteStore } from "../../providers/CommandPaletteProvider";
 
 const CommandPaletteInput = () => {
    const OverlayWrapperRef = useRef<(HTMLDivElement | null)>(null);
-   const { CommandPaletteState, setCommandPaletteState, CommandPaletteInputRef } = useCommandPaletteContext();
+   const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
+   const parsedInput = useCommandPaletteStore(s => s.parsedInput);
+   const selectedIdx = useCommandPaletteStore(s => s.selectedIdx);
+   const setParsedInput = useCommandPaletteStore(s => s.setParsedInput);
+   const setSelectedIdx = useCommandPaletteStore(s => s.setSelectedIdx);
    const { setStoreState } = useStoreContext();
-   const { parsedInput, selectedIdx } = CommandPaletteState;
    const { isIP, isPartialURL, isStrictURL, suggestions, all, value, isEmpty, services } = parsedInput;
 
-   const onSubmit = () => {
+   const ClearCommandPaletteInput = event => {
+      event.stopPropagation();
+      CommandPaletteInputRef.current.focus();
+      if (isEmpty) return;
+      CommandPaletteInputRef.current.value = "";
+      setParsedInput(parse(""));
+   };
+
+   const onSubmit = event => {
+      event.stopPropagation();
       if (isEmpty) return;
       if (isIP || isStrictURL || isPartialURL) { //127::1, ::1, 127...1, 127..1 para 127.0.0.1
          const match = localhost.find(ip => value.includes(ip));
@@ -48,23 +59,26 @@ const CommandPaletteInput = () => {
       window.open(`https://google.com/search?q=${value}`, "_blank", "noopener, noreferrer");
    };
 
-   const onChange = (event) => {
+   const onChange = event => {
       event.stopPropagation();
-      setCommandPaletteState({
-         type: ParsedInputActions.SET_PARSED,
-         payload: parse(event.target.value)
-      });
-      setCommandPaletteState({
-         type: SelectedIdxActions.SET,
-         payload: Math.max(0, Math.min(suggestions.suggestions.length - 1, selectedIdx))
-      });
+      setParsedInput(parse(event.target.value));
+      setSelectedIdx(Math.max(0, Math.min(suggestions.suggestions.length - 1, selectedIdx)));
    };
 
-   const onKeyDown = (event) => {
+   const onKeyDown = event => {
       event.stopPropagation();
-      const submit = () => {
+
+      // if (
+      //    services.matched && !services.service?.[1]?.url?.query &&
+      //    !event.ctrlKey && !event.metaKey && event.key.length === 1
+      // ) {
+      //    event.preventDefault();
+      //    return;
+      // }
+
+      const submit = event => {
          event.preventDefault();
-         onSubmit();
+         onSubmit(~event);
       };
 
       const keyActions = {
@@ -73,11 +87,8 @@ const CommandPaletteInput = () => {
          Tab: () => {
             event.preventDefault();
             event.target.value = suggestions.suggestions[selectedIdx]?.[1]?.name ?? event.target.value;
-            setCommandPaletteState({
-               type: ParsedInputActions.SET_PARSED,
-               payload: parse(event.target.value)
-            });
-            setCommandPaletteState({ type: SelectedIdxActions.RESET });
+            setParsedInput(parse(event.target.value));
+            setSelectedIdx(0);
          },
          Escape: () => {
             event.target.value = "";
@@ -85,15 +96,15 @@ const CommandPaletteInput = () => {
          },
          ArrowDown: () => {
             event.preventDefault();
-            setCommandPaletteState({ type: SelectedIdxActions.SET, payload: selectedIdx === suggestions.suggestions.length - 1 ? 0 : selectedIdx + 1 });
+            setSelectedIdx(selectedIdx === suggestions.suggestions.length - 1 ? 0 : selectedIdx + 1);
          },
          ArrowUp: () => {
             event.preventDefault();
-            setCommandPaletteState({ type: SelectedIdxActions.SET, payload: selectedIdx === 0 ? suggestions.suggestions.length - 1 : selectedIdx - 1 });
+            setSelectedIdx(selectedIdx === 0 ? suggestions.suggestions.length - 1 : selectedIdx - 1);
          },
          Home: () => {
             event.preventDefault();
-            if (suggestions.matched) setCommandPaletteState({ type: SelectedIdxActions.RESET });
+            if (suggestions.matched) setSelectedIdx(0);
             else {
                CommandPaletteInputRef.current?.setSelectionRange(0, 0);
                CommandPaletteInputRef.current?.scroll({
@@ -104,7 +115,7 @@ const CommandPaletteInput = () => {
          },
          End: () => {
             event.preventDefault();
-            if (suggestions.matched) setCommandPaletteState({ type: SelectedIdxActions.SET, payload: suggestions.suggestions.length - 1 });
+            if (suggestions.matched) setSelectedIdx(suggestions.suggestions.length - 1);
             else {
                CommandPaletteInputRef.current?.setSelectionRange(event.target.value.length, event.target.value.length);
                CommandPaletteInputRef.current?.scroll({
@@ -126,24 +137,36 @@ const CommandPaletteInput = () => {
    };
 
    return (
-      <div id="CommandPaletteInput-Wrapper" className="d-flex justify-center align-middle">
+      <div id="CommandPaletteInput-Wrapper" className="d-flex justify-center align-middle pos-relative">
          <div id="CommandPaletteInputContainer" className="pos-relative">
             <HighlightedOverlay ref={OverlayWrapperRef} />
             <textarea
                ref={CommandPaletteInputRef}
                id="CommandPaletteInput"
                className={`CommandPaletteInputText`}
-               spellCheck="false"
+               spellCheck={false}
+               data-gramm={false} // Desativa Grammarly
+               data-lt-active={false} // Desativa LanguageTool
+               aria-hidden={false}
+               autoCorrect="off"
                wrap="off"
                rows={1}
                onChange={onChange}
                onKeyDown={onKeyDown}
                onScroll={onScroll}
-               style={{ textIndent: services.matched ? value.length > services.service[1].name.length ? "5.75rem" : "3.125rem" : "0" }}
+               // style={{ textIndent: services.matched ? value.length > services.service[1].name.length ? "5.75rem" : "3.125rem" : "0" }}
+               style={{ textIndent: services.matched ? "-9rem" : "0" }}
             />
          </div>
+         <button
+            className="clear"
+            onClick={ClearCommandPaletteInput}
+            style={{ opacity: isEmpty ? 0 : 1 }}
+         >
+            <IoMdCloseCircle />
+         </button>
          <button className="pos-relative" onClick={onSubmit}>
-            <Icon icon={{ icon: RxChevronRight, type: "react-icons" }} size="3rem" />
+            <RxChevronRight />
          </button>
       </div>
    );

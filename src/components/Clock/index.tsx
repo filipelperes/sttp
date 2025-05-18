@@ -14,7 +14,7 @@ const Clock = () => {
    }, []);
 
    return (
-      <time id="Clock">
+      <time id="Clock" className="pos-relative">
          {clock.split(":").reduce((acc, part, index, array) => [
             ...acc,
             <span key={`digit-${index}`}>{part}</span>,

@@ -1,15 +1,14 @@
 import type { RefObject } from "react";
-import { useCommandPaletteContext } from "../../providers/CommandPaletteProvider/Context";
 import { Icon } from "../Icon";
 import './style.css';
+import { useCommandPaletteStore } from "../../providers/CommandPaletteProvider";
 
 type IHighlightedOverlayProps = {
    ref: RefObject<HTMLDivElement>;
 };
 
 const HighlightedOverlay = (({ ref }: IHighlightedOverlayProps) => {
-   const { CommandPaletteState } = useCommandPaletteContext();
-   const { parsedInput } = CommandPaletteState;
+   const parsedInput = useCommandPaletteStore(s => s.parsedInput);
    const { value, services } = parsedInput;
    const { service, matched } = services;
    const name = service?.[1]?.name;
@@ -17,7 +16,7 @@ const HighlightedOverlay = (({ ref }: IHighlightedOverlayProps) => {
    const fill = style?.backgroundColor;
 
    return (
-      <div ref={ref} id="Overlay-Wrapper" className="d-flex align-middle justify-center">
+      <div ref={ref} id="Overlay-Wrapper" className="d-flex align-middle justify-center pos-relative">
          <div className="Overlay-Container">
             {!matched ? (
                <pre className="CommandPaletteInputText align-middle justify-center">{value}</pre>
@@ -33,6 +32,9 @@ const HighlightedOverlay = (({ ref }: IHighlightedOverlayProps) => {
                   {value.substring(name.length)}
                </pre>
             )}
+            {/* {(matched && !services.service?.[1]?.url?.query) && (
+               <p>mensagem divertida e engraçada em ingles para caso não tenha query url</p>
+            )} */}
          </div>
       </div>
    );
