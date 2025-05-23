@@ -3,15 +3,15 @@
 @import 'styles/globals.css';
 @import 'styles/utilities.css';
 
-/* body.focused #Clock {
+/* body.opened #Clock {
    top: -6rem
 } */
 
-body.focused #CommandPalette,
-body.show-suggestions #CommandPaletteAutoComplete {
+/* body.opened #CommandPalette #CommandPaletteInput-Wrapper,
+body.opened.show-suggestions #CommandPaletteAutoComplete {
    opacity: 1;
-}
+} */
 
-body.focused #CommandPalette #CommandPaletteInput-Wrapper {
+/* body.opened #CommandPalette #CommandPaletteInput-Wrapper {
    border-width: 2px;
-}
+} */

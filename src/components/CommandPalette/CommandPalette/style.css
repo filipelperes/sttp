@@ -1,7 +1,6 @@
 #CommandPalette {
    position: fixed;
    z-index: 3;
-   opacity: 0;
-   transition: opacity .3s ease;
    width: 65vw;
+   border-radius: 3rem 3rem 0 0;
 }

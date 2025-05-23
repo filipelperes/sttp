@@ -32,11 +32,11 @@ export function parse(value): IParsedInput {
       isEmpty,
       all,
       suggestions: {
-         matched: (filtered.length > 0) && !isEmpty,
+         matched: (filtered.length > 0),
          suggestions: isEmpty ? all : filtered,
       },
       services: {
-         matched: (service !== undefined) && !isEmpty,
+         matched: (service !== undefined),
          service,
          filtered,
       }

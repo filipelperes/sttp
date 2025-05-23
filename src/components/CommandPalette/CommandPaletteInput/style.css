@@ -1,18 +1,11 @@
 #CommandPaletteInput-Wrapper {
-   background: rgba(255, 255, 255, 0);
-   border-radius: 3rem;
-   box-shadow: 0 4px 30px #0000001a;
-   backdrop-filter: blur(20px);
-   -webkit-backdrop-filter: blur(20px);
-   border: 1px solid var(--scrollbar-color);
+   border-radius: 3rem 3rem 0 0;
    flex: 1;
-   ;
 }
 
 #CommandPaletteInput-Wrapper #CommandPaletteInputContainer {
    width: 100%;
    overflow: hidden;
-   border-radius: 3rem 0 0 3rem;
    margin-right: 3rem;
 }
 
@@ -21,9 +14,9 @@
    cursor: pointer;
    background-color: transparent;
    border: none;
-   width: 60px;
-   left: -7px;
-   top: 5px;
+   width: auto;
+   left: 0;
+   top: 0;
    bottom: 0;
    right: 0;
    font-size: 3rem;
@@ -31,11 +24,15 @@
 
 #CommandPaletteInput-Wrapper button.clear {
    transition: opacity .3s ease;
+   opacity: 0;
    left: unset;
-   top: 10px;
-   right: calc(3rem - 5px);
+   right: calc(3rem + 5px);
    font-size: 2.5rem;
    position: absolute;
+}
+
+#CommandPaletteInput-Wrapper button:last-child {
+   left: -9px
 }
 
 #CommandPaletteInput-Wrapper #CommandPaletteInputContainer #CommandPaletteInput {
@@ -51,5 +48,4 @@
    -webkit-text-stroke: 0 transparent;
    height: 100%;
    text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
-   padding-left: 2rem;
 }

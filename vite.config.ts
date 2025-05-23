@@ -6,8 +6,10 @@ import path from 'node:path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
-    svgr()
+    svgr(),
+    react({
+      jsxImportSource: '@welldone-software/why-did-you-render'
+    })
   ],
   base: "/sttp",
   resolve: {

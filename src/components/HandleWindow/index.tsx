@@ -1,19 +1,37 @@
 import { useCallback, useEffect } from 'react';
-import { useAppStore } from '../../stores/AppStore';
+import useAppStore from '../../stores/AppStore';
+
+const ShouldOpenPalette = e => {
+   const isEscape = e.code === "Escape";
+   const hasModifier = e.ctrlKey || e.shiftKey || e.altKey || e.metaKey;
+   const isPlainChar = !hasModifier && /^[\w ]$/.test(e.key);
+   const isPaletteShortcut = e.ctrlKey && (
+      (e.shiftKey && e.code === "KeyP") || e.code === "KeyK"
+   );
+
+   return {
+      Key: isPlainChar ? e.key : null,
+      shouldOpen: !isEscape && (isPlainChar || isPaletteShortcut),
+      shouldIgnore: ["ScrollLock", "AltLeft", "AltRight", "ControlLeft", "ControlRight", "ShiftRight", "ShiftLeft", "CapsLock", "OsLeft", "OSRight", "Enter", "Backspace", "Meta", "MetaLeft", "F5", "R"].includes(e.code)
+   };
+};
 
 const HandleWindow = () => {
-   const focusSearchInput = useAppStore(s => s.focusSearchInput);
+   const OpenCommandPalette = useAppStore(s => s.OpenCommandPalette);
 
-   const setFocusSearchInput = useAppStore(s => s.setFocusSearchInput);
+   const setAppState = useAppStore(s => s.setAppState);
 
    const handleKeyDown = useCallback((event) => {
       event.stopPropagation();
-      const ignore = ["ScrollLock", "AltLeft", "AltRight", "ControlLeft", "ControlRight", "ShiftRight", "ShiftLeft", "CapsLock", "OsLeft", "OSRight", "Enter", "Backspace", "Meta", "MetaLeft", "F5", "R"];
-      if (ignore.includes(event.code)) return;
-      if (
-         (!(["Escape"].includes(event.code) || (event.ctrlKey && event.shiftKey && event.code === "KeyR"))) ||
-         (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(event.code) && !focusSearchInput)
-      ) setFocusSearchInput(true);
+      const { Key, shouldOpen, shouldIgnore } = ShouldOpenPalette(event);
+      if (shouldIgnore || OpenCommandPalette) return;
+      if (shouldOpen) {
+         event.preventDefault();
+         setAppState({
+            OpenCommandPalette: true,
+            Key
+         });
+      };
    }, []);
 
    useEffect(() => {
@@ -24,4 +42,8 @@ const HandleWindow = () => {
    return null;
 };
 
+HandleWindow.whyDidYouRender = {
+   logOnDifferentValues: true,
+   customName: "HandleWindow",
+};
 export default HandleWindow;

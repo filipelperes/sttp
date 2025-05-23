@@ -1,15 +1,45 @@
 import { create } from "zustand";
+import { devtools, subscribeWithSelector } from "zustand/middleware";
 
-type State = {
-   focusSearchInput: boolean;
+type IAppStoreState = {
+   OpenCommandPalette: boolean;
+   Key: string | null;
 };
 
-type Actions = {
-   setFocusSearchInput: (focusSearchInput: boolean) => void;
+type IAppStoreActions = {
+   setOpenCommandPalette: (OpenCommandPalette: boolean) => void;
+   setKey: (Key: string) => void;
+   setAppState: (state: Partial<IAppStoreState>) => void;
 };
 
-export const useAppStore = create<State & Actions>((set) => ({
-   focusSearchInput: false,
+export type IAppStore = IAppStoreState & IAppStoreActions;
 
-   setFocusSearchInput: (focusSearchInput) => set({ focusSearchInput }),
-}));
+const useAppStore = create<IAppStore>()(
+   devtools(
+      subscribeWithSelector(
+         set => ({
+            OpenCommandPalette: false,
+            Key: null,
+
+            setOpenCommandPalette: (OpenCommandPalette) => set({ OpenCommandPalette }),
+            setKey: (Key) => set({ Key }),
+            setAppState: (state) => set(state),
+         })
+      )
+   )
+);
+
+export default useAppStore;
+
+export const AppStoreSelector = (s: ReturnType<typeof useAppStore.getState>) => ({
+   OpenCommandPalette: s.OpenCommandPalette,
+   Key: s.Key,
+   setOpenCommandPalette: s.setOpenCommandPalette,
+   setKey: s.setKey,
+   setAppState: s.setAppState,
+});
+
+useAppStore.subscribe(
+   (state) => state.OpenCommandPalette,
+   (OpenCommandPalette) => { document.body.classList.toggle("opened", OpenCommandPalette); }
+);

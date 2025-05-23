@@ -1,18 +1,13 @@
 #CommandPaletteAutoComplete {
-   max-height: 150px;
+   max-height: 149px;
    position: absolute;
    overflow: hidden auto;
-   background: rgba(255, 255, 255, 0);
    border: 1px solid var(--scrollbar-color);
-   border-radius: 7px;
-   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-   backdrop-filter: blur(20px);
-   -webkit-backdrop-filter: blur(20px);
-   opacity: 0;
-   transition: opacity .7s ease;
+   border-top: 0;
+   border-radius: 0 0 3rem 3rem;
    width: 100%;
-   top: 100%;
-   margin-top: 7px;
+   top: calc(100% - 3px);
+   z-index: 3;
 }
 
 #CommandPaletteAutoComplete li {

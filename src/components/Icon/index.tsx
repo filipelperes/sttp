@@ -1,4 +1,4 @@
-import { createElement, useState } from 'react';
+import { createElement, memo, useState } from 'react';
 import type { IServiceStyle, IServiceIcon } from '../../utils/types/Services';
 import './style.css';
 
@@ -12,7 +12,7 @@ type IIconProps = {
    style?: IServiceStyle;
 };
 
-export const Icon = ({
+const Icon = memo(({
    icon,
    alt = '',
    width = 28,
@@ -24,11 +24,11 @@ export const Icon = ({
       backgroundColor: "#101010"
    }
 }: IIconProps) => {
-   const [imgError, setImgError] = useState(false);
+   const [ImgError, setImgError] = useState(false);
    const { icon: i, type } = icon;
    const props = type === "svgr" ? { width, height } : { size };
 
-   return imgError ? (
+   return ImgError ? (
       <span className='icon' style={{ fontSize: size }}>🧩</span>
    ) : type === "img" ? (
       <img
@@ -54,4 +54,18 @@ export const Icon = ({
          }
       )
    );
-};
+}, (prev, next) =>
+   prev.icon === next.icon &&
+   prev.alt === next.alt &&
+   prev.width === next.width &&
+   prev.height === next.height &&
+   prev.size === next.size &&
+   prev.fill === next.fill &&
+   JSON.stringify(prev.style) === JSON.stringify(next.style)
+);
+
+// Icon.whyDidYouRender = {
+//    logOnDifferentValues: true,
+//    customName: "Icon",
+// };
+export default Icon;

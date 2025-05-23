@@ -1,34 +1,55 @@
-import { useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import "./style.css";
-import HighlightedOverlay from "../HighlightedOverlay";
-import { localhost, parse } from "../CommandPalette/utils";
+import HighlightedOverlay from "../../HighlightedOverlay";
+import { localhost, parse, setTheme } from "../utils";
 import { RxChevronRight } from "react-icons/rx";
 import { IoMdCloseCircle } from "react-icons/io";
-import { useCommandPaletteStore } from "../../stores/CommandPaletteStore";
-import { useAppStore } from "../../stores/AppStore";
+import useCommandPaletteStore, { CommandPaletteStoreSelector } from "../../../stores/CommandPaletteStore";
+import useAppStore, { AppStoreSelector } from "../../../stores/AppStore";
+import { useShallow } from "zustand/shallow";
 
 const CommandPaletteInput = () => {
    const OverlayWrapperRef = useRef<(HTMLDivElement | null)>(null);
 
-   const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
-   const parsedInput = useCommandPaletteStore(s => s.parsedInput);
-   const selectedIdx = useCommandPaletteStore(s => s.selectedIdx);
+   const { setOpenCommandPalette, Key } = useAppStore(useShallow(AppStoreSelector));
 
-   const setParsedInput = useCommandPaletteStore(s => s.setParsedInput);
-   const setSelectedIdx = useCommandPaletteStore(s => s.setSelectedIdx);
-   const setFocusSearchInput = useAppStore(s => s.setFocusSearchInput);
+   const { BodyColor, CommandPaletteInputRef, ParsedInput, SelectedIdx, setParsedInput, setSelectedIdx, setCommandPaletteState } = useCommandPaletteStore(useShallow(CommandPaletteStoreSelector));
 
-   const { isIP, isPartialURL, isStrictURL, suggestions, all, value, isEmpty, services } = parsedInput;
+   const { isIP, isPartialURL, isStrictURL, suggestions, all, value, isEmpty, services } = ParsedInput;
 
-   const ClearCommandPaletteInput = event => {
+   useLayoutEffect(() => {
+      const BodyColor = getComputedStyle(document.body).color;
+      setCommandPaletteState({
+         BodyColor,
+         ParsedInput: parse(Key ?? ""),
+      });
+      CommandPaletteInputRef.current.value = Key ?? "";
+      CommandPaletteInputRef.current?.focus?.();
+      return () => {
+         document.body.style.removeProperty("background-image");
+         document.body.style.removeProperty("background-color");
+         document.body.style.removeProperty("color");
+         CommandPaletteInputRef.current?.blur?.();
+         setCommandPaletteState({
+            ParsedInput: parse(""),
+            SelectedIdx: 0
+         });
+      };
+   }, []);
+
+   useEffect(() => {
+      setTheme((suggestions.matched && suggestions.suggestions[SelectedIdx]?.[1]?.style) || services.service?.[1]?.style);
+   });
+
+   const ClearCommandPaletteInput = useCallback(event => {
       event.stopPropagation();
       CommandPaletteInputRef.current.focus();
       if (isEmpty) return;
       CommandPaletteInputRef.current.value = "";
       setParsedInput(parse(""));
-   };
+   }, [isEmpty, setParsedInput]);
 
-   const onSubmit = event => {
+   const handleSubmit = event => {
       event.stopPropagation();
       if (isEmpty) return;
       if (isIP || isStrictURL || isPartialURL) { //127::1, ::1, 127...1, 127..1 para 127.0.0.1
@@ -63,8 +84,10 @@ const CommandPaletteInput = () => {
 
    const onChange = event => {
       event.stopPropagation();
-      setParsedInput(parse(event.target.value));
-      setSelectedIdx(Math.max(0, Math.min(suggestions.suggestions.length - 1, selectedIdx)));
+      setCommandPaletteState({
+         ParsedInput: parse(event.target.value),
+         SelectedIdx: Math.max(0, Math.min(suggestions.suggestions.length - 1, SelectedIdx))
+      });
    };
 
    const onKeyDown = event => {
@@ -72,7 +95,7 @@ const CommandPaletteInput = () => {
 
       // if (
       //    services.matched && !services.service?.[1]?.url?.query &&
-      //    !event.ctrlKey && !event.metaKey && event.key.length === 1
+      //    /^[/w ]$/.test(event.key)
       // ) {
       //    event.preventDefault();
       //    return;
@@ -80,7 +103,7 @@ const CommandPaletteInput = () => {
 
       const submit = event => {
          event.preventDefault();
-         onSubmit(~event);
+         handleSubmit(event);
       };
 
       const keyActions = {
@@ -88,21 +111,23 @@ const CommandPaletteInput = () => {
          NumpadEnter: submit,
          Tab: () => {
             event.preventDefault();
-            event.target.value = suggestions.suggestions[selectedIdx]?.[1]?.name ?? event.target.value;
-            setParsedInput(parse(event.target.value));
-            setSelectedIdx(0);
+            event.target.value = suggestions.suggestions[SelectedIdx]?.[1]?.name ?? event.target.value;
+            setCommandPaletteState({
+               ParsedInput: parse(event.target.value),
+               SelectedIdx: 0
+            });
          },
          Escape: () => {
             event.target.value = "";
-            setFocusSearchInput(false);
+            setOpenCommandPalette(false);
          },
          ArrowDown: () => {
             event.preventDefault();
-            setSelectedIdx(selectedIdx === suggestions.suggestions.length - 1 ? 0 : selectedIdx + 1);
+            setSelectedIdx(SelectedIdx === suggestions.suggestions.length - 1 ? 0 : SelectedIdx + 1);
          },
          ArrowUp: () => {
             event.preventDefault();
-            setSelectedIdx(selectedIdx === 0 ? suggestions.suggestions.length - 1 : selectedIdx - 1);
+            setSelectedIdx(SelectedIdx === 0 ? suggestions.suggestions.length - 1 : SelectedIdx - 1);
          },
          Home: () => {
             event.preventDefault();
@@ -139,9 +164,14 @@ const CommandPaletteInput = () => {
    };
 
    return (
-      <div id="CommandPaletteInput-Wrapper" className="d-flex justify-center align-middle pos-relative">
+      <div id="CommandPaletteInput-Wrapper" className="d-flex justify-center align-middle pos-relative glass">
          <div id="CommandPaletteInputContainer" className="pos-relative">
-            <HighlightedOverlay ref={OverlayWrapperRef} />
+            <HighlightedOverlay
+               value={value}
+               services={services}
+               ref={OverlayWrapperRef}
+               bodyColor={BodyColor}
+            />
             <textarea
                ref={CommandPaletteInputRef}
                id="CommandPaletteInput"
@@ -161,17 +191,21 @@ const CommandPaletteInput = () => {
             />
          </div>
          <button
-            className="clear"
+            className="d-flex align-middle clear"
             onClick={ClearCommandPaletteInput}
             style={{ opacity: isEmpty ? 0 : 1 }}
          >
             <IoMdCloseCircle />
          </button>
-         <button className="pos-relative" onClick={onSubmit}>
+         <button className="d-flex align-middle pos-relative" onClick={handleSubmit}>
             <RxChevronRight />
          </button>
       </div>
    );
 };
 
+CommandPaletteInput.whyDidYouRender = {
+   logOnDifferentValues: true,
+   customName: "CommandPaletteInput",
+};
 export default CommandPaletteInput;
