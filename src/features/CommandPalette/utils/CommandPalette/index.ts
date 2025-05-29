@@ -1,5 +1,5 @@
 import type { IService, IServiceStyle } from "@/types/Service";
-import { ServicesList } from "@/utils/ServicesList";
+import { ServicesList } from "@/CommandPalette/utils/ServicesList";
 import type { MouseEvent, KeyboardEvent } from "react";
 import useParsedInput from "../../hooks/useParsedInput";
 

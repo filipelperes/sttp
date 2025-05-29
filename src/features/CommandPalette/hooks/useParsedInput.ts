@@ -1,4 +1,4 @@
-import { ServicesList } from "@/utils/ServicesList";
+import { ServicesList } from "@/CommandPalette/utils/ServicesList";
 import z from "zod";
 import { localhost } from "@/CommandPalette/utils/CommandPalette";
 import type { IParsedInput } from "@/CommandPalette/types/ParsedInput";
