@@ -1,0 +1,23 @@
+#CommandPaletteAutoComplete {
+   max-height: 149px;
+   position: absolute;
+   overflow: hidden auto;
+   border: 1px solid var(--scrollbar-color);
+   border-top: 0;
+   border-radius: 0 0 3rem 3rem;
+   width: 100%;
+   top: 100%;
+   z-index: 3;
+}
+
+#CommandPaletteAutoComplete li {
+   cursor: pointer;
+   font-size: 1.3rem;
+   letter-spacing: var(--letter-spacing);
+   padding: 11px 3px;
+}
+
+#CommandPaletteAutoComplete li.selected,
+#CommandPaletteAutoComplete li:hover {
+   background-color: var(--scrollbar-color);
+}

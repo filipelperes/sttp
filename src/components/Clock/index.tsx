@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
-import './style.css';
 import { createRoot } from 'react-dom/client';
+import './style.css';
 
 const Clock = memo(() => {
    const clockRef = useRef<HTMLTimeElement>(null);

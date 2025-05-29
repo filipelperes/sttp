@@ -640,6 +640,11 @@
     "@svgr/hast-util-to-babel-ast" "8.0.0"
     svg-parser "^2.0.4"
 
+"@tsconfig/vite-react@^6.3.5":
+  version "6.3.5"
+  resolved "https://registry.yarnpkg.com/@tsconfig/vite-react/-/vite-react-6.3.5.tgz#dd2fc0052264c19cfc35f74b9552810ba9f026c2"
+  integrity sha512-1JDbtNCgexy5HuQdBkFHv38u5j79XWI1KWs6Jxwnm9i2rD1IPWyzlPqh4vgsAiRu1Zy1d26wxxSJYVqGaDJ+PQ==
+
 "@types/babel__core@^7.20.5":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"

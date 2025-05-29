@@ -1,0 +1,39 @@
+#Overlay-Wrapper {
+   position: absolute;
+   pointer-events: none;
+   z-index: 1;
+   overflow: hidden;
+   width: 100%;
+   height: 100%;
+   margin-right: 3rem;
+}
+
+#Overlay-Wrapper .Overlay-Container {
+   min-width: 100%;
+   border-top-left-radius: 3rem;
+}
+
+#Overlay-Wrapper .Overlay-Container .CommandPaletteInputText {
+   overflow: visible;
+   TextHighlight-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+   display: inline-flex;
+}
+
+#Overlay-Wrapper .Overlay-Container .CommandPaletteInputText .highlight {
+   /* padding: 7px 1rem 7px calc(1rem - 7px); */
+   /* border-radius: 1rem; */
+   padding: 7px 11px 7px calc(1rem - 3px);
+   position: absolute;
+   height: 100%;
+   margin-right: 7px;
+   display: inline-flex;
+   TextHighlight-transform: capitalize;
+   background: var(--scrollbar-color);
+   z-index: 3;
+   border-style: inset;
+   border-top-left-radius: 3rem;
+   left: 0;
+   top: 0;
+   bottom: 0;
+   position: fixed;
+}
