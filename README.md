@@ -12,8 +12,5 @@
 **sttp** is a minimalist homepage designed to be used as a new tab in your browser. It offers a clean, streamlined browsing experience with a modern, distraction-free design.
 
 <h4 align="center">
-  <a href="https://mohvn.github.io/sttp">Visit the Website</a>
+  <a href="https://filipelperes.github.io/sttp/">Visit the Website</a>
 </h4>
-
-<img src="https://i.imgur.com/gJjuPwa.png">
-<img src="https://i.imgur.com/P09xCAJ.png">
