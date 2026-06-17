@@ -1,47 +1,43 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
-import './style.css';
+import { memo, useEffect, useState } from 'react';
+
+const TIME_SEPARATOR = (key: number) => (
+  <span key={`sep-${key}`} className="inline-flex mx-[7px] -top-[0.4rem] relative"> : </span>
+);
+
+const formatTime = (date: Date) => {
+  const [hours, minutes, seconds] = date
+    .toLocaleTimeString([], {
+      hourCycle: 'h23',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+    .split(':');
+
+  return [hours, minutes, seconds].flatMap((part, i, arr) =>
+    i < arr.length - 1
+      ? [<span key={`d-${i}`}>{part}</span>, TIME_SEPARATOR(i)]
+      : [<span key={`d-${i}`}>{part}</span>]
+  );
+};
 
 const Clock = memo(() => {
-   const clockRef = useRef<HTMLTimeElement>(null);
-   const rootRef = useRef<ReturnType<typeof createRoot> | null>(null);
+  const [time, setTime] = useState(() => new Date());
 
-   const setClock = useCallback(() => {
-      const formattedClock = new Date()
-         .toLocaleTimeString([], {
-            hourCycle: 'h23',
-            hour: 'numeric',
-            minute: '2-digit',
-            second: '2-digit'
-         })
-         .split(":")
-         .reduce((acc, part, index, array) => [
-            ...acc,
-            <span key={`digit-${index}`}>{part}</span>,
-            (index < array.length - 1 && (<span key={`separator-${index}`} className="separator pos-relative"> : </span>))
-         ], [] as React.ReactNode[]);
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-      rootRef.current?.render?.(<>{formattedClock}</>);
-   }, []);
-
-   useEffect(() => {
-      if (clockRef.current && !rootRef.current) rootRef.current = createRoot(clockRef.current);
-      setClock();
-      const interval = setInterval(setClock, 1000);
-      return () => clearInterval(interval);
-   }, []);
-
-   return (
-      <time
-         ref={clockRef}
-         id="Clock"
-         className="pos-relative"
-      />
-   );
+  return (
+    <time
+      id="Clock"
+      className="relative top-0 transition-[top] duration-300 text-[5.5rem] font-bold tracking-[1.15px]"
+    >
+      {formatTime(time)}
+    </time>
+  );
 });
 
-Clock.whyDidYouRender = {
-   logOnDifferentValues: true,
-   customName: "Clock",
-};
+Clock.displayName = 'Clock';
 export default Clock;

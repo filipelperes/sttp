@@ -1,34 +1,38 @@
-import { Fragment, memo, useMemo, type CSSProperties } from "react";
+import { Fragment, memo, useMemo, type CSSProperties } from 'react';
 
-type ITextProps = {
-   name: string,
-   value: string;
-   style?: CSSProperties;
-};
+interface ITextHighlightProps {
+  name: string;
+  value: string;
+  highlightStyle?: CSSProperties;
+}
 
-const TextHighlight = memo(({ name, value, style = { fontWeight: 800 } }: ITextProps) => {
-   const parts = useMemo(() => (
-      name.split(new RegExp(`(${value})`, 'i'))
-   ), [name, value]);
+const DEFAULT_HIGHLIGHT_STYLE: CSSProperties = { fontWeight: 800 };
 
-   return (
-      <p>
-         {parts.map((v, i) => (
-            <Fragment key={i}>
-               {v.toLowerCase() === value.toLowerCase() ? (
-                  <span style={style}>{v}</span>
-               ) : (
-                  v
-               )}
-            </Fragment>
-         ))}
-      </p>
-   );
+const escapeRegex = (s: string): string =>
+  s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const TextHighlight = memo(({
+  name,
+  value,
+  highlightStyle = DEFAULT_HIGHLIGHT_STYLE,
+}: ITextHighlightProps) => {
+  const parts = useMemo(
+    () => name.split(new RegExp(`(${escapeRegex(value)})`, 'i')),
+    [name, value],
+  );
+
+  return (
+    <p>
+      {parts.map((v, i) =>
+        v.toLowerCase() === value.toLowerCase() ? (
+          <span key={i} style={highlightStyle}>{v}</span>
+        ) : (
+          <Fragment key={i}>{v}</Fragment>
+        )
+      )}
+    </p>
+  );
 });
 
-TextHighlight.whyDidYouRender = {
-   logOnDifferentValues: true,
-   customName: "TextHighlight",
-};
-
+TextHighlight.displayName = 'TextHighlight';
 export default TextHighlight;

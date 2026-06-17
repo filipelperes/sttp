@@ -3,7 +3,7 @@ import HandleCommandPalette from "@/CommandPalette/components/HandleCommandPalet
 import HandleWindow from "@/components/HandleWindow";
 
 const App = () => (
-  <div id="App" className="d-flex justify-center align-middle column pos-relative">
+  <div id="App" className="flex items-center justify-center flex-col relative">
     <Clock />
     <HandleCommandPalette />
     <HandleWindow />

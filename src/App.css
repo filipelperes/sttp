@@ -1,17 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import './styles/vars.css';
-@import './styles/globals.css';
-@import './styles/utilities.css';
+@import "tailwindcss";
 
-/* body.opened #Clock {
-   top: -6rem
-} */
+@theme {
+  --font-inter: 'Inter', sans-serif;
+  --color-background: #101010;
+  --color-foreground: #d4d4d4;
+  --color-scrollbar: rgba(255, 255, 255, 0.26);
+}
 
-/* body.opened #CommandPalette #CommandPaletteInput-Wrapper,
-body.opened.show-suggestions #CommandPaletteAutoComplete {
-   opacity: 1;
-} */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-scrollbar) transparent;
+  }
 
-/* body.opened #CommandPalette #CommandPaletteInput-Wrapper {
-   border-width: 2px;
-} */
+  body {
+    font-family: var(--font-inter);
+    background: var(--color-background) fixed no-repeat;
+    color: var(--color-foreground);
+    scroll-behavior: smooth;
+  }
+
+  body,
+  div#root,
+  div#App {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  pre {
+    font-family: inherit;
+  }
+
+  *::-webkit-scrollbar {
+    width: 13px;
+    background: rgba(255, 255, 255, 0);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: width 0.2s ease;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 7px;
+    border: 3px solid transparent;
+    background: var(--color-scrollbar);
+    background-clip: content-box;
+  }
+}
