@@ -30,7 +30,8 @@ const CommandPaletteAutoComplete = () => {
   return (
     <ul
       id="CommandPaletteAutoComplete"
-      className="max-h-[149px] absolute overflow-auto border border-scrollbar border-t-0 rounded-b-[3rem] w-full top-full z-[3] bg-white/0 shadow-[0_4px_30px_#0000001a] backdrop-blur-[20px]"
+      className="max-h-[149px] absolute overflow-auto border border-t-0 rounded-b-[3rem] w-full top-full z-[3]"
+      style={{ borderColor: 'var(--glass-border)' }}
     >
       {items.map(([key, { name, icon, style }]: [string, IService], i: number) => (
         <SuggestionListItem
@@ -47,8 +48,4 @@ const CommandPaletteAutoComplete = () => {
   );
 };
 
-CommandPaletteAutoComplete.whyDidYouRender = {
-  logOnDifferentValues: true,
-  customName: 'CommandPaletteAutoComplete',
-};
 export default CommandPaletteAutoComplete;

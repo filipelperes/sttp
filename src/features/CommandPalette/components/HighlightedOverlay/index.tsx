@@ -22,35 +22,36 @@ const HighlightedOverlay = memo(({ value, services, ref, bodyColor }: IHighlight
    ], [value, nameLength]);
 
    return (
-      <div ref={ref} id="Overlay-Wrapper" className="flex items-center justify-center absolute pointer-events-none z-[1] overflow-hidden w-full h-full mr-[3rem]">
-         <div className="min-w-full rounded-tl-[3rem]">
-            {!services.matched ? (
-               <pre className="font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal min-w-full p-[9px] inline-flex items-center justify-center overflow-visible [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)]">
-                  {value}
-               </pre>
-            ) : (
-               <pre className="font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal min-w-full p-[9px] inline-flex items-center justify-center overflow-visible [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)]">
-                  <span
-                     className="px-[11px] py-[7px] pl-[calc(1rem-3px)] h-full mr-[7px] inline-flex capitalize bg-scrollbar z-[3] [border-style:inset] rounded-tl-[3rem] left-0 top-0 bottom-0"
-                     style={{
-                        color: bodyColor,
-                        position: "fixed"
-                     }}
-                  >
-                     <Icon icon={service?.icon} size={"3rem"} width={48} height={48} fill={fill} style={style} />
-                     {prefix}
-                  </span>
-                  {suffix}
-               </pre>
-            )}
-         </div>
+      <div 
+         ref={ref} 
+         id="Overlay-Wrapper" 
+         className="absolute left-0 top-0 z-[1] pointer-events-none overflow-hidden w-full h-full rounded-tl-[3rem]"
+      >
+         {!services.matched ? (
+            <textarea
+               className="absolute left-0 top-0 w-full h-full resize-none border-none outline-none bg-transparent rounded-tl-[3rem] font-[inherit] font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal p-[9px] [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)] m-0"
+               value={value}
+               readOnly
+               rows={1}
+               wrap="off"
+               style={{ WebkitTextFillColor: bodyColor || 'var(--color-foreground)', color: 'transparent' }}
+            />
+         ) : (
+            <div className="absolute left-0 top-0 w-full h-full rounded-tl-[3rem] font-[inherit] font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal p-[9px] [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)] m-0">
+               <span
+                  className="px-[11px] py-[7px] pl-[calc(1rem-3px)] h-full mr-[7px] inline-flex items-center capitalize glass z-[3] [border-style:inset] rounded-tl-[3rem] absolute left-0 top-0 bottom-0"
+                  style={{ color: bodyColor }}
+               >
+                  <Icon icon={service?.icon} size={"3rem"} width={48} height={48} fill={fill} style={style} />
+                  {prefix}
+               </span>
+               <span className="opacity-0 pointer-events-none select-none">{prefix}</span>
+               {suffix}
+            </div>
+         )}
       </div>
    );
 });
 
-HighlightedOverlay.whyDidYouRender = {
-   logOnDifferentValues: true,
-   customName: "HighlightedOverlay",
-};
-
+HighlightedOverlay.displayName = 'HighlightedOverlay';
 export default HighlightedOverlay;

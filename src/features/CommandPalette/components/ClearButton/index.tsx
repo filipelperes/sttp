@@ -18,7 +18,7 @@ const ClearButton = memo(() => {
 
   return (
     <button
-      className="flex items-center text-inherit cursor-pointer bg-transparent border-none w-auto inset-0 transition-opacity duration-300 ease absolute left-auto right-[calc(3rem+5px)] text-[2.5rem]"
+      className="flex items-center text-inherit cursor-pointer bg-transparent border-none w-auto inset-0 transition-opacity duration-300 ease absolute left-auto right-[calc(3rem+5px)] text-[2.5rem] hover:opacity-80"
       onClick={handleClick}
       style={{ opacity: isEmpty ? 0 : 1 }}
       aria-label="Clear input"

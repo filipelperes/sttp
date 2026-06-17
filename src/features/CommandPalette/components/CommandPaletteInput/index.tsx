@@ -47,7 +47,7 @@ const CommandPaletteInput = () => {
   const textIndent = services.matched ? '-9rem' : '0';
 
   return (
-    <div className="flex items-center justify-center relative bg-white/0 shadow-[0_4px_30px_#0000001a] backdrop-blur-[20px] border border-scrollbar rounded-[3rem_3rem_0_0] flex-1 border-b-0">
+    <div className="flex items-center justify-center relative rounded-[3rem_3rem_0_0] flex-1 border-b-0">
       <div className="relative w-full overflow-hidden mr-[3rem]">
         <HighlightedOverlay
           value={Value}
@@ -82,8 +82,4 @@ const CommandPaletteInput = () => {
   );
 };
 
-CommandPaletteInput.whyDidYouRender = {
-  logOnDifferentValues: true,
-  customName: 'CommandPaletteInput',
-};
 export default CommandPaletteInput;

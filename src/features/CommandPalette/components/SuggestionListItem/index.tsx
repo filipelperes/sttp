@@ -51,7 +51,7 @@ const SuggestionListItem = memo(({
       ref={el => setRef(el, index)}
       data-name={name}
       id={`suggestion-${index}`}
-      className={`${isSelected ? 'bg-scrollbar ' : ''}flex items-center justify-center cursor-pointer text-[1.3rem] tracking-[1.15px] px-[3px] py-[11px] hover:bg-scrollbar`}
+      className={`${isSelected ? 'bg-surface-hover ' : ''}flex items-center justify-center cursor-pointer text-[1.3rem] tracking-[1.15px] px-[3px] py-[11px] hover:bg-surface-hover transition-colors`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
