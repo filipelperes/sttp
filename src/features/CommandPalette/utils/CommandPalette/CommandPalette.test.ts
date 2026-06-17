@@ -28,14 +28,14 @@ describe('CommandPalette theme utilities', () => {
     expect(document.body.style.getPropertyValue('background-image')).toBe('none');
   });
 
-  it('setTheme defaults to #101010 for background color when not provided', () => {
+  it('setTheme defaults to var(--color-background) for background color when not provided', () => {
     setTheme({ backgroundColor: undefined } as unknown as undefined);
-    expect(document.body.style.getPropertyValue('background-color')).toBe('rgb(16, 16, 16)');
+    expect(document.body.style.getPropertyValue('background-color')).toBe('var(--color-background)');
   });
 
-  it('setTheme defaults to #d4d4d4 for color when not provided', () => {
+  it('setTheme defaults to var(--color-foreground) for color when not provided', () => {
     setTheme({ backgroundColor: undefined } as unknown as undefined);
-    expect(document.body.style.getPropertyValue('color')).toBe('rgb(212, 212, 212)');
+    expect(document.body.style.getPropertyValue('color')).toBe('var(--color-foreground)');
   });
 
   it('clearTheme removes background-image', () => {
@@ -59,7 +59,7 @@ describe('CommandPalette theme utilities', () => {
   it('handles undefined style gracefully', () => {
     setTheme(undefined);
     expect(document.body.style.getPropertyValue('background-image')).toBe('none');
-    expect(document.body.style.getPropertyValue('background-color')).toBe('rgb(16, 16, 16)');
-    expect(document.body.style.getPropertyValue('color')).toBe('rgb(212, 212, 212)');
+    expect(document.body.style.getPropertyValue('background-color')).toBe('var(--color-background)');
+    expect(document.body.style.getPropertyValue('color')).toBe('var(--color-foreground)');
   });
 });
