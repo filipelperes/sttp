@@ -5,7 +5,7 @@ export type IParsedInput = {
    isStrictURL: boolean;
    isPartialURL: boolean;
    slash: boolean;
-   collon: boolean;
+   colon: boolean;
    isEmpty: boolean;
    all: [string, IService][];
    suggestions: {
