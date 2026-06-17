@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
+import { servicesWriterPlugin } from './scripts/vite-plugin-services-writer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,6 +11,7 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
     react(),
+    servicesWriterPlugin(),
   ],
   base: "/sttp",
   resolve: {
