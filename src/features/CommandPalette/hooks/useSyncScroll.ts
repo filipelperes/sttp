@@ -2,15 +2,17 @@ import { useEffect } from "react";
 
 const useSyncScroll = (sourceRef: React.RefObject<(HTMLElement | null)>, targetRef: React.RefObject<(HTMLElement | null)>) => {
    useEffect(() => {
+      const sourceEl = sourceRef.current;
+      if (!sourceEl || !targetRef.current) return;
       const handleScroll = () => {
-         if (sourceRef.current && targetRef.current) {
-            targetRef.current.scrollTop = sourceRef.current.scrollTop;
-            targetRef.current.scrollLeft = sourceRef.current.scrollLeft;
+         if (targetRef.current) {
+            targetRef.current.scrollTop = sourceEl.scrollTop;
+            targetRef.current.scrollLeft = sourceEl.scrollLeft;
          }
       };
-      sourceRef.current?.addEventListener("scroll", handleScroll);
-      return () => sourceRef.current?.removeEventListener("scroll", handleScroll);
-   }, [targetRef, sourceRef]);
+      sourceEl.addEventListener("scroll", handleScroll);
+      return () => sourceEl.removeEventListener("scroll", handleScroll);
+   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 export default useSyncScroll;

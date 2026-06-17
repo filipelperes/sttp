@@ -48,22 +48,5 @@ const useCommandPaletteStore = create<ICommandPaletteStore>()(
    )
 );
 
-const CommandPaletteStoreSelector = (s: ReturnType<typeof useCommandPaletteStore.getState>) => ({
-   CommandPaletteInputRef: s.CommandPaletteInputRef,
-   Value: s.Value,
-   SelectedIdx: s.SelectedIdx,
-   BodyColor: s.BodyColor,
-   IsScroll: s.IsScroll,
-   Show: s.Show,
-   Key: s.Key,
-   setValue: s.setValue,
-   setSelectedIdx: s.setSelectedIdx,
-   setBodyColor: s.setBodyColor,
-   setIsScroll: s.setIsScroll,
-   setShow: s.setShow,
-   setKey: s.setKey,
-   setCommandPaletteState: s.setCommandPaletteState,
-});
-
 export default useCommandPaletteStore;
-export { CommandPaletteStoreSelector, type ICommandPaletteStore };
+export { type ICommandPaletteStore };

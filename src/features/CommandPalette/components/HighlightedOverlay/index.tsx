@@ -1,16 +1,13 @@
 import { memo, useMemo, type RefObject } from "react";
 import Icon from "@/components/Icon";
 import type { IParsedInput } from "@/CommandPalette/types/ParsedInput";
-import type whyDidYouRender from "@welldone-software/why-did-you-render";
-import './style.css';
 
-type IHighlightedOverlayProps = {
+interface IHighlightedOverlayProps {
    value: string;
    services: IParsedInput["services"];
    ref: RefObject<(HTMLDivElement | null)>;
    bodyColor: string;
-   whyDidYouRender?: typeof whyDidYouRender;
-};
+}
 
 const HighlightedOverlay = memo(({ value, services, ref, bodyColor }: IHighlightedOverlayProps) => {
    const service = services.service?.[1];
@@ -22,18 +19,23 @@ const HighlightedOverlay = memo(({ value, services, ref, bodyColor }: IHighlight
    const [prefix, suffix] = useMemo(() => [
       value.substring(0, nameLength),
       value.substring(nameLength)
-   ], [value, name]);
+   ], [value, nameLength]);
 
    return (
-      <div ref={ref} id="Overlay-Wrapper" className="d-flex align-middle justify-center pos-relative">
-         <div className="Overlay-Container">
+      <div ref={ref} id="Overlay-Wrapper" className="flex items-center justify-center absolute pointer-events-none z-[1] overflow-hidden w-full h-full mr-[3rem]">
+         <div className="min-w-full rounded-tl-[3rem]">
             {!services.matched ? (
-               <pre className="CommandPaletteInputText align-middle justify-center">{value}</pre>
+               <pre className="font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal min-w-full p-[9px] inline-flex items-center justify-center overflow-visible [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)]">
+                  {value}
+               </pre>
             ) : (
-               <pre className="CommandPaletteInputText align-middle justify-center">
+               <pre className="font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal min-w-full p-[9px] inline-flex items-center justify-center overflow-visible [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)]">
                   <span
-                     className="highlight align-middle justify-center"
-                     style={{ color: bodyColor }}
+                     className="px-[11px] py-[7px] pl-[calc(1rem-3px)] h-full mr-[7px] inline-flex capitalize bg-scrollbar z-[3] [border-style:inset] rounded-tl-[3rem] left-0 top-0 bottom-0"
+                     style={{
+                        color: bodyColor,
+                        position: "fixed"
+                     }}
                   >
                      <Icon icon={service?.icon} size={"3rem"} width={48} height={48} fill={fill} style={style} />
                      {prefix}
@@ -41,9 +43,6 @@ const HighlightedOverlay = memo(({ value, services, ref, bodyColor }: IHighlight
                   {suffix}
                </pre>
             )}
-            {/* {(matched && !services.service?.[1]?.url?.query) && (
-               <p>mensagem divertida e engraçada em ingles para caso não tenha query url</p>
-            )} */}
          </div>
       </div>
    );

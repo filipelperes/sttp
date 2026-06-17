@@ -1,6 +1,7 @@
 import { type IServicesList } from "@/types/Service";
 import { FaDiscord, FaFigma, FaGithub, FaGoogleDrive, FaInstagram, FaLinkedin, FaPinterest, FaRedditSquare, FaSpotify, FaTrello, FaTwitch, FaTwitter, FaWhatsapp, FaYoutube } from "react-icons/fa";
-import { SiAliexpress, SiCanva, SiGmail, SiGoogletranslate, SiHackthebox, SiMercadopago, SiMonkeytype, SiNetflix, SiNotion, SiPrimevideo, SiShopee, SiSpeedtest, SiTryhackme, SiZoho } from "react-icons/si";
+import { SiAliexpress, SiCanva, SiGmail, SiGoogletranslate, SiHackthebox, SiMercadopago, SiMonkeytype, SiNetflix, SiNotion, SiShopee, SiSpeedtest, SiTryhackme, SiZoho } from "react-icons/si";
+import { MdOndemandVideo } from "react-icons/md";
 import { PiMicrosoftOutlookLogoLight } from "react-icons/pi";
 import { IoCalendarNumberOutline } from "react-icons/io5";
 import PontoGoIcon from '@/assets/pontogo.svg?react';
@@ -240,9 +241,9 @@ export const ServicesList = {
       },
       pattern: /^p(v|rime(\s?video)?)?/i,
       icon: {
-         icon: SiPrimevideo,
-         type: "react-icons"
-      },
+          icon: MdOndemandVideo,
+          type: "react-icons"
+       },
       style: {
          backgroundColor: "#146eb4",
          backgroundImage: "linear-gradient(to right bottom, #146eb4, #0f4c81)",
