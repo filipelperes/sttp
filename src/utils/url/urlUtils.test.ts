@@ -201,7 +201,7 @@ describe('urlUtils', () => {
       const event = { stopPropagation: vi.fn(), preventDefault: vi.fn() };
       handleSubmit(event, 'some random search');
       expect(window.open).toHaveBeenCalledWith(
-        'https://google.com/search?q=some random search',
+        'https://google.com/search?q=some%20random%20search',
         '_blank',
         'noopener, noreferrer',
       );
@@ -230,7 +230,7 @@ describe('urlUtils', () => {
       const event = { stopPropagation: vi.fn(), preventDefault: vi.fn() };
       handleSubmit(event, 'how to code in react');
       expect(window.open).toHaveBeenCalledWith(
-        'https://google.com/search?q=how to code in react',
+        'https://google.com/search?q=how%20to%20code%20in%20react',
         '_blank',
         'noopener, noreferrer',
       );

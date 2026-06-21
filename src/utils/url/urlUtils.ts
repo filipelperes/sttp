@@ -1,6 +1,8 @@
 import type { IService } from '@/types/Service';
-import { ServicesList } from '@/CommandPalette/utils/ServicesList';
+import { getMergedServicesList } from '@/CommandPalette/utils/ServicesList/servicesStore';
 import { parseInput } from '@/utils/parseInput/parseInput';
+import { SEARCH_ENGINES } from '@/features/Settings/types/Settings';
+import useSettingsStore from '@/features/Settings/stores/SettingsStore';
 
 const localhostValues = ['127.0.0.1', '127::1', '::1', '127...1', '127..1', '..1'];
 
@@ -23,7 +25,7 @@ export const handleIPSubmit = (
 };
 
 export const handleServiceSubmit = (value: string): boolean =>
-  Object.entries(ServicesList).some(([, { name, url }]: [string, IService]) => {
+  Object.entries(getMergedServicesList()).some(([, { name, url }]: [string, IService]) => {
     const pattern = new RegExp(`^${name}([:/]*)`, 'i');
     if (!pattern.test(value)) return false;
 
@@ -52,9 +54,12 @@ export const handleSubmit = (
 
   if (handleServiceSubmit(value)) return;
 
-  window.open(
-    `https://google.com/search?q=${value}`,
-    '_blank',
-    'noopener, noreferrer',
-  );
+  // Use the user's preferred search engine
+  const { searchEngine: engineId, userSearchEngines } = useSettingsStore.getState();
+  const engine = SEARCH_ENGINES.find((e) => e.id === engineId)
+    ?? Object.values(userSearchEngines).find((e) => e.id === engineId)
+    ?? SEARCH_ENGINES[0];
+  const searchUrl = engine.url.replace('%s', encodeURIComponent(value));
+
+  window.open(searchUrl, '_blank', 'noopener, noreferrer');
 };
