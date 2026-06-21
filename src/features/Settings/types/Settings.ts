@@ -1,3 +1,5 @@
+import type { IServicesList } from "@/types/Service";
+
 export type ThemeMode = 'dark' | 'light';
 
 export type HourCycle = 'h23' | 'h12';
@@ -120,13 +122,14 @@ export interface ISettingsActions {
   setAccentOnButtonBorder: (v: boolean) => void;
   resetAll: () => void;
   // ── Profile actions ──
-  loadProfile: (settings: Omit<typeof DEFAULT_SETTINGS, 'userSearchEngines'>) => void;
+  loadProfile: (settings: typeof DEFAULT_SETTINGS, services?: IServicesList) => void;
 }
 
 export interface IProfile {
   id: string;
   name: string;
-  settings: Omit<typeof DEFAULT_SETTINGS, 'userSearchEngines'>;
+  settings: typeof DEFAULT_SETTINGS;
+  services?: IServicesList; // user-defined services captured at save time
   createdAt: string;
 }
 

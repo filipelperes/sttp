@@ -1,4 +1,5 @@
 import type { IProfile } from '@/features/Settings/types/Settings';
+import type { IServicesList } from '@/types/Service';
 import { DEFAULT_SETTINGS } from '@/features/Settings/types/Settings';
 
 const PROFILES_KEY = 'sttp-profiles';
@@ -8,10 +9,7 @@ const STARTUP_PROFILE_KEY = 'sttp-startup-profile';
 export const FACTORY_PROFILE: IProfile = {
   id: '__factory__',
   name: 'Default (factory)',
-  settings: (() => {
-    const { userSearchEngines: _, ...rest } = DEFAULT_SETTINGS;
-    return rest;
-  })(),
+  settings: { ...DEFAULT_SETTINGS, userSearchEngines: {} },
   createdAt: '2024-01-01T00:00:00.000Z',
 };
 
@@ -42,13 +40,17 @@ export const getAllProfiles = (): IProfile[] => {
   return [FACTORY_PROFILE, ...userProfiles];
 };
 
-export const addProfile = (name: string, settings: typeof DEFAULT_SETTINGS): IProfile => {
+export const addProfile = (
+  name: string,
+  settings: typeof DEFAULT_SETTINGS,
+  services?: IServicesList,
+): IProfile => {
   const profiles = loadProfiles();
-  const { userSearchEngines: _, ...settingsClone } = settings;
   const newProfile: IProfile = {
     id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     name,
-    settings: settingsClone,
+    settings: { ...settings },
+    services: services ? { ...services } : undefined,
     createdAt: new Date().toISOString(),
   };
   saveProfiles([...profiles, newProfile]);
@@ -87,12 +89,12 @@ export const setStartupProfileId = (id: string | null) => {
 export const clearStartupProfile = () => setStartupProfileId(null);
 
 /** Load the startup profile settings if one is set, or return null. */
-export const loadStartupProfileSettings = (): Omit<typeof DEFAULT_SETTINGS, 'userSearchEngines'> | null => {
+export const loadStartupProfileSettings = (): { settings: typeof DEFAULT_SETTINGS; services?: IServicesList } | null => {
   const startupId = getStartupProfileId();
   if (!startupId) return null;
   const allProfiles = getAllProfiles();
   const profile = allProfiles.find((p) => p.id === startupId);
-  if (profile) return profile.settings;
+  if (profile) return { settings: profile.settings, services: profile.services };
   return null;
 };
 
@@ -112,6 +114,7 @@ export const importProfilesFromJSON = (json: string): IProfile[] => {
         id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
         name: item.name,
         settings: item.settings,
+        services: item.services ? item.services : undefined,
         createdAt: item.createdAt ?? new Date().toISOString(),
       };
       merged.push(profile);

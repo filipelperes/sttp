@@ -2,6 +2,7 @@ import { memo, useCallback, useRef, useState } from 'react';
 import { IoAdd, IoTrashOutline, IoDownloadOutline, IoCloudUploadOutline, IoCheckmark, IoStar, IoStarOutline } from 'react-icons/io5';
 import useSettingsStore from '@/features/Settings/stores/SettingsStore';
 import type { IProfile } from '@/features/Settings/types/Settings';
+import { loadUserServices } from '@/features/Settings/utils/servicesStorage';
 import {
   getAllProfiles,
   addProfile,
@@ -33,7 +34,8 @@ const ProfileManager = memo(() => {
   const handleSaveCurrent = useCallback(() => {
     const name = profileNameInput.trim();
     if (!name) return;
-    addProfile(name, currentSettings());
+    const currentServices = loadUserServices();
+    addProfile(name, currentSettings(), Object.keys(currentServices).length > 0 ? currentServices : undefined);
     setProfileNameInput('');
     setShowSaveInput(false);
     refresh();
@@ -41,7 +43,7 @@ const ProfileManager = memo(() => {
 
   const handleLoadProfile = useCallback(
     (profile: IProfile) => {
-      loadProfile(profile.settings);
+      loadProfile(profile.settings, profile.services);
     },
     [loadProfile],
   );
@@ -244,7 +246,7 @@ const ProfileManager = memo(() => {
       {importSuccess && <p className="text-xs text-emerald-400">Profiles imported successfully</p>}
 
       <p className="text-[10px] text-foreground/20 leading-relaxed">
-        Profiles store all settings except user-defined search engines.
+        Profiles store all settings, custom search engines, and custom services.
         Click the star icon to set a profile as your startup default.
         The factory default is always available and cannot be deleted.
       </p>

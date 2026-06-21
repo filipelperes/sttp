@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware";
 import type { ISettingsStore, ThemeMode, GlassIntensity, IClockSettings } from "@/features/Settings/types/Settings";
 import { DEFAULT_SETTINGS } from "@/features/Settings/types/Settings";
 import { loadUserSearchEngines, saveUserSearchEngines } from "@/features/Settings/utils/searchEngineStorage";
+import { saveUserServices } from "@/features/Settings/utils/servicesStorage";
 import { loadStartupProfileSettings } from "@/features/Settings/utils/profileStorage";
 
 const STORAGE_KEY = 'sttp-settings';
@@ -29,14 +30,19 @@ const loadFromStorage = (): typeof DEFAULT_SETTINGS => {
 
 /** Apply startup profile on top of loaded settings if one is configured. */
 const applyStartupProfile = (base: typeof DEFAULT_SETTINGS): typeof DEFAULT_SETTINGS => {
-  const startupSettings = loadStartupProfileSettings();
-  if (startupSettings) {
+  const startup = loadStartupProfileSettings();
+  if (startup) {
+    const s = startup.settings;
+    // Restore services from the profile if present
+    if (startup.services) {
+      saveUserServices(startup.services);
+    }
     return {
       ...base,
-      ...startupSettings,
-      clock: { ...base.clock, ...(startupSettings.clock ?? {}) },
-      date: { ...base.date, ...(startupSettings.date ?? {}) },
-      background: { ...base.background, ...(startupSettings.background ?? {}) },
+      ...s,
+      clock: { ...base.clock, ...(s.clock ?? {}) },
+      date: { ...base.date, ...(s.date ?? {}) },
+      background: { ...base.background, ...(s.background ?? {}) },
     };
   }
   return base;
@@ -195,11 +201,17 @@ const useSettingsStore = create<ISettingsStore>()(
         saveToStorage({ ...useSettingsStore.getState(), accentOnButtonBorder: v });
       },
 
-      loadProfile: (profileSettings) => {
-        const { userSearchEngines } = useSettingsStore.getState();
+      loadProfile: (profileSettings, services) => {
         applyThemeToDOM(profileSettings.theme);
         applyAccentToDOM(profileSettings.accentColor);
         applyGlassToDOM(profileSettings.glassIntensity);
+        // Restore user search engines from the profile
+        const userSearchEngines = profileSettings.userSearchEngines ?? {};
+        saveUserSearchEngines(userSearchEngines);
+        // Restore user-defined services from the profile if present
+        if (services) {
+          saveUserServices(services);
+        }
         const newState = { ...DEFAULT_SETTINGS, ...profileSettings, userSearchEngines };
         set(newState);
         saveToStorage(newState);
