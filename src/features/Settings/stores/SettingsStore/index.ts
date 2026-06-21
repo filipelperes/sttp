@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { ISettingsStore, ThemeMode, GlassIntensity, IClockSettings } from "@/features/Settings/types/Settings";
 import { DEFAULT_SETTINGS } from "@/features/Settings/types/Settings";
+import { loadUserSearchEngines, saveUserSearchEngines } from "@/features/Settings/utils/searchEngineStorage";
+import { loadStartupProfileSettings } from "@/features/Settings/utils/profileStorage";
 
 const STORAGE_KEY = 'sttp-settings';
 
@@ -25,6 +27,21 @@ const loadFromStorage = (): typeof DEFAULT_SETTINGS => {
   return DEFAULT_SETTINGS;
 };
 
+/** Apply startup profile on top of loaded settings if one is configured. */
+const applyStartupProfile = (base: typeof DEFAULT_SETTINGS): typeof DEFAULT_SETTINGS => {
+  const startupSettings = loadStartupProfileSettings();
+  if (startupSettings) {
+    return {
+      ...base,
+      ...startupSettings,
+      clock: { ...base.clock, ...(startupSettings.clock ?? {}) },
+      date: { ...base.date, ...(startupSettings.date ?? {}) },
+      background: { ...base.background, ...(startupSettings.background ?? {}) },
+    };
+  }
+  return base;
+};
+
 const saveToStorage = (state: typeof DEFAULT_SETTINGS) => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -40,6 +57,11 @@ const applyThemeToDOM = (theme: ThemeMode) => {
   }
 };
 
+const applyAccentToDOM = (color: string) => {
+  document.documentElement.style.setProperty('--color-accent', color);
+  document.documentElement.style.setProperty('--color-ring', color);
+};
+
 const applyGlassToDOM = (intensity: GlassIntensity) => {
   const vars: Record<GlassIntensity, { bg: string; blur: string }> = {
     light: { bg: 'rgba(255, 255, 255, 0.02)', blur: '12px' },
@@ -51,10 +73,14 @@ const applyGlassToDOM = (intensity: GlassIntensity) => {
   document.documentElement.style.setProperty('--glass-blur', blur);
 };
 
-const initial = loadFromStorage();
+const initial = {
+  ...applyStartupProfile(loadFromStorage()),
+  userSearchEngines: loadUserSearchEngines(),
+};
 
 // Apply saved settings on load
 applyThemeToDOM(initial.theme);
+applyAccentToDOM(initial.accentColor);
 applyGlassToDOM(initial.glassIntensity);
 
 const useSettingsStore = create<ISettingsStore>()(
@@ -66,6 +92,17 @@ const useSettingsStore = create<ISettingsStore>()(
         applyThemeToDOM(theme);
         set({ theme });
         saveToStorage({ ...useSettingsStore.getState(), theme });
+      },
+
+      setAccentColor: (accentColor) => {
+        applyAccentToDOM(accentColor);
+        set({ accentColor });
+        saveToStorage({ ...useSettingsStore.getState(), accentColor });
+      },
+
+      setSearchEngine: (searchEngine) => {
+        set({ searchEngine });
+        saveToStorage({ ...useSettingsStore.getState(), searchEngine });
       },
 
       setGlassIntensity: (glassIntensity) => {
@@ -101,11 +138,81 @@ const useSettingsStore = create<ISettingsStore>()(
         });
       },
 
+      setUserSearchEngines: (userSearchEngines) => {
+        saveUserSearchEngines(userSearchEngines);
+        set({ userSearchEngines });
+      },
+
+      setAccentOnClockSep: (accentOnClockSep) => {
+        set({ accentOnClockSep });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnClockSep });
+      },
+
+      setAccentOnDate: (accentOnDate) => {
+        set({ accentOnDate });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnDate });
+      },
+
+      setAccentOnIcons: (accentOnIcons) => {
+        set({ accentOnIcons });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnIcons });
+      },
+
+      setAccentOnClockText: (v) => {
+        set({ accentOnClockText: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnClockText: v });
+      },
+      setAccentOnTabs: (v) => {
+        set({ accentOnTabs: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnTabs: v });
+      },
+      setAccentOnToggles: (v) => {
+        set({ accentOnToggles: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnToggles: v });
+      },
+      setAccentOnSlider: (v) => {
+        set({ accentOnSlider: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnSlider: v });
+      },
+      setAccentOnCaret: (v) => {
+        set({ accentOnCaret: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnCaret: v });
+      },
+      setAccentOnFocusRing: (v) => {
+        set({ accentOnFocusRing: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnFocusRing: v });
+      },
+      setAccentOnScrollbar: (v) => {
+        set({ accentOnScrollbar: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnScrollbar: v });
+      },
+      setAccentOnGlassBorder: (v) => {
+        set({ accentOnGlassBorder: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnGlassBorder: v });
+      },
+      setAccentOnButtonBorder: (v) => {
+        set({ accentOnButtonBorder: v });
+        saveToStorage({ ...useSettingsStore.getState(), accentOnButtonBorder: v });
+      },
+
+      loadProfile: (profileSettings) => {
+        const { userSearchEngines } = useSettingsStore.getState();
+        applyThemeToDOM(profileSettings.theme);
+        applyAccentToDOM(profileSettings.accentColor);
+        applyGlassToDOM(profileSettings.glassIntensity);
+        const newState = { ...DEFAULT_SETTINGS, ...profileSettings, userSearchEngines };
+        set(newState);
+        saveToStorage(newState);
+      },
+
       resetAll: () => {
+        const { userSearchEngines } = useSettingsStore.getState();
         applyThemeToDOM(DEFAULT_SETTINGS.theme);
+        applyAccentToDOM(DEFAULT_SETTINGS.accentColor);
         applyGlassToDOM(DEFAULT_SETTINGS.glassIntensity);
-        set(DEFAULT_SETTINGS);
-        saveToStorage(DEFAULT_SETTINGS);
+        const resetState = { ...DEFAULT_SETTINGS, userSearchEngines };
+        set(resetState);
+        saveToStorage(resetState);
       },
     }),
     { name: 'SettingsStore' },
