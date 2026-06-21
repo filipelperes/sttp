@@ -25,11 +25,11 @@ const HighlightedOverlay = memo(({ value, services, ref, bodyColor }: IHighlight
       <div 
          ref={ref} 
          id="Overlay-Wrapper" 
-         className="absolute left-0 top-0 z-[1] pointer-events-none overflow-hidden w-full h-full rounded-tl-[3rem]"
+         className="absolute left-0 top-0 z-[1] pointer-events-none overflow-hidden w-full h-full rounded-tl-[2rem] sm:rounded-tl-[3rem]"
       >
          {!services.matched ? (
             <textarea
-               className="absolute left-0 top-0 w-full h-full resize-none border-none outline-none bg-transparent rounded-tl-[3rem] font-[inherit] font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal p-[9px] [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)] m-0"
+               className="absolute left-0 top-0 w-full h-full resize-none border-none outline-none bg-transparent rounded-tl-[2rem] sm:rounded-tl-[3rem] font-[inherit] font-bold text-[1.8rem] sm:text-[2.5rem] md:text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal p-[6px] sm:p-[9px] [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)] m-0"
                value={value}
                readOnly
                rows={1}
@@ -37,12 +37,12 @@ const HighlightedOverlay = memo(({ value, services, ref, bodyColor }: IHighlight
                style={{ WebkitTextFillColor: bodyColor || 'var(--color-foreground)', color: 'transparent' }}
             />
          ) : (
-            <div className="absolute left-0 top-0 w-full h-full rounded-tl-[3rem] font-[inherit] font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal p-[9px] [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)] m-0">
+            <div className="absolute left-0 top-0 w-full h-full rounded-tl-[2rem] sm:rounded-tl-[3rem] font-[inherit] font-bold text-[1.8rem] sm:text-[2.5rem] md:text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal p-[6px] sm:p-[9px] [text-shadow:1px_1px_0px_rgba(0,0,0,0.5)] m-0">
                <span
-                  className="px-[11px] py-[7px] pl-[calc(1rem-3px)] h-full mr-[7px] inline-flex items-center capitalize glass z-[3] [border-style:inset] rounded-tl-[3rem] absolute left-0 top-0 bottom-0"
+                  className="px-[8px] sm:px-[11px] py-[5px] sm:py-[7px] pl-[calc(0.8rem-3px)] sm:pl-[calc(1rem-3px)] h-full mr-[5px] sm:mr-[7px] inline-flex items-center capitalize glass z-[3] [border-style:inset] rounded-tl-[2rem] sm:rounded-tl-[3rem] absolute left-0 top-0 bottom-0"
                   style={{ color: bodyColor }}
                >
-                  <Icon icon={service?.icon} size={"3rem"} width={48} height={48} fill={fill} style={style} />
+                  <Icon icon={service?.icon} size={"1.8rem"} width={32} height={32} fill={fill} style={style} />
                   {prefix}
                </span>
                <span className="opacity-0 pointer-events-none select-none">{prefix}</span>

@@ -1,15 +1,17 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
 import type { IService } from '@/types/Service';
-import useParsedInput from '@/CommandPalette/hooks/useParsedInput';
+import type { IParsedInput } from '@/CommandPalette/types/ParsedInput';
 import SuggestionListItem from '../SuggestionListItem';
 
-const CommandPaletteAutoComplete = () => {
+interface ICommandPaletteAutoCompleteProps {
+  suggestions: IParsedInput['suggestions'];
+}
+
+const CommandPaletteAutoComplete = memo(({ suggestions }: ICommandPaletteAutoCompleteProps) => {
   const suggestionsRef = useRef<(HTMLLIElement | null)[]>([]);
 
   const SelectedIdx = useCommandPaletteStore(s => s.SelectedIdx);
-  const Value = useCommandPaletteStore(s => s.Value);
-  const { suggestions } = useParsedInput(Value);
   const items = suggestions.suggestions;
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const CommandPaletteAutoComplete = () => {
   return (
     <ul
       id="CommandPaletteAutoComplete"
-      className="max-h-[149px] absolute overflow-auto border border-t-0 rounded-b-[3rem] w-full top-full z-[3]"
+      className="max-h-[120px] sm:max-h-[149px] absolute overflow-auto border border-t-0 rounded-b-[2rem] sm:rounded-b-[3rem] w-full top-full z-[3]"
       style={{ borderColor: 'var(--glass-border)' }}
     >
       {items.map(([key, { name, icon, style }]: [string, IService], i: number) => (
@@ -46,6 +48,7 @@ const CommandPaletteAutoComplete = () => {
       ))}
     </ul>
   );
-};
+});
 
+CommandPaletteAutoComplete.displayName = 'CommandPaletteAutoComplete';
 export default CommandPaletteAutoComplete;

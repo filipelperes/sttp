@@ -32,6 +32,18 @@ describe('getKeyboardActions', () => {
     suggestions: [],
   };
 
+  const mockServices = {
+    matched: false,
+    service: undefined,
+    filtered: [],
+  };
+
+  const mockServicesMatched = {
+    matched: true,
+    service: ['spotify', { name: 'Spotify' }],
+    filtered: [],
+  };
+
   let mockSetSelectedIdx: ReturnType<typeof vi.fn>;
   let mockSetCommandPaletteState: ReturnType<typeof vi.fn>;
   let mockSetShow: ReturnType<typeof vi.fn>;
@@ -48,7 +60,7 @@ describe('getKeyboardActions', () => {
     it('returns submit action for Enter', () => {
       const actions = getKeyboardActions(
         mockEvent('Enter'), mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices, mockServices,
       );
       expect(actions.Enter).toBeDefined();
     });
@@ -56,7 +68,7 @@ describe('getKeyboardActions', () => {
     it('returns submit action for NumpadEnter', () => {
       const actions = getKeyboardActions(
         mockEvent('NumpadEnter'), mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices, mockServices,
       );
       expect(actions.NumpadEnter).toBeDefined();
     });
@@ -67,7 +79,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('Tab');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices,
       );
       actions.Tab();
       expect(event.preventDefault).toHaveBeenCalled();
@@ -78,7 +90,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('Tab', 'fallbackValue');
       const actions = getKeyboardActions(
         event, mockRef, 'ignored', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, emptySuggestions,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, emptySuggestions, mockServices,
       );
       actions.Tab();
       expect(mockSetCommandPaletteState).toHaveBeenCalledWith({ Value: 'fallbackValue', SelectedIdx: 0 });
@@ -89,7 +101,7 @@ describe('getKeyboardActions', () => {
     it('calls setShow(false)', () => {
       const actions = getKeyboardActions(
         mockEvent('Escape'), mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices,
       );
       actions.Escape();
       expect(mockSetShow).toHaveBeenCalledWith(false);
@@ -101,7 +113,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('ArrowDown');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, multiSuggestions,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, multiSuggestions, mockServices,
       );
       actions.ArrowDown();
       expect(event.preventDefault).toHaveBeenCalled();
@@ -112,7 +124,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('ArrowDown');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices,
       );
       actions.ArrowDown();
       expect(mockSetSelectedIdx).toHaveBeenCalledWith(0);
@@ -124,7 +136,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('ArrowUp');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 1,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, multiSuggestions,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, multiSuggestions, mockServices,
       );
       actions.ArrowUp();
       expect(event.preventDefault).toHaveBeenCalled();
@@ -135,7 +147,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('ArrowUp');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices,
       );
       actions.ArrowUp();
       expect(mockSetSelectedIdx).toHaveBeenCalledWith(0);
@@ -147,7 +159,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('Home');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 2,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices,
       );
       actions.Home();
       expect(event.preventDefault).toHaveBeenCalled();
@@ -161,7 +173,7 @@ describe('getKeyboardActions', () => {
       mockRef.current = inputEl;
       const actions = getKeyboardActions(
         event, mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, emptySuggestions,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, emptySuggestions, mockServices,
       );
       actions.Home();
       expect(inputEl.setSelectionRange).toHaveBeenCalledWith(0, 0);
@@ -174,7 +186,7 @@ describe('getKeyboardActions', () => {
       const event = mockEvent('End');
       const actions = getKeyboardActions(
         event, mockRef, 'test', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, singleSuggestion, mockServices,
       );
       actions.End();
       expect(event.preventDefault).toHaveBeenCalled();
@@ -188,7 +200,7 @@ describe('getKeyboardActions', () => {
       mockRef.current = inputEl;
       const actions = getKeyboardActions(
         event, mockRef, 'hello', 0,
-        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, emptySuggestions,
+        mockSetSelectedIdx, mockSetCommandPaletteState, mockSetShow, emptySuggestions, mockServices,
       );
       actions.End();
       expect(inputEl.setSelectionRange).toHaveBeenCalledWith(5, 5);

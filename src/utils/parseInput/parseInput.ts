@@ -1,4 +1,4 @@
-import { ServicesList } from '@/CommandPalette/utils/ServicesList';
+import { getMergedServicesList } from '@/CommandPalette/utils/ServicesList/servicesStore';
 import { z } from 'zod';
 import type { IParsedInput } from '@/CommandPalette/types/ParsedInput';
 
@@ -18,7 +18,7 @@ const isPartialURL = (value: string): boolean =>
   value.startsWith('www.');
 
 export const parseInput = (value: string): IParsedInput => {
-  const all = Object.entries(ServicesList);
+  const all = Object.entries(getMergedServicesList());
   const isEmpty = value.length === 0;
   const service = all.find(([, { name }]) =>
     value.toLowerCase().match(name.toLowerCase()),

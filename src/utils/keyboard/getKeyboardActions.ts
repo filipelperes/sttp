@@ -11,22 +11,48 @@ const getKeyboardActions = (
   setCommandPaletteState: (state: { Value?: string; SelectedIdx?: number }) => void,
   setShow: (show: boolean) => void,
   suggestions: IParsedInput['suggestions'],
+  services: IParsedInput['services'],
 ) => {
   const target = event.currentTarget;
+
+  const hasSuggestions = suggestions.suggestions.length > 0;
+  const hasServiceMatch = services.matched;
 
   const submit = () => {
     event.preventDefault();
     handleSubmit(event, value);
   };
 
+  /** Fills the currently highlighted suggestion into the input (like Tab) */
+  const fillSuggestion = () => {
+    event.preventDefault();
+    const v = suggestions.suggestions[selectedIdx]?.[1]?.name ?? target.value;
+    setCommandPaletteState({ Value: v, SelectedIdx: 0 });
+  };
+
   return {
-    Enter: submit,
-    NumpadEnter: submit,
-    Tab: () => {
-      event.preventDefault();
-      const v = suggestions.suggestions[selectedIdx]?.[1]?.name ?? target.value;
-      setCommandPaletteState({ Value: v, SelectedIdx: 0 });
+    Enter: () => {
+      // If there's a service match → navigate to it (submit)
+      // If no service match but there are autocomplete suggestions → fill suggestion
+      // If no service match and no suggestions → submit (URL/IP/search)
+      if (hasServiceMatch) {
+        submit();
+      } else if (hasSuggestions) {
+        fillSuggestion();
+      } else {
+        submit();
+      }
     },
+    NumpadEnter: () => {
+      if (hasServiceMatch) {
+        submit();
+      } else if (hasSuggestions) {
+        fillSuggestion();
+      } else {
+        submit();
+      }
+    },
+    Tab: fillSuggestion,
     Escape: () => {
       setShow(false);
     },

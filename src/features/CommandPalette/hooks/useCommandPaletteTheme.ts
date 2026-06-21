@@ -37,12 +37,11 @@ export const useInputReset = (Key: string | null) => {
   useEffect(() => {
     const inputEl = CommandPaletteInputRef.current;
     setValue(Key ?? '');
-    if (inputEl) inputEl.value = Key ?? '';
     inputEl?.focus?.();
     return () => {
       clearTheme();
       inputEl?.blur?.();
       setCommandPaletteState({ Value: '', SelectedIdx: 0 });
     };
-  }, [Key]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [Key, CommandPaletteInputRef, setValue, setCommandPaletteState]);
 };

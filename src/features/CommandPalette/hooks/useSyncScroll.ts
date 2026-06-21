@@ -12,7 +12,7 @@ const useSyncScroll = (sourceRef: React.RefObject<(HTMLElement | null)>, targetR
       };
       sourceEl.addEventListener("scroll", handleScroll);
       return () => sourceEl.removeEventListener("scroll", handleScroll);
-   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+   }, [sourceRef, targetRef]);
 };
 
 export default useSyncScroll;

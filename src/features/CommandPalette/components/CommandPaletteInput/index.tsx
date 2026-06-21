@@ -1,15 +1,19 @@
-import { useCallback, type ChangeEvent, type KeyboardEvent } from 'react';
+import { memo, useRef, type ChangeEvent, type KeyboardEvent } from 'react';
 import HighlightedOverlay from '@/features/CommandPalette/components/HighlightedOverlay';
 import ClearButton from '@/features/CommandPalette/components/ClearButton';
 import SubmitButton from '@/features/CommandPalette/components/SubmitButton';
 import { useBodyColor, useThemeSync, useInputReset } from '@/CommandPalette/hooks/useCommandPaletteTheme';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
-import useParsedInput from '@/CommandPalette/hooks/useParsedInput';
 import getKeyboardActions from '@/utils/keyboard/getKeyboardActions';
 import useSyncScroll from '@/CommandPalette/hooks/useSyncScroll';
-import { useRef } from 'react';
+import type { IParsedInput } from '@/CommandPalette/types/ParsedInput';
 
-const CommandPaletteInput = () => {
+interface ICommandPaletteInputProps {
+  suggestions: IParsedInput['suggestions'];
+  services: IParsedInput['services'];
+}
+
+const CommandPaletteInput = memo(({ suggestions, services }: ICommandPaletteInputProps) => {
   const OverlayWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
@@ -20,35 +24,36 @@ const CommandPaletteInput = () => {
   const setCommandPaletteState = useCommandPaletteStore(s => s.setCommandPaletteState);
   const setSelectedIdx = useCommandPaletteStore(s => s.setSelectedIdx);
   const setShow = useCommandPaletteStore(s => s.setShow);
-  const { suggestions, services } = useParsedInput(Value);
 
   useBodyColor();
   useThemeSync(suggestions, services, SelectedIdx);
   useInputReset(Key);
   useSyncScroll(CommandPaletteInputRef, OverlayWrapperRef);
 
-  const handleChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { SelectedIdx: currentIdx } = useCommandPaletteStore.getState();
+    const currentSuggestions = suggestions.suggestions;
     event.stopPropagation();
     setCommandPaletteState({
       Value: event.currentTarget.value,
-      SelectedIdx: Math.max(0, Math.min(suggestions.suggestions.length - 1, SelectedIdx)),
+      SelectedIdx: Math.max(0, Math.min(currentSuggestions.length - 1, currentIdx)),
     });
-  }, [setCommandPaletteState, suggestions.suggestions.length, SelectedIdx]);
+  };
 
-  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     event.stopPropagation();
     const action = getKeyboardActions(
       event, CommandPaletteInputRef, Value, SelectedIdx,
-      setSelectedIdx, setCommandPaletteState, setShow, suggestions,
+      setSelectedIdx, setCommandPaletteState, setShow, suggestions, services,
     );
     action?.[event.code as keyof typeof action]?.();
-  }, [CommandPaletteInputRef, Value, SelectedIdx, setSelectedIdx, setCommandPaletteState, setShow, suggestions]);
+  };
 
-  const textIndent = services.matched ? '-9rem' : '0';
+  const textIndent = services.matched ? '-7rem' : '0';
 
   return (
-    <div className="flex items-center justify-center relative rounded-[3rem_3rem_0_0] flex-1 border-b-0">
-      <div className="relative w-full overflow-hidden mr-[3rem]">
+    <div className="flex items-center justify-center relative rounded-[2rem_2rem_0_0] sm:rounded-[3rem_3rem_0_0] flex-1 border-b-0">
+      <div className="relative w-full overflow-hidden mr-[2.5rem] sm:mr-[3rem]">
         <HighlightedOverlay
           value={Value}
           services={services}
@@ -57,8 +62,16 @@ const CommandPaletteInput = () => {
         />
         <textarea
           ref={CommandPaletteInputRef}
+          value={Value}
           id="CommandPaletteInput"
-          className="z-[2] overflow-x-auto overflow-y-hidden resize-none border-none outline-none bg-transparent text-transparent caret-foreground h-full rounded-tl-[3rem] font-bold text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal inline-block min-w-full p-[9px]"
+          className="z-[2] overflow-x-auto overflow-y-hidden resize-none border-none outline-none bg-transparent text-transparent h-full rounded-tl-[2rem] sm:rounded-tl-[3rem] font-bold text-[1.8rem] sm:text-[2.5rem] md:text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal inline-block min-w-full p-[6px] sm:p-[9px]"
+          style={{
+            textIndent,
+            WebkitTextFillColor: 'transparent',
+            WebkitTextStroke: '0 transparent',
+            textShadow: '0px 0px 0px rgba(0, 0, 0, 0.5)',
+            caretColor: 'var(--caret-color, auto)',
+          }}
           spellCheck={false}
           data-gramm={false}
           data-lt-active={false}
@@ -68,18 +81,12 @@ const CommandPaletteInput = () => {
           rows={1}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          style={{
-            textIndent,
-            WebkitTextFillColor: 'transparent',
-            WebkitTextStroke: '0 transparent',
-            textShadow: '0px 0px 0px rgba(0, 0, 0, 0.5)',
-          }}
         />
       </div>
       <ClearButton />
       <SubmitButton />
     </div>
   );
-};
+});
 
 export default CommandPaletteInput;
