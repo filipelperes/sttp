@@ -1,6 +1,44 @@
-import type { IUserSearchEngine } from "@/features/Settings/types/Settings";
+import type { IUserSearchEngine, IUserSearchEngineIcon } from "@/features/Settings/types/Settings";
 
 const STORAGE_KEY = 'sttp-user-search-engines';
+
+/**
+ * Migrate a single icon value from the old format (plain string emoji)
+ * to the new format ({ type, value }).
+ */
+function migrateIcon(icon: unknown): IUserSearchEngineIcon {
+  if (typeof icon === 'string') {
+    return { type: 'emoji', value: icon || '🔍' };
+  }
+  if (icon && typeof icon === 'object') {
+    const obj = icon as Record<string, unknown>;
+    if (obj.type === 'emoji' || obj.type === 'img') {
+      return { type: obj.type, value: String(obj.value || '') };
+    }
+  }
+  return { type: 'emoji', value: '🔍' };
+}
+
+/**
+ * Migrate an entire search engines map from old format to new.
+ */
+function migrateSearchEngines(
+  data: Record<string, unknown>,
+): Record<string, IUserSearchEngine> {
+  const result: Record<string, IUserSearchEngine> = {};
+  for (const [key, val] of Object.entries(data)) {
+    if (val && typeof val === 'object') {
+      const raw = val as Record<string, unknown>;
+      result[key] = {
+        id: String(raw.id ?? key),
+        label: String(raw.label ?? ''),
+        url: String(raw.url ?? ''),
+        icon: migrateIcon(raw.icon),
+      };
+    }
+  }
+  return result;
+}
 
 /**
  * Load user-created search engines from localStorage.
@@ -12,7 +50,7 @@ export const loadUserSearchEngines = (): Record<string, IUserSearchEngine> => {
     if (stored) {
       const parsed = JSON.parse(stored);
       if (typeof parsed === 'object' && parsed !== null) {
-        return parsed as Record<string, IUserSearchEngine>;
+        return migrateSearchEngines(parsed as Record<string, unknown>);
       }
     }
   } catch {

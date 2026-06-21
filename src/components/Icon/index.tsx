@@ -29,6 +29,18 @@ const Icon = memo(({
 
   if (hasError || !icon) return FALLBACK_ICON;
 
+  if (icon.type === 'emoji') {
+    return (
+      <span
+        className="relative my-auto mx-[7px] text-[1.7rem] leading-none"
+        role="img"
+        aria-label={alt || 'icon'}
+      >
+        {icon.icon as string}
+      </span>
+    );
+  }
+
   if (icon.type === 'img') {
     return (
       <img

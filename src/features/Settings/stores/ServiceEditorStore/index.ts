@@ -8,7 +8,7 @@ const initialForm = () => ({
   key: '',
   name: '',
   url: { home: '' },
-  icon: { icon: '', type: 'react-icons' as const },
+  icon: { icon: '🔗', type: 'emoji' as const },
   style: { backgroundColor: '#333333' },
 });
 
@@ -27,21 +27,33 @@ const useServiceEditorStore = create<IServiceEditorStore>()(
         formData: initialForm(),
       }),
 
-      openEdit: (key, service) => set({
-        isOpen: true,
-        mode: 'edit',
-        editingKey: key,
-        formData: {
-          key,
-          name: service.name,
-          url: { ...service.url },
-          icon: {
-            icon: typeof service.icon.icon === 'string' ? service.icon.icon : String(service.icon.icon?.name ?? ''),
-            type: service.icon.type,
+      openEdit: (key, service) => {
+        let iconValue = '';
+        let iconType: 'emoji' | 'img' | 'react-icons' | 'svgr' = 'emoji';
+
+        if (typeof service.icon.icon === 'string') {
+          iconValue = service.icon.icon;
+          iconType = service.icon.type === 'svgr' || service.icon.type === 'react-icons'
+            ? 'emoji'
+            : service.icon.type;
+        } else {
+          iconValue = String(service.icon.icon?.name ?? '');
+          iconType = 'emoji';
+        }
+
+        return set({
+          isOpen: true,
+          mode: 'edit',
+          editingKey: key,
+          formData: {
+            key,
+            name: service.name,
+            url: { ...service.url },
+            icon: { icon: iconValue, type: iconType },
+            style: { ...service.style },
           },
-          style: { ...service.style },
-        },
-      }),
+        });
+      },
 
       close: () => set({
         isOpen: false,
@@ -61,12 +73,16 @@ const useServiceEditorStore = create<IServiceEditorStore>()(
 
         let newServices = { ...currentServices };
 
+        const iconType = formData.icon?.type === 'img' || formData.icon?.type === 'emoji'
+          ? formData.icon.type
+          : 'emoji';
+
         if (mode === 'add') {
           if (newServices[key]) return false; // key exists
           newServices[key] = {
             name: formData.name,
             url: { home: formData.url?.home || '' },
-            icon: { icon: formData.icon?.icon || '', type: 'react-icons' as const },
+            icon: { icon: formData.icon?.icon || '', type: iconType },
             style: {
               backgroundColor: formData.style?.backgroundColor || '#333333',
               ...(formData.style?.backgroundImage ? { backgroundImage: formData.style.backgroundImage } : {}),
@@ -81,7 +97,7 @@ const useServiceEditorStore = create<IServiceEditorStore>()(
           newServices[key] = {
             name: formData.name,
             url: { home: formData.url?.home || '' },
-            icon: { icon: formData.icon?.icon || '', type: 'react-icons' as const },
+            icon: { icon: formData.icon?.icon || '', type: iconType },
             style: {
               backgroundColor: formData.style?.backgroundColor || '#333333',
               ...(formData.style?.backgroundImage ? { backgroundImage: formData.style.backgroundImage } : {}),

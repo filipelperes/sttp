@@ -21,6 +21,14 @@ describe('Icon', () => {
     expect(img).toHaveAttribute('alt', 'Test Icon');
   });
 
+  it('renders emoji text for emoji type', () => {
+    const icon = { icon: '🔍', type: 'emoji' as const };
+    render(<Icon icon={icon} alt="Search" />);
+    const emoji = screen.getByRole('img', { name: 'Search' });
+    expect(emoji).toBeInTheDocument();
+    expect(emoji.textContent).toBe('🔍');
+  });
+
   it('shows fallback on image error', () => {
     const icon = { icon: 'https://example.com/broken.png', type: 'img' as const };
     render(<Icon icon={icon} alt="Broken" />);

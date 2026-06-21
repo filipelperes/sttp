@@ -15,11 +15,16 @@ export interface ISearchEngine {
   icon: string;
 }
 
+export type IUserSearchEngineIcon = {
+  type: 'emoji' | 'img';
+  value: string;
+};
+
 export interface IUserSearchEngine {
   id: string;
   label: string;
   url: string; // search query template with %s
-  icon: string; // emoji string
+  icon: IUserSearchEngineIcon; // emoji or image
 }
 
 export const SEARCH_ENGINES: ISearchEngine[] = [

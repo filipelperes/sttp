@@ -1,6 +1,8 @@
 import { memo, useCallback } from 'react';
 import useServiceEditorStore from '@/features/Settings/stores/ServiceEditorStore';
+import IconPicker from '@/features/Settings/components/IconPicker';
 import type { IServicesList } from '@/types/Service';
+import type { IIconPickerValue } from '@/features/Settings/components/IconPicker';
 
 interface IServiceFormProps {
   services: IServicesList;
@@ -26,6 +28,13 @@ const ServiceForm = memo(({ services }: IServiceFormProps) => {
       }
     },
     [close, handleSave],
+  );
+
+  const handleIconChange = useCallback(
+    (icon: IIconPickerValue) => {
+      updateForm({ icon: { icon: icon.value, type: icon.type } });
+    },
+    [updateForm],
   );
 
   return (
@@ -66,6 +75,15 @@ const ServiceForm = memo(({ services }: IServiceFormProps) => {
           className="w-full px-3 py-2 rounded-lg glass text-foreground text-sm outline-none focus-ring placeholder:text-foreground/30"
         />
       </div>
+
+      {/* Icon Picker */}
+      <IconPicker
+        value={{
+          type: (formData.icon?.type === 'img' || formData.icon?.type === 'emoji' ? formData.icon.type : 'emoji') as 'emoji' | 'img',
+          value: formData.icon?.icon || '',
+        }}
+        onChange={handleIconChange}
+      />
 
       {/* Background Color */}
       <div className="space-y-1">

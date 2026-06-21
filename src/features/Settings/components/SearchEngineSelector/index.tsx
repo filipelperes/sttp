@@ -1,8 +1,11 @@
 import { memo, useCallback, useState } from 'react';
 import useSettingsStore from '@/features/Settings/stores/SettingsStore';
 import { SEARCH_ENGINES } from '@/features/Settings/types/Settings';
-import type { IUserSearchEngine } from '@/features/Settings/types/Settings';
+import type { IUserSearchEngine, IUserSearchEngineIcon } from '@/features/Settings/types/Settings';
 import { upsertUserSearchEngine, removeUserSearchEngine } from '@/features/Settings/utils/searchEngineStorage';
+import IconPicker from '@/features/Settings/components/IconPicker';
+import type { IIconPickerValue } from '@/features/Settings/components/IconPicker';
+import Icon from '@/components/Icon';
 import { IoAdd, IoTrash, IoCreate } from 'react-icons/io5';
 
 interface IFormState {
@@ -11,7 +14,7 @@ interface IFormState {
   editingKey: string | null;
   label: string;
   url: string;
-  icon: string;
+  icon: IUserSearchEngineIcon;
 }
 
 const INITIAL_FORM: IFormState = {
@@ -20,7 +23,7 @@ const INITIAL_FORM: IFormState = {
   editingKey: null,
   label: '',
   url: '',
-  icon: '🔍',
+  icon: { type: 'emoji', value: '🔍' },
 };
 
 const SearchEngineSelector = memo(() => {
@@ -31,11 +34,18 @@ const SearchEngineSelector = memo(() => {
   const [form, setForm] = useState<IFormState>(INITIAL_FORM);
 
   const openAddForm = useCallback(() => {
-    setForm({ isOpen: true, mode: 'add', editingKey: null, label: '', url: '', icon: '🔍' });
+    setForm({ isOpen: true, mode: 'add', editingKey: null, label: '', url: '', icon: { type: 'emoji', value: '🔍' } });
   }, []);
 
   const openEditForm = useCallback((key: string, engine: IUserSearchEngine) => {
-    setForm({ isOpen: true, mode: 'edit', editingKey: key, label: engine.label, url: engine.url, icon: engine.icon });
+    setForm({
+      isOpen: true,
+      mode: 'edit',
+      editingKey: key,
+      label: engine.label,
+      url: engine.url,
+      icon: engine.icon,
+    });
   }, []);
 
   const closeForm = useCallback(() => {
@@ -57,7 +67,7 @@ const SearchEngineSelector = memo(() => {
   const handleSave = useCallback(() => {
     const label = form.label.trim();
     const url = form.url.trim();
-    const icon = form.icon.trim() || '🔍';
+    const icon = form.icon;
     if (!label || !url) return;
 
     const key = label.toLowerCase().replace(/\s+/g, '_');
@@ -95,6 +105,28 @@ const SearchEngineSelector = memo(() => {
     },
     [closeForm, handleSave],
   );
+
+  const handleIconChange = useCallback(
+    (iconValue: IIconPickerValue) => {
+      setForm((f) => ({ ...f, icon: { type: iconValue.type, value: iconValue.value } }));
+    },
+    [],
+  );
+
+  const renderEngineIcon = (icon: IUserSearchEngineIcon, size: number = 20) => {
+    if (icon.type === 'emoji') {
+      return <span className="text-lg">{icon.value}</span>;
+    }
+    return (
+      <Icon
+        icon={{ icon: icon.value, type: 'img' }}
+        width={size}
+        height={size}
+        size="1.2rem"
+        alt=""
+      />
+    );
+  };
 
   return (
     <div className="space-y-3">
@@ -151,7 +183,9 @@ const SearchEngineSelector = memo(() => {
                     : 'glass text-foreground/70 hover:bg-surface-hover'
                 }`}
               >
-                <span className="text-lg">{engine.icon}</span>
+                <div className="flex items-center justify-center w-7 h-7 shrink-0">
+                  {renderEngineIcon(engine.icon)}
+                </div>
                 <div className="flex-1 min-w-0">
                   <span className="font-medium">{engine.label}</span>
                   <span
@@ -231,15 +265,11 @@ const SearchEngineSelector = memo(() => {
             />
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs text-foreground/50 uppercase tracking-wider">Icon (emoji)</label>
-            <input
-              value={form.icon}
-              onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
-              placeholder="🔍"
-              className="w-full px-3 py-2 rounded-lg glass text-foreground text-sm outline-none focus-ring placeholder:text-foreground/30"
-            />
-          </div>
+          {/* Icon Picker */}
+          <IconPicker
+            value={{ type: form.icon.type, value: form.icon.value }}
+            onChange={handleIconChange}
+          />
 
           <div className="flex gap-2 pt-2">
             <button

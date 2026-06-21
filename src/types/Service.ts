@@ -8,7 +8,7 @@ type IServiceURL = {
 
 type IServiceIcon = {
    icon: string | IconType | FC<SVGAttributes<SVGElement>>;
-   type: "svgr" | "react-icons" | "img";
+    type: "svgr" | "react-icons" | "img" | "emoji";
 };
 
 type IServiceStyle = {

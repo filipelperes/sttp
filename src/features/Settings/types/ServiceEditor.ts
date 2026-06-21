@@ -6,7 +6,7 @@ export interface IServiceFormData {
   key?: string;
   name?: string;
   url?: { home?: string; query?: string };
-  icon?: { icon?: string; type?: "svgr" | "react-icons" | "img" };
+  icon?: { icon?: string; type?: "svgr" | "react-icons" | "img" | "emoji" };
   style?: {
     backgroundColor?: string;
     backgroundImage?: string;
@@ -36,6 +36,6 @@ export const DEFAULT_EDITOR_FORM: IServiceFormData = {
   key: '',
   name: '',
   url: { home: '' },
-  icon: { icon: '', type: 'react-icons' },
+  icon: { icon: '🔗', type: 'emoji' },
   style: { backgroundColor: '#333333' },
 };
