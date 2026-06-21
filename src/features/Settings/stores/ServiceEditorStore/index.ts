@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { IServiceEditorStore, EditorMode } from "@/features/Settings/types/ServiceEditor";
 import type { IService } from "@/types/Service";
+import { upsertUserService, removeUserService } from "@/features/Settings/utils/servicesStorage";
 
 const initialForm = () => ({
   key: '',
@@ -58,7 +59,7 @@ const useServiceEditorStore = create<IServiceEditorStore>()(
         const key = formData.key?.trim().toLowerCase().replace(/\s+/g, '_');
         if (!key || !formData.name) return false;
 
-        const newServices = { ...currentServices };
+        let newServices = { ...currentServices };
 
         if (mode === 'add') {
           if (newServices[key]) return false; // key exists
@@ -89,32 +90,20 @@ const useServiceEditorStore = create<IServiceEditorStore>()(
           } as IService;
         }
 
+        // Save to localStorage
         try {
-          const response = await fetch('/api/services', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ services: newServices }),
-          });
-          if (!response.ok) throw new Error('Failed to save');
+          upsertUserService(key, newServices[key], currentServices);
           set({ isOpen: false, mode: 'none', editingKey: null, formData: initialForm() });
           return true;
         } catch (err) {
-          console.error('Failed to save services:', err);
+          console.error('Failed to save service:', err);
           return false;
         }
       },
 
       remove: async (key, currentServices) => {
-        const newServices = { ...currentServices };
-        delete newServices[key];
-
         try {
-          const response = await fetch('/api/services', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ services: newServices }),
-          });
-          if (!response.ok) throw new Error('Failed to remove');
+          removeUserService(key, currentServices);
           return true;
         } catch (err) {
           console.error('Failed to remove service:', err);

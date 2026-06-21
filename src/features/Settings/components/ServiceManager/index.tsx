@@ -1,5 +1,5 @@
-import { memo, useCallback, useState } from 'react';
-import { ServicesList } from '@/CommandPalette/utils/ServicesList';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { getMergedServicesList } from '@/CommandPalette/utils/ServicesList/servicesStore';
 import useServiceEditorStore from '@/features/Settings/stores/ServiceEditorStore';
 import ServiceForm from '@/features/Settings/components/ServiceForm';
 import Icon from '@/components/Icon';
@@ -11,7 +11,9 @@ const ServiceManager = memo(() => {
   const { isOpen, mode, openAdd, openEdit, remove } = useServiceEditorStore();
   const [removing, setRemoving] = useState<string | null>(null);
 
-  const entries = Object.entries(ServicesList).filter(([key, svc]) =>
+  const services = useMemo(() => getMergedServicesList(), []);
+
+  const entries = Object.entries(services).filter(([key, svc]) =>
     key.toLowerCase().includes(search.toLowerCase()) ||
     svc.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -19,13 +21,13 @@ const ServiceManager = memo(() => {
   const handleRemove = useCallback(
     async (key: string) => {
       setRemoving(key);
-      const ok = await remove(key, ServicesList);
+      const ok = await remove(key, services);
       setRemoving(null);
       if (!ok) {
         alert('Failed to remove service. Check console for details.');
       }
     },
-    [remove],
+    [remove, services],
   );
 
   const handleEdit = useCallback(
@@ -51,7 +53,7 @@ const ServiceManager = memo(() => {
       {/* Service Editor Form */}
       {isOpen && mode !== 'none' && (
         <div className="p-4 rounded-xl glass animate-fade-in">
-          <ServiceForm services={ServicesList} />
+          <ServiceForm services={services} />
         </div>
       )}
 
