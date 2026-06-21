@@ -1,4 +1,4 @@
-import { createElement, memo, useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import type { IServiceStyle, IServiceIcon } from '@/types/Service';
 
 interface IIconProps {
@@ -47,11 +47,14 @@ const Icon = memo(({
     );
   }
 
-  return createElement(icon.icon, {
-    className: 'relative my-auto mx-[7px]',
-    fill: fill ?? 'currentColor',
-    ...(icon.type === 'svgr' ? { width, height } : { size }),
-  });
+  const IconComponent = icon.icon;
+  return (
+    <IconComponent
+      className="relative my-auto mx-[7px]"
+      fill={fill ?? 'currentColor'}
+      {...(icon.type === 'svgr' ? { width, height } : { size })}
+    />
+  );
 });
 
 Icon.displayName = 'Icon';
