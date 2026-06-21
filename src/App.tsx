@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Clock from '@/components/Clock';
 import DateDisplay from '@/components/DateDisplay';
+import Tips from '@/components/Tips';
 import HandleCommandPalette from '@/CommandPalette/components/HandleCommandPalette';
 import HandleWindow from '@/components/HandleWindow';
 import QuickThemeToggle from '@/features/Settings/components/QuickThemeToggle';
@@ -65,6 +66,7 @@ const App = () => {
     <div id="App" className="flex items-center justify-center flex-col relative">
       <Clock />
       <DateDisplay />
+      <Tips />
       <HandleCommandPalette />
       <HandleWindow />
       <QuickThemeToggle />
