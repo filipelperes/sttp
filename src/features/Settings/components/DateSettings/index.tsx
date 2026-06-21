@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import useSettingsStore from '@/features/Settings/stores/SettingsStore';
 import ToggleSwitch from '@/features/Settings/components/ToggleSwitch';
+import LanguagePicker from '@/features/Settings/components/LanguagePicker';
 import type { DateFormatStyle } from '@/features/Settings/types/Settings';
 
 const FORMAT_OPTIONS: { value: DateFormatStyle; label: string; desc: string }[] = [
@@ -28,13 +29,6 @@ const LOCALE_OPTIONS = [
 const DateSettings = memo(() => {
   const date = useSettingsStore((s) => s.date);
   const updateDate = useSettingsStore((s) => s.updateDate);
-
-  const setLocale = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      updateDate({ locale: e.target.value });
-    },
-    [updateDate],
-  );
 
   const toggleDayOfWeek = useCallback(() => {
     updateDate({ showDayOfWeek: !date.showDayOfWeek });
@@ -84,29 +78,11 @@ const DateSettings = memo(() => {
       {/* Locale */}
       <div className="space-y-1.5">
         <label className="text-xs text-foreground/50 uppercase tracking-wider">Language / Region</label>
-        <div className="relative w-full min-w-0">
-          <select
-            value={date.locale}
-            onChange={setLocale}
-            className="w-full min-w-0 px-3 py-2.5 rounded-lg glass text-foreground text-sm outline-none cursor-pointer focus-ring appearance-none"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'right 12px center',
-              backgroundSize: '14px',
-              paddingRight: '36px',
-            }}
-          >
-            {LOCALE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-background text-foreground">
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <p className="text-[11px] text-foreground/30 ml-1">
-          {LOCALE_OPTIONS.find((o) => o.value === date.locale)?.example ?? ''}
-        </p>
+        <LanguagePicker
+          options={LOCALE_OPTIONS}
+          value={date.locale}
+          onChange={(v) => updateDate({ locale: v })}
+        />
       </div>
 
       {/* Format Style */}
