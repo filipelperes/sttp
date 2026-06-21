@@ -108,13 +108,14 @@ const ClockSettings = memo(() => {
           step="0.1"
           value={clock.fontSize}
           onChange={handleFontSize}
-          className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-muted accent-accent
+          className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-muted
             [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
-            [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:shadow-md
+            [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--slider-accent,var(--color-accent))] [&::-webkit-slider-thumb]:shadow-md
             [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform
             [&::-webkit-slider-thumb]:hover:scale-110
             [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full
-            [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+            [&::-moz-range-thumb]:bg-[var(--slider-accent,var(--color-accent))] [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+          style={{ accentColor: 'var(--slider-accent, var(--color-accent))' } as React.CSSProperties}
         />
         <div className="flex justify-between text-[10px] text-foreground/30 mt-1">
           <span>3rem</span>

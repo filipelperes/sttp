@@ -12,6 +12,7 @@ const msUntilMidnight = (): number => {
 
 const DateDisplay = memo(() => {
   const dateSettings = useSettingsStore((s) => s.date);
+  const accentOnDate = useSettingsStore((s) => s.accentOnDate);
 
   const formatDate = (date: Date): string => {
     const opts: Intl.DateTimeFormatOptions = {};
@@ -59,8 +60,9 @@ const DateDisplay = memo(() => {
   return (
     <time
       id="DateDisplay"
-      className="text-[1.3rem] tracking-[0.05em] opacity-70 mt-2 capitalize"
+      className={`tracking-[0.05em] mt-1 sm:mt-2 capitalize px-2 text-center ${accentOnDate ? 'text-accent' : 'opacity-70'}`}
       dateTime={new Date().toISOString().slice(0, 10)}
+      style={{ fontSize: `${dateSettings.fontSize}rem` }}
     >
       {dateStr}
     </time>

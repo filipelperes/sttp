@@ -84,11 +84,11 @@ const DateSettings = memo(() => {
       {/* Locale */}
       <div className="space-y-1.5">
         <label className="text-xs text-foreground/50 uppercase tracking-wider">Language / Region</label>
-        <div className="relative">
+        <div className="relative w-full min-w-0">
           <select
             value={date.locale}
             onChange={setLocale}
-            className="w-full px-3 py-2.5 rounded-lg glass text-foreground text-sm outline-none cursor-pointer focus-ring appearance-none"
+            className="w-full min-w-0 px-3 py-2.5 rounded-lg glass text-foreground text-sm outline-none cursor-pointer focus-ring appearance-none"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
               backgroundRepeat: 'no-repeat',
@@ -157,6 +157,28 @@ const DateSettings = memo(() => {
           </p>
         </div>
         <ToggleSwitch checked={date.capitalize} onChange={toggleCapitalize} />
+      </div>
+
+      {/* Font size */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="text-xs text-foreground/50 uppercase tracking-wider">Font size</label>
+          <span className="text-xs text-foreground/40 tabular-nums">{date.fontSize.toFixed(1)}rem</span>
+        </div>
+        <input
+          type="range"
+          min={0.5}
+          max={3.0}
+          step={0.1}
+          value={date.fontSize}
+          onChange={(e) => updateDate({ fontSize: parseFloat(e.target.value) })}
+          className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-surface-hover [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--slider-accent,var(--color-accent))] [&::-webkit-slider-thumb]:shadow-md"
+          style={{ accentColor: 'var(--slider-accent, var(--color-accent))' } as React.CSSProperties}
+        />
+        <div className="flex justify-between text-[10px] text-foreground/20">
+          <span>0.5</span>
+          <span>3.0</span>
+        </div>
       </div>
     </div>
   );
