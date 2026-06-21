@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import CommandPalette from "@/CommandPalette/components/CommandPalette";
 import useCommandPaletteStore from "@/CommandPalette/stores/CommandPaletteStore";
 import useSettingsStore from "@/features/Settings/stores/SettingsStore";
 
-const HandleCommandPalette = () => {
+const HandleCommandPalette = memo(() => {
   const Show = useCommandPaletteStore(s => s.Show);
   const dim = useSettingsStore(s => s.background.dim);
 
@@ -22,6 +23,7 @@ const HandleCommandPalette = () => {
       {Show && <CommandPalette />}
     </>
   );
-};
+});
 
+HandleCommandPalette.displayName = 'HandleCommandPalette';
 export default HandleCommandPalette;
