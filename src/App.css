@@ -99,11 +99,20 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  body,
+  body {
+    width: 100vw;
+    height: 100vh;
+  }
+
   div#root,
   div#App {
     width: 100vw;
-    height: 100vh;
+    height: var(--visual-height, 100vh);
+    transition: height 0.35s ease;
+  }
+
+  div#App {
+    position: relative;
   }
 
   pre {
