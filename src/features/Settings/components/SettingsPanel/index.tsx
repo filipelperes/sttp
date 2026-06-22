@@ -85,7 +85,7 @@ const SettingsPanel = memo(({ onClose }: ISettingsPanelProps) => {
         {/* Tabs — reordered: Appearance, Clock, Date, Search, Services */}
         <div
           ref={drag.ref}
-          className="flex border-b border-border px-2 sm:px-4 overflow-x-auto shrink-0 scrollbar-thin max-sm:[scrollbar-width:none] max-sm:[-ms-overflow-style:none] [&::-webkit-scrollbar]:max-sm:hidden"
+          className="flex border-b border-border px-2 sm:px-4 overflow-x-auto shrink-0 scrollbar-thin max-lg:[scrollbar-width:none] max-lg:[-ms-overflow-style:none] [&::-webkit-scrollbar]:max-lg:hidden"
         >
           {TABS.map((tab) => (
             <button

@@ -19,7 +19,7 @@ const MobilePaletteTrigger = memo(() => {
       aria-label="Open command palette"
       className="fixed bottom-20 right-5 z-40 flex items-center justify-center w-14 h-14 rounded-full bg-accent text-accent-foreground shadow-lg cursor-pointer transition-all duration-200 hover:scale-110 focus-ring
         sm:bottom-24 sm:right-6
-        md:hidden"
+        lg:hidden"
     >
       <IoSearch size={24} />
     </button>
