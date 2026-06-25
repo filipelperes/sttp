@@ -14,6 +14,17 @@ export default defineConfig({
     servicesWriterPlugin(),
   ],
   base: "/sttp",
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) return 'vendor-react';
+          if (id.includes('node_modules/react-icons')) return 'vendor-icons';
+          if (id.includes('node_modules/zustand')) return 'vendor-state';
+        },
+      },
+    },
+  },
   resolve: {
     alias: [
       {
