@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAccentSettingsStore } from '@/features/Settings/stores/settings';
 
 interface IToggleSwitchProps {
   checked: boolean;
@@ -8,7 +8,7 @@ interface IToggleSwitchProps {
 }
 
 const ToggleSwitch = memo(({ checked, onChange, id }: IToggleSwitchProps) => {
-  const accentOnToggles = useSettingsStore((s) => s.accentOnToggles);
+  const accentOnToggles = useAccentSettingsStore((s) => s.accentOnToggles);
   return (
     <button
       id={id}

@@ -1,9 +1,10 @@
 import { memo, useCallback } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useShallow } from 'zustand/react/shallow';
+import { useClockSettingsStore } from '@/features/Settings/stores/settings';
 import ToggleSwitch from '@/features/Settings/components/ToggleSwitch';
 
 /** Formats the current time based on settings for the preview */
-const formatPreview = (settings: ReturnType<typeof useSettingsStore.getState>['clock']): string => {
+const formatPreview = (settings: ReturnType<typeof useClockSettingsStore.getState>['clock']): string => {
   const now = new Date();
   const parts: string[] = [];
   if (settings.hourCycle === 'h12') {
@@ -21,8 +22,8 @@ const formatPreview = (settings: ReturnType<typeof useSettingsStore.getState>['c
 };
 
 const ClockSettings = memo(() => {
-  const clock = useSettingsStore((s) => s.clock);
-  const updateClock = useSettingsStore((s) => s.updateClock);
+  const clock = useClockSettingsStore(useShallow((s) => s.clock));
+  const updateClock = useClockSettingsStore((s) => s.updateClock);
   const preview = formatPreview({ ...clock });
 
   const toggleHourCycle = useCallback(() => {

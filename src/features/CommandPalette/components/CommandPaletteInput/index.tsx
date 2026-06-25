@@ -1,9 +1,11 @@
 import { memo, useRef, type ChangeEvent, type KeyboardEvent } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import HighlightedOverlay from '@/features/CommandPalette/components/HighlightedOverlay';
 import ClearButton from '@/features/CommandPalette/components/ClearButton';
 import SubmitButton from '@/features/CommandPalette/components/SubmitButton';
 import { useBodyColor, useThemeSync, useInputReset } from '@/CommandPalette/hooks/useCommandPaletteTheme';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
+import { commandPaletteInputRef } from '@/CommandPalette/utils/commandPaletteRef';
 import getKeyboardActions from '@/utils/keyboard/getKeyboardActions';
 import useSyncScroll from '@/CommandPalette/hooks/useSyncScroll';
 import type { IParsedInput } from '@/CommandPalette/types/ParsedInput';
@@ -16,19 +18,28 @@ interface ICommandPaletteInputProps {
 const CommandPaletteInput = memo(({ suggestions, services }: ICommandPaletteInputProps) => {
   const OverlayWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
-  const Value = useCommandPaletteStore(s => s.Value);
-  const SelectedIdx = useCommandPaletteStore(s => s.SelectedIdx);
-  const BodyColor = useCommandPaletteStore(s => s.BodyColor);
-  const Key = useCommandPaletteStore(s => s.Key);
-  const setCommandPaletteState = useCommandPaletteStore(s => s.setCommandPaletteState);
-  const setSelectedIdx = useCommandPaletteStore(s => s.setSelectedIdx);
-  const setShow = useCommandPaletteStore(s => s.setShow);
+  // Grouped selectors — single subscription instead of 7 individual ones
+  const { Value, SelectedIdx, BodyColor, Key } = useCommandPaletteStore(
+    useShallow((s) => ({
+      Value: s.Value,
+      SelectedIdx: s.SelectedIdx,
+      BodyColor: s.BodyColor,
+      Key: s.Key,
+    })),
+  );
+  // Actions are stable references — grouped together
+  const { setCommandPaletteState, setSelectedIdx, setShow } = useCommandPaletteStore(
+    useShallow((s) => ({
+      setCommandPaletteState: s.setCommandPaletteState,
+      setSelectedIdx: s.setSelectedIdx,
+      setShow: s.setShow,
+    })),
+  );
 
   useBodyColor();
   useThemeSync(suggestions, services, SelectedIdx);
   useInputReset(Key);
-  useSyncScroll(CommandPaletteInputRef, OverlayWrapperRef);
+  useSyncScroll(commandPaletteInputRef, OverlayWrapperRef);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { SelectedIdx: currentIdx } = useCommandPaletteStore.getState();
@@ -43,7 +54,7 @@ const CommandPaletteInput = memo(({ suggestions, services }: ICommandPaletteInpu
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     event.stopPropagation();
     const action = getKeyboardActions(
-      event, CommandPaletteInputRef, Value, SelectedIdx,
+      event, commandPaletteInputRef, Value, SelectedIdx,
       setSelectedIdx, setCommandPaletteState, setShow, suggestions, services,
     );
     action?.[event.code as keyof typeof action]?.();
@@ -61,7 +72,7 @@ const CommandPaletteInput = memo(({ suggestions, services }: ICommandPaletteInpu
           bodyColor={BodyColor}
         />
         <textarea
-          ref={CommandPaletteInputRef}
+          ref={commandPaletteInputRef}
           value={Value}
           id="CommandPaletteInput"
           className="z-[2] overflow-x-auto overflow-y-hidden resize-none border-none outline-none bg-transparent text-transparent h-full rounded-tl-[2rem] sm:rounded-tl-[3rem] font-bold text-[1.8rem] sm:text-[2.5rem] md:text-[3rem] text-center tracking-[1.15px] whitespace-pre break-normal inline-block min-w-full p-[6px] sm:p-[9px]"

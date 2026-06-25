@@ -8,7 +8,11 @@ import { IoAdd, IoTrash, IoCreate } from 'react-icons/io5';
 
 const ServiceManager = memo(() => {
   const [search, setSearch] = useState('');
-  const { isOpen, mode, openAdd, openEdit, remove } = useServiceEditorStore();
+  const isOpen = useServiceEditorStore(s => s.isOpen);
+  const mode = useServiceEditorStore(s => s.mode);
+  const openAdd = useServiceEditorStore(s => s.openAdd);
+  const openEdit = useServiceEditorStore(s => s.openEdit);
+  const remove = useServiceEditorStore(s => s.remove);
   const [removing, setRemoving] = useState<string | null>(null);
 
   const services = useMemo(() => getMergedServicesList(), []);

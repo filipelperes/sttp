@@ -1,4 +1,5 @@
 import { memo, useCallback } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import useServiceEditorStore from '@/features/Settings/stores/ServiceEditorStore';
 import IconPicker from '@/features/Settings/components/IconPicker';
 import type { IServicesList } from '@/types/Service';
@@ -9,7 +10,11 @@ interface IServiceFormProps {
 }
 
 const ServiceForm = memo(({ services }: IServiceFormProps) => {
-  const { mode, formData, updateForm, save, close } = useServiceEditorStore();
+  const mode = useServiceEditorStore(s => s.mode);
+  const formData = useServiceEditorStore(useShallow(s => s.formData));
+  const updateForm = useServiceEditorStore(s => s.updateForm);
+  const save = useServiceEditorStore(s => s.save);
+  const close = useServiceEditorStore(s => s.close);
   const isEditing = mode === 'edit';
 
   const handleSave = useCallback(async () => {

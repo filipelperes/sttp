@@ -4,6 +4,7 @@ import type { IServiceIcon, IServiceStyle } from '@/types/Service';
 import { memo, useCallback, type MouseEvent } from 'react';
 import { setTheme } from '@/CommandPalette/utils/CommandPalette';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
+import { commandPaletteInputRef } from '@/CommandPalette/utils/commandPaletteRef';
 import { parseInput } from '@/utils/parseInput/parseInput';
 
 /** Converts a hex color to rgba with the given opacity */
@@ -24,6 +25,7 @@ interface ISuggestionListItemProps {
   icon: IServiceIcon;
   style?: IServiceStyle;
   setRef: (el: HTMLLIElement | null, i: number) => void;
+  value: string;
 }
 
 const SuggestionListItem = memo(({
@@ -33,16 +35,15 @@ const SuggestionListItem = memo(({
   icon,
   style,
   setRef,
+  value,
 }: ISuggestionListItemProps) => {
   const setCommandPaletteState = useCommandPaletteStore(s => s.setCommandPaletteState);
-  const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
-  const Value = useCommandPaletteStore(s => s.Value);
 
   const handleClick = useCallback((event: MouseEvent<HTMLLIElement>) => {
-    const value = event.currentTarget.dataset.name ?? '';
-    setCommandPaletteState({ Value: value, SelectedIdx: 0 });
-    CommandPaletteInputRef.current?.focus();
-  }, [setCommandPaletteState, CommandPaletteInputRef]);
+    const v = event.currentTarget.dataset.name ?? '';
+    setCommandPaletteState({ Value: v, SelectedIdx: 0 });
+    commandPaletteInputRef.current?.focus();
+  }, [setCommandPaletteState]);
 
   const handleMouseEnter = useCallback(() => setTheme(style), [style]);
 
@@ -72,7 +73,7 @@ const SuggestionListItem = memo(({
       onMouseLeave={handleMouseLeave}
     >
       <Icon icon={icon} fill={style?.backgroundColor} style={style} />
-      <TextHighlight name={name} value={Value} />
+      <TextHighlight name={name} value={value} />
     </li>
   );
 });

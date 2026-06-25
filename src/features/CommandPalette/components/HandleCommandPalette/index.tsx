@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import CommandPalette from "@/CommandPalette/components/CommandPalette";
 import useCommandPaletteStore from "@/CommandPalette/stores/CommandPaletteStore";
-import useSettingsStore from "@/features/Settings/stores/SettingsStore";
+import { useAppearanceStore } from "@/features/Settings/stores/settings";
 
 const HandleCommandPalette = memo(() => {
   const Show = useCommandPaletteStore(s => s.Show);
-  const dim = useSettingsStore(s => s.background.dim);
+  const dim = useAppearanceStore(s => s.background.dim);
 
   return (
     <>

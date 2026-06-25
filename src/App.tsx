@@ -8,55 +8,36 @@ import QuickThemeToggle from '@/features/Settings/components/QuickThemeToggle';
 import SettingsButton from '@/features/Settings/components/SettingsButton';
 import MobilePaletteTrigger from '@/CommandPalette/components/MobilePaletteTrigger';
 import WelcomeTour from '@/features/WelcomeTour/components/WelcomeTour';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAppearanceStore, useAccentSettingsStore } from '@/features/Settings/stores/settings';
 
 /**
  * Applies global CSS custom properties based on accent toggle state.
- * Runs whenever any accent toggle or the accent color changes.
+ *
+ * Uses `subscribe()` instead of hook selectors to avoid re-rendering
+ * the entire App (and its `memo`'d children) whenever accent settings change.
+ * DOM updates happen synchronously on state changes — no React re-render needed.
  */
 const useAccentGlobals = () => {
-  const accentColor = useSettingsStore((s) => s.accentColor);
-  const accentOnFocusRing = useSettingsStore((s) => s.accentOnFocusRing);
-  const accentOnScrollbar = useSettingsStore((s) => s.accentOnScrollbar);
-  const accentOnCaret = useSettingsStore((s) => s.accentOnCaret);
-  const accentOnGlassBorder = useSettingsStore((s) => s.accentOnGlassBorder);
-  const accentOnButtonBorder = useSettingsStore((s) => s.accentOnButtonBorder);
-  const accentOnSlider = useSettingsStore((s) => s.accentOnSlider);
-
   useEffect(() => {
-    const root = document.documentElement;
-    const c = accentColor;
+    const update = () => {
+      const ap = useAppearanceStore.getState();
+      const ac = useAccentSettingsStore.getState();
+      const root = document.documentElement;
+      const c = ap.accentColor;
 
-    // Focus ring: override --color-ring (initially set by applyAccentToDOM)
-    root.style.setProperty('--color-ring', accentOnFocusRing ? c : 'rgba(255, 255, 255, 0.15)');
+      root.style.setProperty('--color-ring', ac.accentOnFocusRing ? c : 'rgba(255, 255, 255, 0.15)');
+      root.style.setProperty('--color-scrollbar', ac.accentOnScrollbar ? `${c}66` : 'rgba(255, 255, 255, 0.2)');
+      root.style.setProperty('--caret-color', ac.accentOnCaret ? c : 'auto');
+      root.style.setProperty('--glass-border', ac.accentOnGlassBorder ? `${c}40` : 'rgba(255, 255, 255, 0.08)');
+      root.style.setProperty('--button-hover-border', ac.accentOnButtonBorder ? `${c}50` : 'rgba(255, 255, 255, 0.12)');
+      root.style.setProperty('--slider-accent', ac.accentOnSlider ? c : 'rgba(255, 255, 255, 0.25)');
+    };
 
-    // Scrollbar thumb
-    root.style.setProperty(
-      '--color-scrollbar',
-      accentOnScrollbar ? `${c}66` : 'rgba(255, 255, 255, 0.2)',
-    );
-
-    // Caret color on command palette textarea
-    root.style.setProperty('--caret-color', accentOnCaret ? c : 'auto');
-
-    // Glass border
-    root.style.setProperty(
-      '--glass-border',
-      accentOnGlassBorder ? `${c}40` : 'rgba(255, 255, 255, 0.08)',
-    );
-
-    // Button hover border (used by .glass hover styles)
-    root.style.setProperty(
-      '--button-hover-border',
-      accentOnButtonBorder ? `${c}50` : 'rgba(255, 255, 255, 0.12)',
-    );
-
-    // Slider accent color
-    root.style.setProperty(
-      '--slider-accent',
-      accentOnSlider ? c : 'rgba(255, 255, 255, 0.25)',
-    );
-  }, [accentColor, accentOnFocusRing, accentOnScrollbar, accentOnCaret, accentOnGlassBorder, accentOnButtonBorder, accentOnSlider]);
+    update(); // Apply initial values
+    const unsub1 = useAppearanceStore.subscribe(update);
+    const unsub2 = useAccentSettingsStore.subscribe(update);
+    return () => { unsub1(); unsub2(); };
+  }, []);
 };
 
 const App = () => {

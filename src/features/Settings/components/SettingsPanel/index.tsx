@@ -11,7 +11,7 @@ import ServiceManager from '@/features/Settings/components/ServiceManager';
 import ProfileManager from '@/features/Settings/components/ProfileManager';
 import GlassIntensityControl from '@/features/Settings/components/GlassIntensityControl';
 import BackgroundDimControl from '@/features/Settings/components/BackgroundDimControl';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAccentSettingsStore, resetAllSettings } from '@/features/Settings/stores/settings';
 import useTourStore from '@/features/WelcomeTour/stores/tourStore';
 import { resetTour } from '@/features/WelcomeTour/utils/tourStorage';
 
@@ -40,8 +40,7 @@ interface ISettingsPanelProps {
 const SettingsPanel = memo(({ onClose }: ISettingsPanelProps) => {
   const [activeTab, setActiveTab] = useState<TabId>('appearance');
   const [showResetConfirm, setShowResetConfirm] = useState(false);
-  const resetAll = useSettingsStore((s) => s.resetAll);
-  const accentOnTabs = useSettingsStore((s) => s.accentOnTabs);
+  const accentOnTabs = useAccentSettingsStore((s) => s.accentOnTabs);
   const triggerTour = useTourStore((s) => s.triggerShow);
 
   const handleShowTour = useCallback(() => {
@@ -58,9 +57,9 @@ const SettingsPanel = memo(({ onClose }: ISettingsPanelProps) => {
   );
 
   const handleReset = useCallback(() => {
-    resetAll();
+    resetAllSettings();
     setShowResetConfirm(false);
-  }, [resetAll]);
+  }, []);
 
   const drag = useDragScroll();
 

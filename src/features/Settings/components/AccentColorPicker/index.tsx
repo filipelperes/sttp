@@ -1,10 +1,10 @@
 import { memo, useCallback } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAppearanceStore } from '@/features/Settings/stores/settings';
 import { ACCENT_COLORS, DEFAULT_ACCENT } from '@/features/Settings/types/Settings';
 
 const AccentColorPicker = memo(() => {
-  const accentColor = useSettingsStore((s) => s.accentColor);
-  const setAccentColor = useSettingsStore((s) => s.setAccentColor);
+  const accentColor = useAppearanceStore((s) => s.accentColor);
+  const setAccentColor = useAppearanceStore((s) => s.setAccentColor);
 
   const handleCustomColor = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

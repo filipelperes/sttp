@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAppearanceStore } from '@/features/Settings/stores/settings';
 import type { GlassIntensity } from '@/features/Settings/types/Settings';
 
 const OPTIONS: { value: GlassIntensity; label: string; desc: string }[] = [
@@ -9,8 +9,8 @@ const OPTIONS: { value: GlassIntensity; label: string; desc: string }[] = [
 ];
 
 const GlassIntensityControl = memo(() => {
-  const intensity = useSettingsStore((s) => s.glassIntensity);
-  const setIntensity = useSettingsStore((s) => s.setGlassIntensity);
+  const intensity = useAppearanceStore((s) => s.glassIntensity);
+  const setIntensity = useAppearanceStore((s) => s.setGlassIntensity);
 
   return (
     <div className="space-y-3">

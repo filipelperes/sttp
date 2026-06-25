@@ -1,18 +1,13 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { IoSunnyOutline, IoMoonOutline } from 'react-icons/io5';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useTheme } from '@/features/Settings/hooks/useTheme';
 
 const ThemeToggle = memo(() => {
-  const theme = useSettingsStore((s) => s.theme);
-  const setTheme = useSettingsStore((s) => s.setTheme);
-
-  const toggle = useCallback(() => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  }, [theme, setTheme]);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button
-      onClick={toggle}
+      onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       className="flex items-center gap-2 px-3 py-2 rounded-lg glass text-sm text-foreground/80 hover:text-foreground cursor-pointer transition-all duration-200 focus-ring"
     >

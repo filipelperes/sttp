@@ -1,6 +1,6 @@
 import { memo, useCallback, useRef, useState } from 'react';
 import { IoAdd, IoTrashOutline, IoDownloadOutline, IoCloudUploadOutline, IoCheckmark, IoStar, IoStarOutline } from 'react-icons/io5';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { getFullSettings, loadProfile } from '@/features/Settings/stores/settings';
 import type { IProfile } from '@/features/Settings/types/Settings';
 import { loadUserServices } from '@/features/Settings/utils/servicesStorage';
 import {
@@ -23,8 +23,7 @@ const ProfileManager = memo(() => {
   const [importSuccess, setImportSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const currentSettings = useSettingsStore.getState;
-  const loadProfile = useSettingsStore((s) => s.loadProfile);
+  const currentSettings = getFullSettings;
 
   const refresh = useCallback(() => {
     setProfiles(getAllProfiles());
@@ -45,7 +44,7 @@ const ProfileManager = memo(() => {
     (profile: IProfile) => {
       loadProfile(profile.settings, profile.services);
     },
-    [loadProfile],
+    [],
   );
 
   const handleDeleteProfile = useCallback(

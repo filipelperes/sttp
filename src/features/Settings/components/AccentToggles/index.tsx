@@ -1,13 +1,13 @@
 import { memo } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAccentSettingsStore } from '@/features/Settings/stores/settings';
 
 const AccentToggles = memo(() => {
-  const accentOnClockSep = useSettingsStore((s) => s.accentOnClockSep);
-  const accentOnDate = useSettingsStore((s) => s.accentOnDate);
-  const accentOnIcons = useSettingsStore((s) => s.accentOnIcons);
-  const setAccentOnClockSep = useSettingsStore((s) => s.setAccentOnClockSep);
-  const setAccentOnDate = useSettingsStore((s) => s.setAccentOnDate);
-  const setAccentOnIcons = useSettingsStore((s) => s.setAccentOnIcons);
+  const accentOnClockSep = useAccentSettingsStore((s) => s.accentOnClockSep);
+  const accentOnDate = useAccentSettingsStore((s) => s.accentOnDate);
+  const accentOnIcons = useAccentSettingsStore((s) => s.accentOnIcons);
+  const setAccentOnClockSep = useAccentSettingsStore((s) => s.setAccentOnClockSep);
+  const setAccentOnDate = useAccentSettingsStore((s) => s.setAccentOnDate);
+  const setAccentOnIcons = useAccentSettingsStore((s) => s.setAccentOnIcons);
 
   return (
     <div className="space-y-3">

@@ -1,9 +1,9 @@
 import { memo, useCallback } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAppearanceStore } from '@/features/Settings/stores/settings';
 
 const BackgroundDimControl = memo(() => {
-  const dim = useSettingsStore((s) => s.background.dim);
-  const updateBackground = useSettingsStore((s) => s.updateBackground);
+  const dim = useAppearanceStore((s) => s.background.dim);
+  const updateBackground = useAppearanceStore((s) => s.updateBackground);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

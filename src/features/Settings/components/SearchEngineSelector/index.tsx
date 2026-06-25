@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useShallow } from 'zustand/react/shallow';
+import { useSearchSettingsStore } from '@/features/Settings/stores/settings';
 import { SEARCH_ENGINES } from '@/features/Settings/types/Settings';
 import type { IUserSearchEngine, IUserSearchEngineIcon } from '@/features/Settings/types/Settings';
 import { upsertUserSearchEngine, removeUserSearchEngine } from '@/features/Settings/utils/searchEngineStorage';
@@ -27,10 +28,10 @@ const INITIAL_FORM: IFormState = {
 };
 
 const SearchEngineSelector = memo(() => {
-  const currentEngine = useSettingsStore((s) => s.searchEngine);
-  const setSearchEngine = useSettingsStore((s) => s.setSearchEngine);
-  const userEngines = useSettingsStore((s) => s.userSearchEngines);
-  const setUserSearchEngines = useSettingsStore((s) => s.setUserSearchEngines);
+  const currentEngine = useSearchSettingsStore((s) => s.searchEngine);
+  const setSearchEngine = useSearchSettingsStore((s) => s.setSearchEngine);
+  const userEngines = useSearchSettingsStore(useShallow((s) => s.userSearchEngines));
+  const setUserSearchEngines = useSearchSettingsStore((s) => s.setUserSearchEngines);
   const [form, setForm] = useState<IFormState>(INITIAL_FORM);
 
   const openAddForm = useCallback(() => {
@@ -78,7 +79,7 @@ const SearchEngineSelector = memo(() => {
 
     const engine: IUserSearchEngine = { id: key, label, url, icon };
 
-    let current = { ...userEngines };
+    const current = { ...userEngines };
     // If editing and key changed, remove the old entry
     if (form.mode === 'edit' && form.editingKey && form.editingKey !== key) {
       delete current[form.editingKey];
@@ -151,7 +152,7 @@ const SearchEngineSelector = memo(() => {
                 : 'glass text-foreground/70 hover:text-foreground hover:bg-surface-hover'
             }`}
           >
-            <span className="text-lg">{engine.icon}</span>
+            <engine.icon size="1.25rem" />
             <div>
               <span className="font-medium">{engine.label}</span>
               <span

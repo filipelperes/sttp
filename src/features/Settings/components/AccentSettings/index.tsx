@@ -1,9 +1,11 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { IoTimeOutline, IoCalendarOutline, IoAppsOutline, IoColorWandOutline, IoText, IoGridOutline, IoOptionsOutline, IoCodeSlash, IoScanOutline, IoResize, IoSquareOutline, IoRemove } from 'react-icons/io5';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAccentSettingsStore, useAppearanceStore } from '@/features/Settings/stores/settings';
+import type { AccentToggleKey } from '@/features/Settings/stores/settings/accentSettingsStore';
 
 interface IAccentTarget {
-  key: string;
+  key: AccentToggleKey;
   label: string;
   description: string;
   icon: React.ReactNode;
@@ -153,43 +155,34 @@ const AccentRow = memo(
 AccentRow.displayName = 'AccentRow';
 
 const AccentSettings = memo(() => {
-  const store = useSettingsStore();
+  // accentColor vem do AppearanceStore; os 12 toggles vêm do AccentSettingsStore.
+  // Como são stores independentes, mudar date/clock/search não re-renderiza nada aqui.
+  const accentColor = useAppearanceStore((s) => s.accentColor);
+  const accentValues = useAccentSettingsStore(
+    useShallow((s) => ({
+      accentOnClockText: s.accentOnClockText,
+      accentOnClockSep: s.accentOnClockSep,
+      accentOnCaret: s.accentOnCaret,
+      accentOnDate: s.accentOnDate,
+      accentOnIcons: s.accentOnIcons,
+      accentOnTabs: s.accentOnTabs,
+      accentOnToggles: s.accentOnToggles,
+      accentOnSlider: s.accentOnSlider,
+      accentOnFocusRing: s.accentOnFocusRing,
+      accentOnButtonBorder: s.accentOnButtonBorder,
+      accentOnScrollbar: s.accentOnScrollbar,
+      accentOnGlassBorder: s.accentOnGlassBorder,
+    })),
+  );
 
-  const getSetter = (key: string) => {
-    const map: Record<string, (v: boolean) => void> = {
-      accentOnClockText: store.setAccentOnClockText,
-      accentOnClockSep: store.setAccentOnClockSep,
-      accentOnCaret: store.setAccentOnCaret,
-      accentOnDate: store.setAccentOnDate,
-      accentOnIcons: store.setAccentOnIcons,
-      accentOnTabs: store.setAccentOnTabs,
-      accentOnToggles: store.setAccentOnToggles,
-      accentOnSlider: store.setAccentOnSlider,
-      accentOnFocusRing: store.setAccentOnFocusRing,
-      accentOnButtonBorder: store.setAccentOnButtonBorder,
-      accentOnScrollbar: store.setAccentOnScrollbar,
-      accentOnGlassBorder: store.setAccentOnGlassBorder,
-    };
-    return map[key] ?? (() => {});
-  };
+  // Single generic setter replaces the 12 individual setters + getSetter map + useCallback
+  const setAccentToggle = useAccentSettingsStore((s) => s.setAccentToggle);
 
-  const getValue = (key: string): boolean => {
-    const map: Record<string, boolean> = {
-      accentOnClockText: store.accentOnClockText,
-      accentOnClockSep: store.accentOnClockSep,
-      accentOnCaret: store.accentOnCaret,
-      accentOnDate: store.accentOnDate,
-      accentOnIcons: store.accentOnIcons,
-      accentOnTabs: store.accentOnTabs,
-      accentOnToggles: store.accentOnToggles,
-      accentOnSlider: store.accentOnSlider,
-      accentOnFocusRing: store.accentOnFocusRing,
-      accentOnButtonBorder: store.accentOnButtonBorder,
-      accentOnScrollbar: store.accentOnScrollbar,
-      accentOnGlassBorder: store.accentOnGlassBorder,
-    };
-    return map[key] ?? false;
-  };
+  const getValue = useCallback((key: string): boolean => {
+    return accentValues[key as keyof typeof accentValues] ?? false;
+  }, [accentValues]);
+
+  const activeCount = Object.values(accentValues).filter(Boolean).length;
 
   return (
     <div className="space-y-6">
@@ -197,32 +190,16 @@ const AccentSettings = memo(() => {
       <div className="glass rounded-xl px-4 py-3 flex items-center gap-3">
         <span
           className="w-4 h-4 rounded-full shrink-0"
-          style={{ backgroundColor: store.accentColor }}
+          style={{ backgroundColor: accentColor }}
         />
         <div className="flex-1 min-w-0">
           <p className="text-sm text-foreground/90 font-medium">Accent color</p>
           <p className="text-[11px] text-foreground/40 truncate">
-            {store.accentColor} &middot; {SECTIONS.reduce((sum, s) => sum + s.items.length, 0)} targets
+            {accentColor} &middot; {SECTIONS.reduce((sum, s) => sum + s.items.length, 0)} targets
           </p>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="text-[11px] text-foreground/40">
-            {Object.entries({
-              accentOnClockText: store.accentOnClockText,
-              accentOnClockSep: store.accentOnClockSep,
-              accentOnCaret: store.accentOnCaret,
-              accentOnDate: store.accentOnDate,
-              accentOnIcons: store.accentOnIcons,
-              accentOnTabs: store.accentOnTabs,
-              accentOnToggles: store.accentOnToggles,
-              accentOnSlider: store.accentOnSlider,
-              accentOnFocusRing: store.accentOnFocusRing,
-              accentOnButtonBorder: store.accentOnButtonBorder,
-              accentOnScrollbar: store.accentOnScrollbar,
-              accentOnGlassBorder: store.accentOnGlassBorder,
-            }).filter(([, v]) => v).length}{' '}
-            active
-          </span>
+          <span className="text-[11px] text-foreground/40">{activeCount} active</span>
         </div>
       </div>
 
@@ -239,7 +216,7 @@ const AccentSettings = memo(() => {
                 description={item.description}
                 icon={item.icon}
                 checked={getValue(item.key)}
-                onChange={getSetter(item.key)}
+                onChange={(v) => setAccentToggle(item.key, v)}
               />
             ))}
           </div>

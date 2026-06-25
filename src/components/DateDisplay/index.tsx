@@ -1,5 +1,5 @@
 import { memo, useEffect, useState, useMemo } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useDateSettingsStore, useAccentSettingsStore } from '@/features/Settings/stores/settings';
 
 /** Returns milliseconds until the next midnight */
 const msUntilMidnight = (): number => {
@@ -11,8 +11,10 @@ const msUntilMidnight = (): number => {
 };
 
 const DateDisplay = memo(() => {
-  const dateSettings = useSettingsStore((s) => s.date);
-  const accentOnDate = useSettingsStore((s) => s.accentOnDate);
+  // Sub-store split: dateSettings só re-renderiza quando date muda;
+  // accentOnDate só re-renderiza quando ESTE toggle muda.
+  const dateSettings = useDateSettingsStore((s) => s.date);
+  const accentOnDate = useAccentSettingsStore((s) => s.accentOnDate);
 
   const formatDate = (date: Date): string => {
     const opts: Intl.DateTimeFormatOptions = {};

@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useShallow } from 'zustand/react/shallow';
+import { useDateSettingsStore } from '@/features/Settings/stores/settings';
 import ToggleSwitch from '@/features/Settings/components/ToggleSwitch';
 import LanguagePicker from '@/features/Settings/components/LanguagePicker';
 import type { DateFormatStyle } from '@/features/Settings/types/Settings';
@@ -27,8 +28,8 @@ const LOCALE_OPTIONS = [
 ];
 
 const DateSettings = memo(() => {
-  const date = useSettingsStore((s) => s.date);
-  const updateDate = useSettingsStore((s) => s.updateDate);
+  const date = useDateSettingsStore(useShallow((s) => s.date));
+  const updateDate = useDateSettingsStore((s) => s.updateDate);
 
   const toggleDayOfWeek = useCallback(() => {
     updateDate({ showDayOfWeek: !date.showDayOfWeek });

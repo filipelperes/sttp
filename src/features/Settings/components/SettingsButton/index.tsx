@@ -1,12 +1,21 @@
-import { memo, Suspense, lazy, useCallback, useState } from 'react';
+import { memo, Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { IoSettingsOutline } from 'react-icons/io5';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useAccentSettingsStore } from '@/features/Settings/stores/settings';
 
-const SettingsPanel = lazy(() => import('@/features/Settings/components/SettingsPanel'));
+const importSettingsPanel = () => import('@/features/Settings/components/SettingsPanel');
+const SettingsPanel = lazy(importSettingsPanel);
 
 const SettingsButton = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
-  const accentOnIcons = useSettingsStore((s) => s.accentOnIcons);
+  const accentOnIcons = useAccentSettingsStore((s) => s.accentOnIcons);
+
+  // Preload SettingsPanel bundle in background as soon as page mounts,
+  // so clicking the button is instant — no lazy-load delay.
+  useEffect(() => {
+    importSettingsPanel().catch(() => {
+      /* Preload failed (e.g. missing assets) — SettingsPanel will lazy-load on click */
+    });
+  }, []);
 
   const toggle = useCallback(() => setIsOpen((v) => !v), []);
   const close = useCallback(() => setIsOpen(false), []);

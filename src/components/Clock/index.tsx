@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useShallow } from 'zustand/react/shallow';
+import { useClockSettingsStore, useAccentSettingsStore } from '@/features/Settings/stores/settings';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
 
 /** Renders a single time digit or separator */
@@ -14,10 +15,18 @@ const Digit = ({ children, sep, accent }: { children: string; sep?: boolean; acc
 
 const Clock = memo(() => {
   const [time, setTime] = useState(() => new Date());
-  const clockSettings = useSettingsStore((s) => s.clock);
+  // Sub-store split: clockSettings só re-renderiza quando clock muda
+  // (não quando date, search ou accentOn* mudam).
+  const clockSettings = useClockSettingsStore((s) => s.clock);
+  // Sub-store split: accentOnClockSep/Text só re-renderizam quando
+  // ESTES dois booleanos mudam (não os outros 10 accent toggles).
+  const { accentOnClockSep, accentOnClockText } = useAccentSettingsStore(
+    useShallow((s) => ({
+      accentOnClockSep: s.accentOnClockSep,
+      accentOnClockText: s.accentOnClockText,
+    })),
+  );
   const paletteShow = useCommandPaletteStore((s) => s.Show);
-  const accentOnClockSep = useSettingsStore((s) => s.accentOnClockSep);
-  const accentOnClockText = useSettingsStore((s) => s.accentOnClockText);
   const isHidden = clockSettings.hideWhenTyping && paletteShow;
 
   useEffect(() => {

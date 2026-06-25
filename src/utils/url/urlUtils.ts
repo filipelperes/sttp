@@ -2,7 +2,7 @@ import type { IService } from '@/types/Service';
 import { getMergedServicesList } from '@/CommandPalette/utils/ServicesList/servicesStore';
 import { parseInput } from '@/utils/parseInput/parseInput';
 import { SEARCH_ENGINES } from '@/features/Settings/types/Settings';
-import useSettingsStore from '@/features/Settings/stores/SettingsStore';
+import { useSearchSettingsStore } from '@/features/Settings/stores/settings';
 
 const localhostValues = ['127.0.0.1', '127::1', '::1', '127...1', '127..1', '..1'];
 
@@ -55,7 +55,7 @@ export const handleSubmit = (
   if (handleServiceSubmit(value)) return;
 
   // Use the user's preferred search engine
-  const { searchEngine: engineId, userSearchEngines } = useSettingsStore.getState();
+  const { searchEngine: engineId, userSearchEngines } = useSearchSettingsStore.getState();
   const engine = SEARCH_ENGINES.find((e) => e.id === engineId)
     ?? Object.values(userSearchEngines).find((e) => e.id === engineId)
     ?? SEARCH_ENGINES[0];
