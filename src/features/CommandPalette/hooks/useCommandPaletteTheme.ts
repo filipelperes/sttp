@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect } from 'react';
+import { useEffect } from 'react';
 import { clearTheme, setTheme } from '@/CommandPalette/utils/CommandPalette';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
 import { commandPaletteInputRef } from '@/CommandPalette/utils/commandPaletteRef';
@@ -8,7 +8,7 @@ import type { IParsedInput } from '@/CommandPalette/types/ParsedInput';
 export const useBodyColor = () => {
   const setBodyColor = useCommandPaletteStore(s => s.setBodyColor);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const bodyColor = getComputedStyle(document.body).color;
     setBodyColor(bodyColor);
   }, [setBodyColor]);

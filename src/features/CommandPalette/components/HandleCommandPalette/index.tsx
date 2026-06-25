@@ -15,8 +15,8 @@ const HandleCommandPalette = memo(() => {
           className="fixed inset-0 z-[2] transition-opacity duration-300 pointer-events-none"
           style={{
             backgroundColor: `rgba(0, 0, 0, ${dim / 100})`,
-            backdropFilter: dim > 20 ? `blur(${(dim - 20) / 20}px)` : 'none',
-            WebkitBackdropFilter: dim > 20 ? `blur(${(dim - 20) / 20}px)` : 'none',
+            backdropFilter: dim >= 40 ? `blur(${(dim - 40) / 15}px)` : 'none',
+            WebkitBackdropFilter: dim >= 40 ? `blur(${(dim - 40) / 15}px)` : 'none',
           }}
         />
       )}
