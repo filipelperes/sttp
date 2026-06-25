@@ -22,6 +22,7 @@ import {
   SiFreelancer,
   SiGmail,
   SiGooglegemini,
+  SiGooglekeep,
   SiGoogletranslate,
   SiHackthebox,
   SiMercadopago,
@@ -765,6 +766,21 @@ export const ServicesList = {
     style: {
       backgroundColor: "#6FDA44",
       color: "#ffffff",
+    },
+  },
+  keep: {
+    name: "Keep Notes",
+    url: {
+      home: "https://keep.google.com",
+    },
+    icon: {
+      icon: SiGooglekeep,
+      type: "react-icons",
+    },
+    pattern: /^k(eep(\s?notes)?)?/i,
+    style: {
+      backgroundColor: "#FFCC00",
+      color: "#000000",
     },
   },
 } as IServicesList;
