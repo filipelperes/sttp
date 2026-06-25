@@ -34,6 +34,7 @@ import {
   SiOpenai,
   SiShopee,
   SiSpeedtest,
+  SiTradingview,
   SiTryhackme,
   SiUpwork,
   SiX,
@@ -48,6 +49,7 @@ import GrokIcon from "@/assets/grok.svg?react";
 import DeepSeekIcon from "@/assets/deepseek.svg?react";
 import Workana from "@/assets/workana.png";
 import NoventaNoveFreelas from "@/assets/99freelas.png";
+import ProfitWeb from "@/assets/profit.png";
 import PontoGoIcon from "@/assets/pontogo.svg?react";
 import Habbo from "@/assets/habbo.png";
 import Unisantos from "@/assets/unisantos.png";
@@ -781,6 +783,36 @@ export const ServicesList = {
     style: {
       backgroundColor: "#FFCC00",
       color: "#000000",
+    },
+  },
+  tradingview: {
+    name: "TradingView",
+    url: {
+      home: "https://www.tradingview.com",
+    },
+    icon: {
+      icon: SiTradingview,
+      type: "react-icons",
+    },
+    pattern: /^t(radingview)?/i,
+    style: {
+      backgroundColor: "#2962FF",
+      color: "#ffffff",
+    },
+  },
+  profitweb: {
+    name: "ProfitWeb",
+    url: {
+      home: "https://profitweb.nelogica.com.br",
+    },
+    icon: {
+      icon: ProfitWeb,
+      type: "img",
+    },
+    pattern: /^pr(ofitweb)?/i,
+    style: {
+      backgroundColor: "#1E6B4F",
+      color: "#ffffff",
     },
   },
 } as IServicesList;
