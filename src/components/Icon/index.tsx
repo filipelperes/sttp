@@ -52,7 +52,7 @@ const Icon = memo(({
         style={{
           objectFit: 'contain',
           backgroundImage: style?.backgroundImage || 'none',
-          backgroundColor: style?.backgroundColor || '#101010',
+          backgroundColor: icon.skipBackground ? 'transparent' : (style?.backgroundColor || '#101010'),
         }}
         className="relative my-auto mx-[7px]"
       />

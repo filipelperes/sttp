@@ -9,6 +9,7 @@ type IServiceURL = {
 type IServiceIcon = {
    icon: string | IconType | FC<SVGAttributes<SVGElement>>;
     type: "svgr" | "react-icons" | "img" | "emoji";
+   skipBackground?: boolean;
 };
 
 type IServiceStyle = {
