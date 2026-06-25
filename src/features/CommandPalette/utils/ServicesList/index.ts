@@ -1,11 +1,16 @@
 import { type IServicesList } from "@/types/Service";
-import { FaDiscord, FaFigma, FaGithub, FaGoogleDrive, FaInstagram, FaLinkedin, FaPinterest, FaRedditSquare, FaSpotify, FaTrello, FaTwitch, FaTwitter, FaWhatsapp, FaYoutube } from "react-icons/fa";
-import { SiAliexpress, SiCanva, SiGmail, SiGoogletranslate, SiHackthebox, SiMercadopago, SiMonkeytype, SiNetflix, SiNotion, SiShopee, SiSpeedtest, SiTryhackme, SiZoho } from "react-icons/si";
+import { FaDiscord, FaFigma, FaGithub, FaGoogleDrive, FaInstagram, FaLinkedin, FaPinterest, FaRedditSquare, FaSpotify, FaTrello, FaTwitch, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { SiAliexpress, SiCanva, SiClaude, SiFiverr, SiFreelancer, SiGmail, SiGooglegemini, SiGoogletranslate, SiHackthebox, SiMercadopago, SiMeta, SiMonkeytype, SiNetflix, SiNotebooklm, SiNotion, SiOpenai, SiShopee, SiSpeedtest, SiTryhackme, SiUpwork, SiX, SiZoho } from "react-icons/si";
 import { MdOndemandVideo } from "react-icons/md";
 import { PiMicrosoftOutlookLogoLight } from "react-icons/pi";
 import { IoCalendarNumberOutline } from "react-icons/io5";
+import { GoCopilot } from "react-icons/go";
+import QwenIcon from '@/assets/qwen.svg?react';
+import GrokIcon from '@/assets/grok.svg?react';
+import DeepSeekIcon from '@/assets/deepseek.svg?react';
+import Workana from '@/assets/workana.png';
+import NoventaNoveFreelas from '@/assets/99freelas.png';
 import PontoGoIcon from '@/assets/pontogo.svg?react';
-import ChatGPT from '@/assets/chatgpt.svg?react';
 import Habbo from '@/assets/habbo.png';
 import Unisantos from '@/assets/unisantos.png';
 
@@ -26,19 +31,18 @@ export const ServicesList = {
       }
    },
    twitter: {
-      name: "Twitter",
+      name: "X",
       url: {
-         home: "https://twitter.com"
+         home: "https://x.com"
       },
       icon: {
-         icon: FaTwitter,
+         icon: SiX,
          type: "react-icons"
       },
-      pattern: /^t(t|w(itter)?)/i,
+      pattern: /^x$/i,
       style: {
-         backgroundColor: "#1da1f2",
-         backgroundImage: "linear-gradient(to right bottom, #1DA1F2, #009ffc)",
-         color: "#14171a",
+         backgroundColor: "#000000",
+         color: "#ffffff",
       }
    },
    youtube: {
@@ -263,15 +267,15 @@ export const ServicesList = {
          backgroundColor: "#e60023",
          backgroundImage: "linear-gradient(to right bottom, #e60023, #f00000)",
       }
-   },
+    },
    chat_gpt: {
       name: "ChatGPT",
       url: {
          home: "https://chat.openai.com"
       },
       icon: {
-         icon: ChatGPT,
-         type: "svgr"
+         icon: SiOpenai,
+         type: "react-icons"
       },
       pattern: /^c(gpt|hat(\s?gpt)?)?/i,
       style: {
@@ -517,6 +521,201 @@ export const ServicesList = {
       pattern: /^f(igma)?/i,
       style: {
          backgroundColor: "#2c2c2c",
+         color: "#ffffff",
+      }
+   },
+   qwen: {
+      name: "Qwen",
+      url: {
+         home: "https://chat.qwen.ai"
+      },
+      icon: {
+         icon: QwenIcon,
+         type: "svgr"
+      },
+      pattern: /^qw(en)?/i,
+      style: {
+         backgroundColor: "#6A3DE8",
+         color: "#ffffff",
+      }
+   },
+   gemini: {
+      name: "Gemini",
+      url: {
+         home: "https://gemini.google.com"
+      },
+      icon: {
+         icon: SiGooglegemini,
+         type: "react-icons"
+      },
+      pattern: /^ge(mini)?/i,
+      style: {
+         backgroundColor: "#1A73E8",
+         color: "#ffffff",
+      }
+   },
+   notebooklm: {
+      name: "NotebookLM",
+      url: {
+         home: "https://notebooklm.google.com"
+      },
+      icon: {
+         icon: SiNotebooklm,
+         type: "react-icons"
+      },
+      pattern: /^n(otebooklm)?/i,
+      style: {
+         backgroundColor: "#1A73E8",
+         color: "#ffffff",
+      }
+   },
+   grok: {
+      name: "Grok",
+      url: {
+         home: "https://x.com/i/grok"
+      },
+      icon: {
+         icon: GrokIcon,
+         type: "svgr"
+      },
+      pattern: /^g(rok)?/i,
+      style: {
+         backgroundColor: "#000000",
+         color: "#ffffff",
+      }
+   },
+   claude: {
+      name: "Claude",
+      url: {
+         home: "https://claude.ai"
+      },
+      icon: {
+         icon: SiClaude,
+         type: "react-icons"
+      },
+      pattern: /^c(laude)?/i,
+      style: {
+         backgroundColor: "#D97706",
+         color: "#ffffff",
+      }
+   },
+   copilot: {
+      name: "Copilot",
+      url: {
+         home: "https://copilot.microsoft.com"
+      },
+      icon: {
+         icon: GoCopilot,
+         type: "react-icons"
+      },
+      pattern: /^co(pilot)?/i,
+      style: {
+         backgroundColor: "#217346",
+         color: "#ffffff",
+      }
+   },
+   deepseek: {
+      name: "DeepSeek",
+      url: {
+         home: "https://chat.deepseek.com"
+      },
+      icon: {
+         icon: DeepSeekIcon,
+         type: "svgr"
+      },
+      pattern: /^dee(p(seek)?)?/i,
+      style: {
+         backgroundColor: "#4F6BFE",
+         color: "#ffffff",
+      }
+   },
+   metaai: {
+      name: "Meta AI",
+      url: {
+         home: "https://meta.ai"
+      },
+      icon: {
+         icon: SiMeta,
+         type: "react-icons"
+      },
+      pattern: /^me(ta(\s?ai)?)?/i,
+      style: {
+         backgroundColor: "#0064E0",
+         color: "#ffffff",
+      }
+   },
+   workana: {
+      name: "Workana",
+      url: {
+         home: "https://www.workana.com"
+      },
+      icon: {
+         icon: Workana,
+         type: "img"
+      },
+      pattern: /^wo(rkana)?/i,
+      style: {
+         backgroundColor: "#F7931E",
+         color: "#ffffff",
+      }
+   },
+   freelancer: {
+      name: "Freelancer",
+      url: {
+         home: "https://www.freelancer.com.br"
+      },
+      icon: {
+         icon: SiFreelancer,
+         type: "react-icons"
+      },
+      pattern: /^fr(eelancer)?/i,
+      style: {
+         backgroundColor: "#29B2FE",
+         color: "#ffffff",
+      }
+   },
+   "99freelas": {
+      name: "99freelas",
+      url: {
+         home: "https://www.99freelas.com.br"
+      },
+      icon: {
+         icon: NoventaNoveFreelas,
+         type: "img"
+      },
+      pattern: /^99(freelas)?/i,
+      style: {
+         backgroundColor: "#00B4B4",
+         color: "#ffffff",
+      }
+   },
+   fiverr: {
+      name: "Fiverr",
+      url: {
+         home: "https://www.fiverr.com"
+      },
+      icon: {
+         icon: SiFiverr,
+         type: "react-icons"
+      },
+      pattern: /^fi(verr)?/i,
+      style: {
+         backgroundColor: "#1DBF73",
+         color: "#ffffff",
+      }
+   },
+   upwork: {
+      name: "Upwork",
+      url: {
+         home: "https://www.upwork.com"
+      },
+      icon: {
+         icon: SiUpwork,
+         type: "react-icons"
+      },
+      pattern: /^up(work)?/i,
+      style: {
+         backgroundColor: "#6FDA44",
          color: "#ffffff",
       }
    },

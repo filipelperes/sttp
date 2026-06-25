@@ -1,4 +1,8 @@
 import type { IServicesList } from "@/types/Service";
+import type { IconType } from "react-icons";
+import { SiGoogle, SiDuckduckgo, SiBrave, SiEcosia, SiStartpage } from "react-icons/si";
+import { TbBrandBing } from "react-icons/tb";
+import { FaYahoo } from "react-icons/fa6";
 
 export type ThemeMode = 'dark' | 'light';
 
@@ -14,7 +18,7 @@ export interface ISearchEngine {
   id: SearchEngineId;
   label: string;
   url: string; // search query template, %s will be replaced with the query
-  icon: string;
+  icon: IconType;
 }
 
 export type IUserSearchEngineIcon = {
@@ -30,13 +34,13 @@ export interface IUserSearchEngine {
 }
 
 export const SEARCH_ENGINES: ISearchEngine[] = [
-  { id: 'google', label: 'Google', url: 'https://google.com/search?q=%s', icon: '🔍' },
-  { id: 'duckduckgo', label: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=%s', icon: '🦆' },
-  { id: 'bing', label: 'Bing', url: 'https://bing.com/search?q=%s', icon: '📘' },
-  { id: 'brave', label: 'Brave', url: 'https://search.brave.com/search?q=%s', icon: '🦁' },
-  { id: 'yahoo', label: 'Yahoo', url: 'https://search.yahoo.com/search?p=%s', icon: '📰' },
-  { id: 'ecosia', label: 'Ecosia', url: 'https://ecosia.org/search?q=%s', icon: '🌳' },
-  { id: 'startpage', label: 'Startpage', url: 'https://startpage.com/do/dsearch?query=%s', icon: '🔒' },
+  { id: 'google', label: 'Google', url: 'https://google.com/search?q=%s', icon: SiGoogle },
+  { id: 'duckduckgo', label: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=%s', icon: SiDuckduckgo },
+  { id: 'bing', label: 'Bing', url: 'https://bing.com/search?q=%s', icon: TbBrandBing },
+  { id: 'brave', label: 'Brave', url: 'https://search.brave.com/search?q=%s', icon: SiBrave },
+  { id: 'yahoo', label: 'Yahoo', url: 'https://search.yahoo.com/search?p=%s', icon: FaYahoo },
+  { id: 'ecosia', label: 'Ecosia', url: 'https://ecosia.org/search?q=%s', icon: SiEcosia },
+  { id: 'startpage', label: 'Startpage', url: 'https://startpage.com/do/dsearch?query=%s', icon: SiStartpage },
 ] as const;
 
 export interface IClockSettings {
