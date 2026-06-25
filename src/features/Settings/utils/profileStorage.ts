@@ -9,7 +9,7 @@ const STARTUP_PROFILE_KEY = 'sttp-startup-profile';
 export const FACTORY_PROFILE: IProfile = {
   id: '__factory__',
   name: 'Default (factory)',
-  settings: { ...DEFAULT_SETTINGS, userSearchEngines: {} },
+  settings: DEFAULT_SETTINGS,
   createdAt: '2024-01-01T00:00:00.000Z',
 };
 
@@ -98,28 +98,92 @@ export const loadStartupProfileSettings = (): { settings: typeof DEFAULT_SETTING
   return null;
 };
 
+/**
+ * Minimal validation that the provided object has the shape of a valid settings snapshot.
+ */
+function isValidSettings(value: unknown): value is typeof DEFAULT_SETTINGS {
+  if (!value || typeof value !== 'object') return false;
+  const s = value as Record<string, unknown>;
+  const required = ['theme', 'accentColor', 'searchEngine', 'glassIntensity', 'clock', 'date', 'background'];
+  return required.every((field) => field in s);
+}
+
+/** Wrapper format for exported profiles (v1). */
+interface IExportedProfilesV1 {
+  version: 1;
+  startupProfileName?: string;
+  profiles: IProfile[];
+}
+
 export const exportProfilesAsJSON = (): string => {
   const profiles = loadProfiles();
-  return JSON.stringify(profiles, null, 2);
+  const startupId = getStartupProfileId();
+  const startupProfileName = startupId
+    ? getAllProfiles().find((p) => p.id === startupId)?.name
+    : undefined;
+
+  const data: IExportedProfilesV1 = {
+    version: 1,
+    startupProfileName,
+    profiles,
+  };
+  return JSON.stringify(data, null, 2);
 };
 
 export const importProfilesFromJSON = (json: string): IProfile[] => {
   const parsed = JSON.parse(json);
-  if (!Array.isArray(parsed)) throw new Error('Invalid profiles format');
+
+  // Support both the new wrapped format { version, profiles } and the
+  // legacy plain array format for backward compatibility.
+  let profilesToImport: IProfile[];
+  let startupProfileName: string | undefined;
+  if (Array.isArray(parsed)) {
+    profilesToImport = parsed;
+  } else if (parsed && typeof parsed === 'object' && Array.isArray(parsed.profiles)) {
+    profilesToImport = parsed.profiles;
+    startupProfileName = parsed.startupProfileName;
+  } else {
+    throw new Error('Invalid profiles format — expected an array or { version, profiles }');
+  }
+
   const existing = loadProfiles();
   const merged = [...existing];
-  for (const item of parsed) {
-    if (item && typeof item === 'object' && item.name && item.settings) {
-      const profile: IProfile = {
-        id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-        name: item.name,
-        settings: item.settings,
-        services: item.services ? item.services : undefined,
-        createdAt: item.createdAt ?? new Date().toISOString(),
-      };
-      merged.push(profile);
+  const seenNames = new Set(existing.map((p) => p.name));
+  let importedCount = 0;
+
+  for (const item of profilesToImport) {
+    if (!item || typeof item !== 'object') continue;
+    if (!item.name || typeof item.name !== 'string') continue;
+    if (!isValidSettings(item.settings)) continue;
+
+    const name: string = item.name;
+
+    // Deduplicate by name — skip if a profile with the same name already exists
+    if (seenNames.has(name)) continue;
+    seenNames.add(name);
+
+    const profile: IProfile = {
+      id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+      name,
+      settings: item.settings,
+      services: item.services && typeof item.services === 'object' && Object.keys(item.services).length > 0
+        ? { ...item.services }
+        : undefined,
+      createdAt: item.createdAt ?? new Date().toISOString(),
+    };
+    merged.push(profile);
+    importedCount++;
+  }
+
+  saveProfiles(merged);
+
+  // Restore startup profile association by name (IDs change on import)
+  if (startupProfileName) {
+    const matched = merged.find((p) => p.name === startupProfileName);
+    if (matched) {
+      setStartupProfileId(matched.id);
     }
   }
-  saveProfiles(merged);
+
   return merged;
 };
