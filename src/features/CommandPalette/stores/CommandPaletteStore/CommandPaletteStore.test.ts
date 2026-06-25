@@ -11,7 +11,6 @@ describe('CommandPaletteStore', () => {
       IsScroll: false,
       Show: false,
       Key: null,
-      CommandPaletteInputRef: { current: null },
     });
   });
 

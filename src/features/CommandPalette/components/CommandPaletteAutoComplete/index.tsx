@@ -6,9 +6,10 @@ import SuggestionListItem from '../SuggestionListItem';
 
 interface ICommandPaletteAutoCompleteProps {
   suggestions: IParsedInput['suggestions'];
+  value: string;
 }
 
-const CommandPaletteAutoComplete = memo(({ suggestions }: ICommandPaletteAutoCompleteProps) => {
+const CommandPaletteAutoComplete = memo(({ suggestions, value }: ICommandPaletteAutoCompleteProps) => {
   const suggestionsRef = useRef<(HTMLLIElement | null)[]>([]);
 
   const SelectedIdx = useCommandPaletteStore(s => s.SelectedIdx);
@@ -44,6 +45,7 @@ const CommandPaletteAutoComplete = memo(({ suggestions }: ICommandPaletteAutoCom
           icon={icon}
           style={style}
           setRef={setRef}
+          value={value}
         />
       ))}
     </ul>

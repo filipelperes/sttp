@@ -1,9 +1,7 @@
 import { create } from "zustand";
-import type { RefObject } from "react";
 import { devtools, subscribeWithSelector } from "zustand/middleware";
 
 type ICommandPaletteStoreState = {
-   CommandPaletteInputRef: RefObject<HTMLTextAreaElement | null>;
    Value: string;
    BodyColor: string;
    SelectedIdx: number;
@@ -25,12 +23,11 @@ type ICommandPaletteStoreActions = {
 type ICommandPaletteStore = ICommandPaletteStoreState & ICommandPaletteStoreActions;
 
 const useCommandPaletteStore = create<ICommandPaletteStore>()(
-   devtools(
-      subscribeWithSelector(
+   subscribeWithSelector(
+      devtools(
          set => ({
             Value: "",
             SelectedIdx: 0,
-            CommandPaletteInputRef: { current: null },
             BodyColor: "#d4d4d4",
             IsScroll: false,
             Show: false,
@@ -43,8 +40,9 @@ const useCommandPaletteStore = create<ICommandPaletteStore>()(
             setShow: (Show) => set({ Show }),
             setKey: (Key) => set({ Key }),
             setCommandPaletteState: (state) => set(state),
-         })
-      )
+         }),
+         { name: "CommandPaletteStore" },
+      ),
    )
 );
 

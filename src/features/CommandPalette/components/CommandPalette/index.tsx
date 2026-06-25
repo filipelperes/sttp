@@ -60,7 +60,7 @@ const CommandPalette = memo(() => {
            style={{ borderBottom: 'none' }}
          >
             <CommandPaletteInput suggestions={suggestions} services={services} />
-            <CommandPaletteAutoComplete suggestions={suggestions} />
+            <CommandPaletteAutoComplete suggestions={suggestions} value={Value} />
          </div>
       </div>
    );

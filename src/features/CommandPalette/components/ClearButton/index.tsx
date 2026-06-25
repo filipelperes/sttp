@@ -1,16 +1,16 @@
 import { memo, type MouseEvent } from 'react';
 import { IoMdCloseCircle } from 'react-icons/io';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
+import { commandPaletteInputRef } from '@/CommandPalette/utils/commandPaletteRef';
 
 const ClearButton = memo(() => {
-  const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
   const Value = useCommandPaletteStore(s => s.Value);
   const setValue = useCommandPaletteStore(s => s.setValue);
   const isEmpty = Value.length === 0;
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    CommandPaletteInputRef.current?.focus();
+    commandPaletteInputRef.current?.focus();
     if (isEmpty) return;
     setValue('');
   };

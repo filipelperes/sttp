@@ -1,6 +1,7 @@
 import { useLayoutEffect, useEffect } from 'react';
 import { clearTheme, setTheme } from '@/CommandPalette/utils/CommandPalette';
 import useCommandPaletteStore from '@/CommandPalette/stores/CommandPaletteStore';
+import { commandPaletteInputRef } from '@/CommandPalette/utils/commandPaletteRef';
 import type { IServiceStyle } from '@/types/Service';
 import type { IParsedInput } from '@/CommandPalette/types/ParsedInput';
 
@@ -30,12 +31,11 @@ export const useThemeSync = (
 };
 
 export const useInputReset = (Key: string | null) => {
-  const CommandPaletteInputRef = useCommandPaletteStore(s => s.CommandPaletteInputRef);
   const setValue = useCommandPaletteStore(s => s.setValue);
   const setCommandPaletteState = useCommandPaletteStore(s => s.setCommandPaletteState);
 
   useEffect(() => {
-    const inputEl = CommandPaletteInputRef.current;
+    const inputEl = commandPaletteInputRef.current;
     setValue(Key ?? '');
     inputEl?.focus?.();
     return () => {
@@ -43,5 +43,5 @@ export const useInputReset = (Key: string | null) => {
       inputEl?.blur?.();
       setCommandPaletteState({ Value: '', SelectedIdx: 0 });
     };
-  }, [Key, CommandPaletteInputRef, setValue, setCommandPaletteState]);
+  }, [Key, setValue, setCommandPaletteState]);
 };
