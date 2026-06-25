@@ -1,182 +1,218 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+/* Font loaded via <link> in index.html (preconnect + preload for better perf) */
 @import "tailwindcss";
 
 /* ─── Theme Tokens ───────────────────────────────────────────── */
 @theme {
-  --font-inter: 'Inter', sans-serif;
+    --font-inter: "Inter", sans-serif;
 
-  /* Dark theme (default) */
-  --color-background: #101010;
-  --color-foreground: #d4d4d4;
-  --color-accent: #7c3aed;
-  --color-accent-foreground: #ffffff;
-  --color-muted: rgba(255, 255, 255, 0.06);
-  --color-muted-foreground: rgba(212, 212, 212, 0.6);
-  --color-border: rgba(255, 255, 255, 0.12);
-  --color-scrollbar: rgba(255, 255, 255, 0.2);
-  --color-card: rgba(255, 255, 255, 0.04);
-  --color-card-foreground: #d4d4d4;
-  --color-ring: #7c3aed;
+    /* Dark theme (default) */
+    --color-background: #101010;
+    --color-foreground: #d4d4d4;
+    --color-accent: #7c3aed;
+    --color-accent-foreground: #ffffff;
+    --color-muted: rgba(255, 255, 255, 0.06);
+    --color-muted-foreground: rgba(212, 212, 212, 0.6);
+    --color-border: rgba(255, 255, 255, 0.12);
+    --color-scrollbar: rgba(255, 255, 255, 0.2);
+    --color-card: rgba(255, 255, 255, 0.04);
+    --color-card-foreground: #d4d4d4;
+    --color-ring: #7c3aed;
 
-  /* Glass effect tokens */
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: 24px;
-  --glass-opacity: 1;
+    /* Glass effect tokens */
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: 24px;
+    --glass-opacity: 1;
 
-  /* Surface tokens */
-  --surface-elevated: rgba(255, 255, 255, 0.06);
-  --surface-hover: rgba(255, 255, 255, 0.1);
+    /* Surface tokens */
+    --surface-elevated: rgba(255, 255, 255, 0.06);
+    --surface-hover: rgba(255, 255, 255, 0.1);
 
-  /* Animation */
-  --animate-fade-in: fade-in 0.2s ease-out;
-  --animate-slide-up: slide-up 0.25s ease-out;
-  --animate-scale-in: scale-in 0.15s ease-out;
+    /* Animation */
+    --animate-fade-in: fade-in 0.2s ease-out;
+    --animate-slide-up: slide-up 0.25s ease-out;
+    --animate-scale-in: scale-in 0.15s ease-out;
 
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-  @keyframes slide-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes scale-in {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
-  }
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @keyframes fade-out {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    @keyframes slide-up {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes scale-in {
+        from {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 }
 
 /* ─── Dark Mode (default) ────────────────────────────────────── */
 :root {
-  color-scheme: dark;
+    color-scheme: dark;
 }
 
 /* ─── Light Mode overrides ───────────────────────────────────── */
 @custom-variant light (&:where(.light, .light *));
 
 .light {
-  color-scheme: light;
-  --color-background: #f0f0f0;
-  --color-foreground: #1a1a1a;
-  --color-accent: #7c3aed;
-  --color-accent-foreground: #ffffff;
-  --color-muted: rgba(0, 0, 0, 0.04);
-  --color-muted-foreground: rgba(26, 26, 26, 0.55);
-  --color-border: rgba(0, 0, 0, 0.1);
-  --color-scrollbar: rgba(0, 0, 0, 0.18);
-  --color-card: rgba(255, 255, 255, 0.7);
-  --color-card-foreground: #1a1a1a;
-  --color-ring: #7c3aed;
+    color-scheme: light;
+    --color-background: #f0f0f0;
+    --color-foreground: #1a1a1a;
+    --color-accent: #7c3aed;
+    --color-accent-foreground: #ffffff;
+    --color-muted: rgba(0, 0, 0, 0.04);
+    --color-muted-foreground: rgba(26, 26, 26, 0.55);
+    --color-border: rgba(0, 0, 0, 0.1);
+    --color-scrollbar: rgba(0, 0, 0, 0.18);
+    --color-card: rgba(255, 255, 255, 0.7);
+    --color-card-foreground: #1a1a1a;
+    --color-ring: #7c3aed;
 
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.7);
-  --glass-blur: 20px;
-  --glass-opacity: 1;
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.7);
+    --glass-blur: 20px;
+    --glass-opacity: 1;
 
-  --surface-elevated: rgba(255, 255, 255, 0.8);
-  --surface-hover: rgba(0, 0, 0, 0.06);
+    --surface-elevated: rgba(255, 255, 255, 0.8);
+    --surface-hover: rgba(0, 0, 0, 0.06);
 }
 
 /* ─── Base Styles ─────────────────────────────────────────────── */
 @layer base {
-  *,
-  *::before,
-  *::after {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-scrollbar) transparent;
-  }
+    *,
+    *::before,
+    *::after {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-scrollbar) transparent;
+    }
 
-  body {
-    font-family: var(--font-inter);
-    background: var(--color-background) fixed no-repeat;
-    color: var(--color-foreground);
-    scroll-behavior: smooth;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+    body {
+        font-family: var(--font-inter);
+        background: var(--color-background) fixed no-repeat;
+        color: var(--color-foreground);
+        scroll-behavior: smooth;
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+    }
 
-  body {
-    width: 100vw;
-    height: 100vh;
-  }
+    body {
+        width: 100vw;
+        height: 100vh;
+    }
 
-  div#root,
-  div#App {
-    width: 100vw;
-    height: var(--visual-height, 100vh);
-    transition: height 0.35s ease;
-  }
+    div#root,
+    div#App {
+        width: 100vw;
+        height: var(--visual-height, 100vh);
+        transition: height 0.35s ease;
+    }
 
-  div#App {
-    position: relative;
-  }
+    div#App {
+        position: relative;
+    }
 
-  pre {
-    font-family: inherit;
-  }
+    pre {
+        font-family: inherit;
+    }
 
-  *::-webkit-scrollbar {
-    width: 10px;
-    background: transparent;
-    transition: width 0.2s ease;
-  }
+    *::-webkit-scrollbar {
+        width: 10px;
+        background: transparent;
+        transition: width 0.2s ease;
+    }
 
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
-  *::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    border: 2px solid transparent;
-    background: var(--color-scrollbar);
-    background-clip: content-box;
-  }
+    *::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background: var(--color-scrollbar);
+        background-clip: content-box;
+    }
 
-  *::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.35);
-    background-clip: content-box;
-  }
+    *::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.35);
+        background-clip: content-box;
+    }
 
-  /* Smooth transitions for theme toggling */
-  *,
-  *::before,
-  *::after {
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  }
+    /*
+   * Smooth transitions — limited to background-color and border-color only.
+   *
+   * WHY NOT color / box-shadow universally?
+   *   - color triggers repaint for every affected text node (~40% of elements)
+   *   - box-shadow triggers composite + paint even when unchanged
+   *   - body already has its own `color` transition (see above)
+   *   - removing these two properties eliminates the main source of
+   *     layout/paint storms during theme toggle while keeping the most
+   *     visible transitions smooth.
+   */
+    *,
+    *::before,
+    *::after {
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
 }
 
 /* ─── Glass Utility ──────────────────────────────────────────── */
 @utility glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
-  &:hover {
-    border-color: var(--button-hover-border, var(--glass-border));
-  }
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+    &:hover {
+        border-color: var(--button-hover-border, var(--glass-border));
+    }
 }
 
 @utility glass-strong {
-  background: var(--surface-elevated);
-  backdrop-filter: blur(calc(var(--glass-blur) * 1.2));
-  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.2));
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
-  &:hover {
-    border-color: var(--button-hover-border, var(--glass-border));
-  }
+    background: var(--surface-elevated);
+    backdrop-filter: blur(calc(var(--glass-blur) * 1.2));
+    -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.2));
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+    &:hover {
+        border-color: var(--button-hover-border, var(--glass-border));
+    }
 }
 
 /* ─── Focus Ring ─────────────────────────────────────────────── */
 @utility focus-ring {
-  outline: none;
-  &:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
-  }
+    outline: none;
+    &:focus-visible {
+        outline: 2px solid var(--color-ring);
+        outline-offset: 2px;
+    }
 }
