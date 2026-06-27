@@ -68,7 +68,7 @@ import BibleGatewayIcon from "@/assets/biblegateway.png";
 import BibliaOnlineIcon from "@/assets/bibliaonline.svg?react";
 import InvestingIcon from "@/assets/investing.png";
 import BloombergIcon from "@/assets/bloomberg.png";
-import CnbcIcon from "@/assets/cnbc.png";
+import CnbcIcon from "@/assets/cnbc.svg?react";
 import YahooFinanceIcon from "@/assets/yahoofinance.svg?react";
 import MsnDinheiroIcon from "@/assets/msndinheiro.svg?react";
 
@@ -1026,8 +1026,7 @@ export const ServicesList = {
     },
     icon: {
       icon: CnbcIcon,
-      type: "img",
-      skipBackground: true,
+      type: "svgr",
     },
     pattern: /^cn(bc)?/i,
     style: {
