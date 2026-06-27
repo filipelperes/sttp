@@ -19,6 +19,7 @@ import {
   SiAliexpress,
   SiCanva,
   SiClaude,
+  SiDeepl,
   SiFiverr,
   SiFreelancer,
   SiGmail,
@@ -27,6 +28,7 @@ import {
   SiGooglekeep,
   SiGoogletranslate,
   SiHackthebox,
+  SiMega,
   SiMercadopago,
   SiMeta,
   SiMonkeytype,
@@ -42,6 +44,7 @@ import {
   SiX,
   SiZoho,
 } from "react-icons/si";
+import { DiOnedrive } from "react-icons/di";
 import { MdOndemandVideo } from "react-icons/md";
 import { PiMicrosoftOutlookLogoLight } from "react-icons/pi";
 import { IoCalendarNumberOutline } from "react-icons/io5";
@@ -56,6 +59,10 @@ import MetaTrader5 from "@/assets/metatrader5.svg?react";
 import PontoGoIcon from "@/assets/pontogo.svg?react";
 import Habbo from "@/assets/habbo.png";
 import Unisantos from "@/assets/unisantos.png";
+import TeraBoxIcon from "@/assets/terabox.png";
+import YouVersionIcon from "@/assets/youversion.png";
+import BibleGatewayIcon from "@/assets/biblegateway.png";
+import BibliaOnlineIcon from "@/assets/bibliaonline.svg?react";
 
 export const ServicesList = {
   reddit: {
@@ -811,6 +818,7 @@ export const ServicesList = {
     icon: {
       icon: ProfitWeb,
       type: "img",
+      skipBackground: true,
     },
     pattern: /^pr(ofitweb)?/i,
     style: {
@@ -860,6 +868,114 @@ export const ServicesList = {
     pattern: /^ym|^ya(hoo\s?mail)?/i,
     style: {
       backgroundColor: "#6001D2",
+      color: "#ffffff",
+    },
+  },
+  onedrive: {
+    name: "OneDrive",
+    url: {
+      home: "https://onedrive.live.com",
+    },
+    icon: {
+      icon: DiOnedrive,
+      type: "react-icons",
+    },
+    pattern: /^od|^on(edrive)?/i,
+    style: {
+      backgroundColor: "#0078D4",
+      color: "#ffffff",
+    },
+  },
+  mega: {
+    name: "Mega",
+    url: {
+      home: "https://mega.io",
+    },
+    icon: {
+      icon: SiMega,
+      type: "react-icons",
+    },
+    pattern: /^mg|^me(ga)?/i,
+    style: {
+      backgroundColor: "#D9272E",
+      color: "#ffffff",
+    },
+  },
+  terabox: {
+    name: "TeraBox",
+    url: {
+      home: "https://www.terabox.com",
+    },
+    icon: {
+      icon: TeraBoxIcon,
+      type: "img",
+      skipBackground: true,
+    },
+    pattern: /^te(rabox)?/i,
+    style: {
+      backgroundColor: "#1890FF",
+      color: "#ffffff",
+    },
+  },
+  deepl: {
+    name: "DeepL",
+    url: {
+      home: "https://www.deepl.com",
+    },
+    icon: {
+      icon: SiDeepl,
+      type: "react-icons",
+    },
+    pattern: /^dl|^de(epl)?/i,
+    style: {
+      backgroundColor: "#0F2B46",
+      color: "#ffffff",
+    },
+  },
+  biblegateway: {
+    name: "Bible Gateway",
+    url: {
+      home: "https://www.biblegateway.com",
+    },
+    icon: {
+      icon: BibleGatewayIcon,
+      type: "img",
+      skipBackground: true,
+    },
+    pattern: /^bg|^b(ible\s?gateway)?/i,
+    style: {
+      backgroundColor: "#B80000",
+      color: "#ffffff",
+    },
+  },
+  youversion: {
+    name: "YouVersion",
+    url: {
+      home: "https://www.youversion.com",
+    },
+    icon: {
+      icon: YouVersionIcon,
+      type: "img",
+      skipBackground: true,
+    },
+    pattern: /^yv|^y(ouversion)?/i,
+    style: {
+      backgroundColor: "#D60000",
+      color: "#ffffff",
+    },
+  },
+  bibliaonline: {
+    name: "Bíblia Online",
+    url: {
+      home: "https://www.bibliaonline.com.br",
+    },
+    icon: {
+      icon: BibliaOnlineIcon,
+      type: "svgr",
+    },
+    pattern: /^bo|^b(iblia\s?online)?/i,
+    style: {
+      backgroundColor: "#005599",
       color: "#ffffff",
     },
   },
