@@ -12,6 +12,7 @@ import {
   FaTrello,
   FaTwitch,
   FaWhatsapp,
+  FaYahoo,
   FaYoutube,
 } from "react-icons/fa";
 import {
@@ -22,6 +23,7 @@ import {
   SiFreelancer,
   SiGmail,
   SiGooglegemini,
+  SiGooglecalendar,
   SiGooglekeep,
   SiGoogletranslate,
   SiHackthebox,
@@ -50,6 +52,7 @@ import DeepSeekIcon from "@/assets/deepseek.svg?react";
 import Workana from "@/assets/workana.png";
 import NoventaNoveFreelas from "@/assets/99freelas.png";
 import ProfitWeb from "@/assets/profit.png";
+import MetaTrader5 from "@/assets/metatrader5.svg?react";
 import PontoGoIcon from "@/assets/pontogo.svg?react";
 import Habbo from "@/assets/habbo.png";
 import Unisantos from "@/assets/unisantos.png";
@@ -812,6 +815,51 @@ export const ServicesList = {
     pattern: /^pr(ofitweb)?/i,
     style: {
       backgroundColor: "#1E6B4F",
+      color: "#ffffff",
+    },
+  },
+  metatrader5: {
+    name: "MetaTrader 5",
+    url: {
+      home: "https://web.metatrader.app/terminal?lang=pt",
+    },
+    icon: {
+      icon: MetaTrader5,
+      type: "svgr",
+    },
+    pattern: /^me(t(atrade(r5?)?)?)?/i,
+    style: {
+      backgroundColor: "#1E2A38",
+      color: "#ffffff",
+    },
+  },
+  googlecalendar: {
+    name: "Google Calendar",
+    url: {
+      home: "https://calendar.google.com",
+    },
+    icon: {
+      icon: SiGooglecalendar,
+      type: "react-icons",
+    },
+    pattern: /^gc|^g(oogle\s?calendar)?/i,
+    style: {
+      backgroundColor: "#1A73E8",
+      color: "#ffffff",
+    },
+  },
+  yahoomail: {
+    name: "Yahoo Mail",
+    url: {
+      home: "https://mail.yahoo.com",
+    },
+    icon: {
+      icon: FaYahoo,
+      type: "react-icons",
+    },
+    pattern: /^ym|^ya(hoo\s?mail)?/i,
+    style: {
+      backgroundColor: "#6001D2",
       color: "#ffffff",
     },
   },
