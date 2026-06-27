@@ -19,6 +19,7 @@ import {
   SiAliexpress,
   SiCanva,
   SiClaude,
+  SiCnn,
   SiDeepl,
   SiFiverr,
   SiFreelancer,
@@ -33,11 +34,13 @@ import {
   SiMeta,
   SiMonkeytype,
   SiNetflix,
+  SiNewyorktimes,
   SiNotebooklm,
   SiNotion,
   SiOpenai,
   SiShopee,
   SiSpeedtest,
+  SiThewashingtonpost,
   SiTradingview,
   SiTryhackme,
   SiUpwork,
@@ -63,6 +66,11 @@ import TeraBoxIcon from "@/assets/terabox.png";
 import YouVersionIcon from "@/assets/youversion.png";
 import BibleGatewayIcon from "@/assets/biblegateway.png";
 import BibliaOnlineIcon from "@/assets/bibliaonline.svg?react";
+import InvestingIcon from "@/assets/investing.png";
+import BloombergIcon from "@/assets/bloomberg.png";
+import CnbcIcon from "@/assets/cnbc.png";
+import YahooFinanceIcon from "@/assets/yahoofinance.svg?react";
+import MsnDinheiroIcon from "@/assets/msndinheiro.svg?react";
 
 export const ServicesList = {
   reddit: {
@@ -976,6 +984,129 @@ export const ServicesList = {
     pattern: /^bo|^b(iblia\s?online)?/i,
     style: {
       backgroundColor: "#005599",
+      color: "#ffffff",
+    },
+  },
+  investing: {
+    name: "Investing.com",
+    url: {
+      home: "https://www.investing.com",
+    },
+    icon: {
+      icon: InvestingIcon,
+      type: "img",
+      skipBackground: true,
+    },
+    pattern: /^i(nv(esting)?)?/i,
+    style: {
+      backgroundColor: "#181C21",
+      color: "#ffffff",
+    },
+  },
+  bloomberg: {
+    name: "Bloomberg",
+    url: {
+      home: "https://www.bloomberg.com",
+    },
+    icon: {
+      icon: BloombergIcon,
+      type: "img",
+      skipBackground: true,
+    },
+    pattern: /^bl(oomberg)?/i,
+    style: {
+      backgroundColor: "#000000",
+      color: "#ffffff",
+    },
+  },
+  cnbc: {
+    name: "CNBC",
+    url: {
+      home: "https://www.cnbc.com",
+    },
+    icon: {
+      icon: CnbcIcon,
+      type: "img",
+      skipBackground: true,
+    },
+    pattern: /^cn(bc)?/i,
+    style: {
+      backgroundColor: "#005594",
+      color: "#ffffff",
+    },
+  },
+  cnn: {
+    name: "CNN",
+    url: {
+      home: "https://www.cnn.com",
+    },
+    icon: {
+      icon: SiCnn,
+      type: "react-icons",
+    },
+    pattern: /^c(nn)?/i,
+    style: {
+      backgroundColor: "#CC0000",
+      color: "#ffffff",
+    },
+  },
+  washingtonpost: {
+    name: "Washington Post",
+    url: {
+      home: "https://www.washingtonpost.com",
+    },
+    icon: {
+      icon: SiThewashingtonpost,
+      type: "react-icons",
+    },
+    pattern: /^w(p|ash(ington\spost)?)?/i,
+    style: {
+      backgroundColor: "#000000",
+      color: "#ffffff",
+    },
+  },
+  nytimes: {
+    name: "NYTimes",
+    url: {
+      home: "https://www.nytimes.com",
+    },
+    icon: {
+      icon: SiNewyorktimes,
+      type: "react-icons",
+    },
+    pattern: /^ny(t(imes)?)?/i,
+    style: {
+      backgroundColor: "#000000",
+      color: "#ffffff",
+    },
+  },
+  yahoofinance: {
+    name: "Yahoo Finance",
+    url: {
+      home: "https://finance.yahoo.com",
+    },
+    icon: {
+      icon: YahooFinanceIcon,
+      type: "svgr",
+    },
+    pattern: /^y(f|ahoo\s?finance)?/i,
+    style: {
+      backgroundColor: "#6001D2",
+      color: "#ffffff",
+    },
+  },
+  msndinheiro: {
+    name: "MSN Dinheiro",
+    url: {
+      home: "https://www.msn.com/pt-br/dinheiro",
+    },
+    icon: {
+      icon: MsnDinheiroIcon,
+      type: "svgr",
+    },
+    pattern: /^ms(n(\sdinheiro)?)?/i,
+    style: {
+      backgroundColor: "#0078D7",
       color: "#ffffff",
     },
   },
