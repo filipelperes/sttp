@@ -11,6 +11,16 @@ const HandleWindow = memo(() => {
     const { isSpecialKey, shouldOpen, key } = getKeyEventDetails(event);
     const { Show } = useCommandPaletteStore.getState();
     if (isSpecialKey || Show) return;
+
+    // Don't open the command palette when the user is typing inside an input,
+    // textarea, or contenteditable element (e.g. search bars in settings).
+    const activeEl = document.activeElement;
+    const isFormField =
+      activeEl?.tagName === 'INPUT' ||
+      activeEl?.tagName === 'TEXTAREA' ||
+      (activeEl instanceof HTMLElement && activeEl.isContentEditable);
+    if (isFormField) return;
+
     if (shouldOpen) {
       event.preventDefault();
       setCommandPaletteState({ Show: true, Key: key });
