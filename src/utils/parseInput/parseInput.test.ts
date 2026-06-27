@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { parseInput } from './parseInput';
 import { ServicesList } from '@/CommandPalette/utils/ServicesList';
+import { getSortedServiceEntries } from '@/CommandPalette/utils/ServicesList/servicesStore';
 
 describe('parseInput', () => {
   // --- isEmpty ---
@@ -17,7 +18,7 @@ describe('parseInput', () => {
 
   it('returns all suggestions when value is empty', () => {
     const result = parseInput('');
-    expect(result.suggestions.suggestions).toEqual(Object.entries(ServicesList));
+    expect(result.suggestions.suggestions).toEqual(getSortedServiceEntries());
     expect(result.suggestions.matched).toBe(true);
   });
 
