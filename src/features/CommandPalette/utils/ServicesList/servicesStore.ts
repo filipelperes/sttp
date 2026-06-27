@@ -7,6 +7,7 @@ import { loadUserServices } from "@/features/Settings/utils/servicesStorage";
 // ~60×/min during active typing). The cache is invalidated explicitly whenever
 // user services are modified.
 let _cachedMerged: IServicesList | null = null;
+let _cachedSortedEntries: [string, IServicesList[string]][] | null = null;
 
 /**
  * Returns the complete merged services list:
@@ -28,6 +29,21 @@ export const getMergedServicesList = (): IServicesList => {
 };
 
 /**
+ * Returns the merged services list as a sorted array of [key, service] entries,
+ * ordered alphabetically by service name.
+ *
+ * Computed once and cached alongside the merged list. Free on subsequent calls.
+ */
+export const getSortedServiceEntries = (): [string, IServicesList[string]][] => {
+  if (!_cachedSortedEntries) {
+    _cachedSortedEntries = Object.entries(getMergedServicesList()).sort(
+      ([, a], [, b]) => a.name.localeCompare(b.name),
+    );
+  }
+  return _cachedSortedEntries;
+};
+
+/**
  * Invalidates the in-memory merged-services cache.
  * Must be called after any write to user services (add, edit, remove,
  * profile load, etc.) so the next `getMergedServicesList()` call
@@ -35,6 +51,7 @@ export const getMergedServicesList = (): IServicesList => {
  */
 export const invalidateServicesCache = (): void => {
   _cachedMerged = null;
+  _cachedSortedEntries = null;
 };
 
 /**

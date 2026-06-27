@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useState } from 'react';
-import { getMergedServicesList } from '@/CommandPalette/utils/ServicesList/servicesStore';
+import { getMergedServicesList, getSortedServiceEntries } from '@/CommandPalette/utils/ServicesList/servicesStore';
 import useServiceEditorStore from '@/features/Settings/stores/ServiceEditorStore';
 import ServiceForm from '@/features/Settings/components/ServiceForm';
 import Icon from '@/components/Icon';
@@ -16,10 +16,18 @@ const ServiceManager = memo(() => {
   const [removing, setRemoving] = useState<string | null>(null);
 
   const services = useMemo(() => getMergedServicesList(), []);
+  const sortedEntries = getSortedServiceEntries();
 
-  const entries = Object.entries(services).filter(([key, svc]) =>
-    key.toLowerCase().includes(search.toLowerCase()) ||
-    svc.name.toLowerCase().includes(search.toLowerCase()),
+  const entries = useMemo(
+    () =>
+      search
+        ? sortedEntries.filter(
+            ([key, svc]) =>
+              key.toLowerCase().includes(search.toLowerCase()) ||
+              svc.name.toLowerCase().includes(search.toLowerCase()),
+          )
+        : sortedEntries,
+    [sortedEntries, search],
   );
 
   const handleRemove = useCallback(
